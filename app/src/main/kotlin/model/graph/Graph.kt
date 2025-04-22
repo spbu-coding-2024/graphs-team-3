@@ -22,12 +22,6 @@ class Graph(
             _vertices[firstVertexId] ?: throw IllegalStateException("No vertex with ID: $firstVertexId in graph")
         val secondVertex =
             _vertices[secondVertexId] ?: throw IllegalStateException("No vertex with ID: $secondVertexId in graph")
-
-        if (!isDirected) {
-            _edges.getOrPut(edgeIdCount + 1) { Edge(edgeIdCount + 1, secondVertex to firstVertex, weight) }
-            edgeIdCount += 2
-            return _edges.getOrPut(edgeIdCount - 2) { Edge(edgeIdCount - 2, firstVertex to secondVertex, weight) }
-        }
         edgeIdCount++
         return _edges.getOrPut(edgeIdCount - 1) { Edge(edgeIdCount - 1, firstVertex to secondVertex, weight) }
     }
@@ -46,7 +40,27 @@ class Graph(
         _vertices.remove(vertexID)
     }
 
-//    fun deleteEdge(edgeId: Long) {
-//        _edges.remove(edgeId)
-//    }
+    fun toAdjacencyList(): MutableMap<Vertex, MutableList<Vertex>> {
+        var adjacencyList: MutableMap<Vertex, MutableList<Vertex>> = mutableMapOf()
+        this.vertices.forEach { vertex ->
+            adjacencyList[vertex] = mutableListOf()
+        }
+        this.edges.forEach { edge ->
+            adjacencyList[edge.vertices.first]?.add(edge.vertices.second)
+            if (!isDirected) {
+                adjacencyList[edge.vertices.second]?.add(edge.vertices.first)
+            }
+        }
+        return adjacencyList
+    }
+
+    fun getEdge(first: Vertex, second: Vertex): Edge? {
+        var result: Edge? = null
+        this.edges.forEach { edge ->
+            if ((edge.vertices.first == first && edge.vertices.second == second) || (edge.vertices.first == second && edge.vertices.second == first)) {
+                result = edge
+            }
+        }
+        return result
+    }
 }
