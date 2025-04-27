@@ -48,10 +48,13 @@ class Neo4jRepository(private val uri: String, private val user: String, private
             driver.close()
         } catch (e: ClientException) {
             println("WARNING: wrong uri/username/password")
+            throw e
         } catch (e: ServerException) {
             println("WARNING: cannot connect to database")
+            throw e
         } catch (e: Exception) {
-            println("WARNING: other error")
+            println("WARNING: other error occurred")
+            throw e
         }
     }
 
