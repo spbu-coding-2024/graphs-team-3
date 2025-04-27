@@ -17,7 +17,7 @@ class Graph(
 
     fun addVertex(id: Int, label: String): Vertex = _vertices.getOrPut(id) { Vertex(label, id) }
 
-    fun addEdge(firstVertexId: Int, secondVertexId: Int, weight: Float = 1f): Edge {
+    fun addEdge(firstVertexId: Int, secondVertexId: Int, weight: Long = 1): Edge {
         val firstVertex =
             _vertices[firstVertexId] ?: throw IllegalStateException("No vertex with ID: $firstVertexId in graph")
         val secondVertex =
