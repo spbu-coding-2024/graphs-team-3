@@ -1,19 +1,26 @@
 package model.graph
 
 class Graph(
-    var isDirected: Boolean = false,
-    var isWeighted: Boolean = false
+    internal var isDirected: Boolean = false,
+    internal var isWeighted: Boolean = false
 ) {
-    private val _vertices = hashMapOf<Int, Vertex>()
-    private val _edges = hashMapOf<Long, Edge>()
-    private var vertexIdCount: Int = 0
-    private var edgeIdCount: Long = 0
+    internal val _vertices = hashMapOf<Int, Vertex>()
+    internal val _edges = hashMapOf<Long, Edge>()
+    internal var vertexIdCount: Int = 0
+    internal var edgeIdCount: Long = 0
 
     val vertices: Collection<Vertex>
         get() = _vertices.values
 
     val edges: Collection<Edge>
         get() = _edges.values
+
+    fun addVertex(label: String): Vertex {
+        var newVertex = Vertex(label, vertexIdCount)
+        _vertices.getOrPut(vertexIdCount) { newVertex }
+        vertexIdCount++
+        return newVertex
+    }
 
     fun addVertex(id: Int, label: String): Vertex = _vertices.getOrPut(id) { Vertex(label, id) }
 
