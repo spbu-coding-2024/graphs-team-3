@@ -9,7 +9,7 @@ import java.rmi.ServerException
 class Neo4jRepository(private val uri: String, private val user: String, private val password: String) {
     fun writeToDB(graph: Graph) {
         try {
-            val driver = GraphDatabase.driver("neo4j://localhost:7687", AuthTokens.basic(user, password))
+            val driver = GraphDatabase.driver(uri, AuthTokens.basic(user, password))
             val session = driver.session()
 
             session.executeWrite { transaction ->
@@ -42,6 +42,8 @@ class Neo4jRepository(private val uri: String, private val user: String, private
                     ).consume()
                 }
             }
+            session.close()
+            driver.close()
         } catch (e: ClientException) {
             println("WARNING: wrong uri/username/password")
         } catch (e: ServerException) {
