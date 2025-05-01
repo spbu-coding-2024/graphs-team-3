@@ -25,6 +25,27 @@ class Graph(
     fun addVertex(id: Int, label: String): Vertex = _vertices.getOrPut(id) { Vertex(label, id) }
 
     fun addEdge(firstVertexId: Int, secondVertexId: Int, weight: Long = 1): Edge {
+        var edgeForChange: Edge? = null
+        _edges.values.forEach { edge ->
+            when {
+                edge.vertices.first.id == firstVertexId && edge.vertices.second.id == secondVertexId -> {
+                    edgeForChange = edge
+                }
+
+                edge.vertices.first.id == secondVertexId && edge.vertices.second.id == firstVertexId -> {
+                    if (isDirected) {
+                        throw IllegalStateException("The application does not support graphs with multiple edges.")
+                    }
+                    edgeForChange = edge
+                }
+            }
+        }
+
+        edgeForChange?.let {
+            edgeForChange?.weight = weight
+            return edgeForChange ?: throw IllegalStateException()
+        }
+
         val firstVertex =
             _vertices[firstVertexId] ?: throw IllegalStateException("No vertex with ID: $firstVertexId in graph")
         val secondVertex =
