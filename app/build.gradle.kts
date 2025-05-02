@@ -21,6 +21,8 @@ dependencies {
     implementation("org.neo4j.driver", "neo4j-java-driver", "5.28.4")
     implementation("org.gephi","gephi-toolkit" ,"0.10.1" , classifier = "all")
     implementation("org.apache.logging.log4j:log4j-core:2.20.0")
+    implementation("cafe.adriel.voyager:voyager-navigator:1.0.1")
+    implementation("cafe.adriel.voyager:voyager-screenmodel:1.0.1")
 }
 
 tasks.test {
