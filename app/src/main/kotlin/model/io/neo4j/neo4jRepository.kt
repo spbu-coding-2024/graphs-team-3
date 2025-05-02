@@ -3,13 +3,11 @@ package model.io.neo4j
 import model.graph.Graph
 import org.neo4j.driver.AuthTokens
 import org.neo4j.driver.GraphDatabase
-import org.neo4j.driver.Value
 import org.neo4j.driver.exceptions.ClientException
-import java.io.IOException
 import java.rmi.ServerException
 
 class Neo4jRepository(private val uri: String, private val user: String, private val password: String) {
-    fun writeToDB(graph: Graph) {
+    internal fun writeToDB(graph: Graph) {
         try {
             val driver = GraphDatabase.driver(uri, AuthTokens.basic(user, password))
             val session = driver.session()
@@ -58,13 +56,12 @@ class Neo4jRepository(private val uri: String, private val user: String, private
         }
     }
 
-    fun readFromDB(): Graph? {
-        var graph: Graph = Graph()
+    internal fun readFromDB(): Graph {
+        val graph = Graph()
         try {
             val driver = GraphDatabase.driver(uri, AuthTokens.basic(user, password))
             val session = driver.session()
-            var maxId = 0
-            var changeCount = 0
+            var maxId: Int
             session.executeWrite { transaction ->
                 maxId = transaction.run(
                     "MATCH (v: Vertex) RETURN max(ID(v)) as maxId",
