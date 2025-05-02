@@ -2,12 +2,12 @@ package model.graph
 
 class Graph(
     internal var isDirected: Boolean = false,
-    internal var isWeighted: Boolean = false
 ) {
     internal val _vertices = hashMapOf<Int, Vertex>()
     internal val _edges = hashMapOf<Long, Edge>()
     internal var vertexIdCount: Int = 0
     internal var edgeIdCount: Long = 0
+    internal var isNegativeWeight: Boolean = false
 
     val vertices: Collection<Vertex>
         get() = _vertices.values
@@ -45,6 +45,9 @@ class Graph(
             edgeForChange?.weight = weight
             return edgeForChange ?: throw IllegalStateException()
         }
+        if (weight < 0) {
+            isNegativeWeight = true
+        }
 
         val firstVertex =
             _vertices[firstVertexId] ?: throw IllegalStateException("No vertex with ID: $firstVertexId in graph")
@@ -66,6 +69,13 @@ class Graph(
             _edges.remove(edgeID)
         }
         _vertices.remove(vertexID)
+
+        isNegativeWeight = false
+        _edges.values.forEach { edge ->
+            if (edge.weight < 0) {
+                isNegativeWeight = true
+            }
+        }
     }
 
     fun toAdjacencyList(): MutableMap<Vertex, MutableList<Vertex>> {
