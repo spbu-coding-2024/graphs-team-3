@@ -1,13 +1,13 @@
 package model.graph
 
 class Graph(
-    var isDirected: Boolean = false,
-    var isWeighted: Boolean = false
+    internal var isDirected: Boolean = false,
 ) {
-    private val _vertices = hashMapOf<Int, Vertex>()
-    private val _edges = hashMapOf<Long, Edge>()
-    private var vertexIdCount: Int = 0
-    private var edgeIdCount: Long = 0
+    internal val _vertices = hashMapOf<Int, Vertex>()
+    internal val _edges = hashMapOf<Long, Edge>()
+    internal var vertexIdCount: Int = 0
+    internal var edgeIdCount: Long = 0
+    internal var isNegativeWeight: Boolean = false
 
     val vertices: Collection<Vertex>
         get() = _vertices.values
@@ -15,9 +15,40 @@ class Graph(
     val edges: Collection<Edge>
         get() = _edges.values
 
+    fun addVertex(label: String): Vertex {
+        var newVertex = Vertex(label, vertexIdCount)
+        _vertices.getOrPut(vertexIdCount) { newVertex }
+        vertexIdCount++
+        return newVertex
+    }
+
     fun addVertex(id: Int, label: String): Vertex = _vertices.getOrPut(id) { Vertex(label, id) }
 
     fun addEdge(firstVertexId: Int, secondVertexId: Int, weight: Long = 1): Edge {
+        var edgeForChange: Edge? = null
+        _edges.values.forEach { edge ->
+            when {
+                edge.vertices.first.id == firstVertexId && edge.vertices.second.id == secondVertexId -> {
+                    edgeForChange = edge
+                }
+
+                edge.vertices.first.id == secondVertexId && edge.vertices.second.id == firstVertexId -> {
+                    if (isDirected) {
+                        throw IllegalStateException("The application does not support graphs with multiple edges.")
+                    }
+                    edgeForChange = edge
+                }
+            }
+        }
+
+        edgeForChange?.let {
+            edgeForChange?.weight = weight
+            return edgeForChange ?: throw IllegalStateException()
+        }
+        if (weight < 0) {
+            isNegativeWeight = true
+        }
+
         val firstVertex =
             _vertices[firstVertexId] ?: throw IllegalStateException("No vertex with ID: $firstVertexId in graph")
         val secondVertex =
@@ -38,6 +69,13 @@ class Graph(
             _edges.remove(edgeID)
         }
         _vertices.remove(vertexID)
+
+        isNegativeWeight = false
+        _edges.values.forEach { edge ->
+            if (edge.weight < 0) {
+                isNegativeWeight = true
+            }
+        }
     }
 
     fun toAdjacencyList(): MutableMap<Vertex, MutableList<Vertex>> {
