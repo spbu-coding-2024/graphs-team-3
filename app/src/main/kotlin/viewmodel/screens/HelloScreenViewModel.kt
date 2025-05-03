@@ -62,7 +62,7 @@ class HelloScreenViewModel {
         _message.value = message
     }
 
-    fun onConnect() {
+    fun onNeo4jConnect() {
         var neo4jRepo = Neo4jRepository(_uri.value ?: "", _username.value ?: "", _password.value ?: "")
         try {
             _graph.value = neo4jRepo.readFromDB()

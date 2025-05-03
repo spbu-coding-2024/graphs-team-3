@@ -98,7 +98,7 @@ fun helloScreen(
                 username,
                 password,
                 onDismiss = { viewModel.selectStorage(null) },
-                onConnect = viewModel::onConnect,
+                onConnect = viewModel::onNeo4jConnect,
                 viewModel
             )
         }
