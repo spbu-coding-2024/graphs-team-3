@@ -6,12 +6,12 @@ import model.graph.Vertex
 fun findSCC(graph: Graph): Set<Set<Vertex>> {
     val adjacencyList = graph.toAdjacencyList()
     val revAdjacencyList: MutableMap<Vertex, MutableList<Vertex>> = mutableMapOf()
-    for (u in adjacencyList.keys) {
-        revAdjacencyList[u] = mutableListOf()
+    for (vertex in adjacencyList.keys) {
+        revAdjacencyList[vertex] = mutableListOf()
     }
-    for ((u, near) in adjacencyList) {
-        for (v in near) {
-            revAdjacencyList[v]?.add(u)
+    for ((from, neighbor) in adjacencyList) {
+        for (to in neighbor) {
+            revAdjacencyList[to]?.add(from)
         }
     }
 
@@ -19,30 +19,30 @@ fun findSCC(graph: Graph): Set<Set<Vertex>> {
     val stack = ArrayDeque<Vertex>()
     val result = mutableSetOf<Set<Vertex>>()
 
-    fun dfs(u: Vertex) {
-        visited += u
-        for (v in adjacencyList[u]?: throw IllegalStateException()) {
-            if (v !in visited) dfs(v)
+    fun dfs(vertex: Vertex) {
+        visited += vertex
+        for (neighbor in adjacencyList[vertex]?: throw IllegalStateException()) {
+            if (neighbor !in visited) dfs(neighbor)
         }
-        stack.addFirst(u)
+        stack.addFirst(vertex)
     }
 
-    for (u in adjacencyList.keys) if (u !in visited) dfs(u)
+    for (vertex in adjacencyList.keys) if (vertex !in visited) dfs(vertex)
 
     visited.clear()
-    fun findComponents(u: Vertex, component: MutableSet<Vertex>) {
-        visited += u
-        component += u
-        for (v in revAdjacencyList[u]?: throw IllegalStateException()) {
-            if (v !in visited) findComponents(v, component)
+    fun findComponents(vertex: Vertex, component: MutableSet<Vertex>) {
+        visited += vertex
+        component += vertex
+        for (neighbor in revAdjacencyList[vertex]?: throw IllegalStateException()) {
+            if (neighbor !in visited) findComponents(neighbor, component)
         }
     }
 
     while (stack.isNotEmpty()) {
-        val u = stack.removeFirst()
-        if (u !in visited) {
+        val vertex = stack.removeFirst()
+        if (vertex !in visited) {
             val component = mutableSetOf<Vertex>()
-            findComponents(u, component)
+            findComponents(vertex, component)
             result += component
         }
     }
