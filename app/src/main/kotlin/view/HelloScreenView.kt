@@ -13,6 +13,8 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.navigator.LocalNavigator
+import model.graph.Graph
+import model.io.neo4j.Neo4jRepository
 import view.colors.ColorTheme
 import view.io.neo4jView
 
@@ -28,7 +30,10 @@ fun helloScreen() {
     val navigator = LocalNavigator.current
     val uri = remember { mutableStateOf<String?>(null) }
     val username = remember { mutableStateOf<String?>(null) }
-    var password = remember { mutableStateOf<String?>(null) }
+    val password = remember { mutableStateOf<String?>(null) }
+    val graph = remember { mutableStateOf<Graph>(Graph()) }
+    val exceptionDialog = remember { mutableStateOf(false) }
+    val message = remember { mutableStateOf<String>("") }
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -48,17 +53,21 @@ fun helloScreen() {
             OutlinedButton(
                 onClick = { storage = Storage.JSON },
                 colors = ButtonDefaults.buttonColors(backgroundColor = ColorTheme.SelectRepositoryButtonColor),
-                modifier = Modifier.clip(RoundedCornerShape(percent = 25)).weight(0.23f)
+                modifier = Modifier.clip(RoundedCornerShape(percent = 25)).weight(0.23f),
+                enabled = false,
             ) {
-                Text("JSON")
+                Text("JSON\nWIP")
             }
 
             OutlinedButton(
                 onClick = { storage = Storage.SQLite },
                 colors = ButtonDefaults.buttonColors(backgroundColor = ColorTheme.SelectRepositoryButtonColor),
-                modifier = Modifier.clip(RoundedCornerShape(percent = 25)).weight(0.34f)
+                modifier = Modifier.clip(RoundedCornerShape(percent = 25)).weight(0.34f),
+                enabled = false,
             ) {
-                Text("SQLite")
+                Text(
+                    "SQLite\nWIP"
+                )
             }
 
             OutlinedButton(
@@ -70,9 +79,6 @@ fun helloScreen() {
                 Text("Neo4j")
             }
         }
-//        Text(
-//            text = if (password.value == null) "Null" else if (password.value == "") "abra" else password.value!!
-//        )
     }
 
     when (storage) {
@@ -85,11 +91,32 @@ fun helloScreen() {
         }
 
         Storage.Neo4j -> {
-            neo4jView(uri, username, password, onDismiss = { storage = null })
+            neo4jView(
+                uri,
+                username,
+                password,
+                onDismiss = { storage = null },
+                onConnect = {
+                    val neo4jRepo = Neo4jRepository(uri.value ?: "", username.value ?: "", password.value ?: "")
+                    try {
+                        graph.value = neo4jRepo.readFromDB()
+                    } catch (e: Exception) {
+                        exceptionDialog.value = true
+                        uri.value = null
+                        username.value = null
+                        password.value = null
+                        message.value = e.message ?: "Unknown error"
+                    }
+                }
+            )
         }
 
         else -> {
 
         }
+    }
+
+    if (exceptionDialog.value) {
+        exceptionView(message.value) { exceptionDialog.value = false }
     }
 }

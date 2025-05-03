@@ -19,7 +19,8 @@ fun neo4jView(
     uri: MutableState<String?>,
     username: MutableState<String?>,
     password: MutableState<String?>,
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
+    onConnect: () -> Unit,
 ) {
     val navigator = LocalNavigator.current
 
@@ -102,7 +103,7 @@ fun neo4jView(
                             openDialog = false
                             onDismiss()
                         },
-                        colors = ButtonDefaults.buttonColors(ColorTheme.DisabledColor)
+                        colors = ButtonDefaults.buttonColors(ColorTheme.rejectColor)
                     ) {
                         Text("Cancel")
                     }
@@ -113,6 +114,7 @@ fun neo4jView(
                             if (username.value == null) username.value = ""
                             if (password.value == null) password.value = ""
                             openDialog = false
+                            onConnect()
                             onDismiss()
                         },
                         colors = ButtonDefaults.buttonColors(ColorTheme.ConfirmColor)

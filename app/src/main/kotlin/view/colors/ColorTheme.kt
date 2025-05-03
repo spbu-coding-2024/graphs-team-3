@@ -13,5 +13,5 @@ object ColorTheme {
     @Stable
     val ConfirmColor = Color(120,255,140)
     @Stable
-    val DisabledColor = Color(255, 120, 140)
+    val rejectColor = Color(255, 120, 140)
 }
