@@ -63,22 +63,29 @@ class Neo4jRepository(private val uri: String, private val user: String, private
             val session = driver.session()
             var maxId: Int
             session.executeWrite { transaction ->
-                maxId = transaction.run(
-                    "MATCH (v: Vertex) RETURN max(ID(v)) as maxId",
-                ).single().get("maxId").asInt()
-                graph.vertexIdCount = maxId + 1
+                val maxIdResult = transaction.run(
+                    "MATCH (v) RETURN max(ID(v)) as maxId",
+                ).single()
+
+                graph.vertexIdCount = when {
+                    maxIdResult["maxId"].isNull -> 0
+                    else -> maxIdResult["maxId"].asInt() + 1
+                }
 
                 val vertices = transaction.run(
-                    "MATCH (v:Vertex) RETURN ID(v) as id, v.label as label, v.isDirected as isDirected",
+                    "MATCH (v) RETURN ID(v) as id, v.label as label, v.isDirected as isDirected",
                 ).list()
 
                 vertices.forEach { vertex ->
                     graph.addVertex(vertex.get("id").asInt(), vertex.get("label").asString())
-                    graph.isDirected = vertex.get("isDirected").asInt() == 1
+                    graph.isDirected = when {
+                        vertex.get("isDirected").isNull -> false
+                        else -> vertex.get("isDirected").asInt() == 1
+                    }
                 }
 
                 val edges = transaction.run(
-                    "MATCH (f:Vertex)-[e]->(s:Vertex) RETURN ID(f) as firstId, ID(s) as secondId, e.weight as weight",
+                    "MATCH (f)-[e]->(s) RETURN ID(f) as firstId, ID(s) as secondId, e.weight as weight",
                 ).list()
 
                 edges.forEach { edge ->
