@@ -1,4 +1,4 @@
-package view
+package view.exceptionDialog
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
@@ -11,7 +11,7 @@ import androidx.compose.material.icons.outlined.Warning
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
-import view.colors.ColorTheme
+import viewmodel.colors.ColorTheme
 
 @Composable
 fun exceptionView(

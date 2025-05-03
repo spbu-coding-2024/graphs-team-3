@@ -1,4 +1,4 @@
-package view
+package view.screens
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -13,10 +13,10 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.navigator.LocalNavigator
-import model.graph.Graph
-import model.io.neo4j.Neo4jRepository
-import view.colors.ColorTheme
+import view.exceptionDialog.exceptionView
+import viewmodel.colors.ColorTheme
 import view.io.neo4jView
+import viewmodel.screens.HelloScreenViewModel
 
 enum class Storage {
     JSON,
@@ -25,15 +25,17 @@ enum class Storage {
 }
 
 @Composable
-fun helloScreen() {
-    var storage by remember { mutableStateOf<Storage?>(null) }
+fun helloScreen(
+    viewModel: HelloScreenViewModel = remember { HelloScreenViewModel() },
+) {
+    val storage by viewModel.storage
     val navigator = LocalNavigator.current
-    val uri = remember { mutableStateOf<String?>(null) }
-    val username = remember { mutableStateOf<String?>(null) }
-    val password = remember { mutableStateOf<String?>(null) }
-    val graph = remember { mutableStateOf<Graph>(Graph()) }
-    val exceptionDialog = remember { mutableStateOf(false) }
-    val message = remember { mutableStateOf<String>("") }
+    val uri = remember { viewModel.uri }
+    val username  = remember { viewModel.username}
+    val password = remember { viewModel.password }
+    val graph by viewModel.graph
+    val exceptionDialog = remember { viewModel.exceptionDialog }
+    val message = remember { viewModel.message }
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -51,7 +53,7 @@ fun helloScreen() {
             horizontalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             OutlinedButton(
-                onClick = { storage = Storage.JSON },
+                onClick = { viewModel.selectStorage(Storage.JSON) },
                 colors = ButtonDefaults.buttonColors(backgroundColor = ColorTheme.SelectRepositoryButtonColor),
                 modifier = Modifier.clip(RoundedCornerShape(percent = 25)).weight(0.23f),
                 enabled = false,
@@ -60,7 +62,7 @@ fun helloScreen() {
             }
 
             OutlinedButton(
-                onClick = { storage = Storage.SQLite },
+                onClick = { viewModel.selectStorage(Storage.SQLite) },
                 colors = ButtonDefaults.buttonColors(backgroundColor = ColorTheme.SelectRepositoryButtonColor),
                 modifier = Modifier.clip(RoundedCornerShape(percent = 25)).weight(0.34f),
                 enabled = false,
@@ -71,7 +73,7 @@ fun helloScreen() {
             }
 
             OutlinedButton(
-                onClick = { storage = Storage.Neo4j },
+                onClick = { viewModel.selectStorage(Storage.Neo4j) },
                 colors = ButtonDefaults.buttonColors(backgroundColor = ColorTheme.SelectRepositoryButtonColor),
                 modifier = Modifier.clip(RoundedCornerShape(percent = 25)).weight(0.28f)
 
@@ -83,11 +85,11 @@ fun helloScreen() {
 
     when (storage) {
         Storage.JSON -> {
-            storage = null
+            viewModel.selectStorage(null)
         }
 
         Storage.SQLite -> {
-            storage = null
+            viewModel.selectStorage(null)
         }
 
         Storage.Neo4j -> {
@@ -95,19 +97,9 @@ fun helloScreen() {
                 uri,
                 username,
                 password,
-                onDismiss = { storage = null },
-                onConnect = {
-                    val neo4jRepo = Neo4jRepository(uri.value ?: "", username.value ?: "", password.value ?: "")
-                    try {
-                        graph.value = neo4jRepo.readFromDB()
-                    } catch (e: Exception) {
-                        exceptionDialog.value = true
-                        uri.value = null
-                        username.value = null
-                        password.value = null
-                        message.value = e.message ?: "Unknown error"
-                    }
-                }
+                onDismiss = { viewModel.selectStorage(null) },
+                onConnect = viewModel::onConnect,
+                viewModel
             )
         }
 
@@ -117,6 +109,6 @@ fun helloScreen() {
     }
 
     if (exceptionDialog.value) {
-        exceptionView(message.value) { exceptionDialog.value = false }
+        exceptionView(message.value) { viewModel.setExceptionDialog(false) }
     }
 }

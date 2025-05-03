@@ -12,15 +12,17 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.navigator.LocalNavigator
-import view.colors.ColorTheme
+import viewmodel.colors.ColorTheme
+import viewmodel.screens.HelloScreenViewModel
 
 @Composable
 fun neo4jView(
-    uri: MutableState<String?>,
-    username: MutableState<String?>,
-    password: MutableState<String?>,
+    uri: State<String?>,
+    username: State<String?>,
+    password: State<String?>,
     onDismiss: () -> Unit,
     onConnect: () -> Unit,
+    viewModel: HelloScreenViewModel
 ) {
     val navigator = LocalNavigator.current
 
@@ -30,9 +32,7 @@ fun neo4jView(
         AlertDialog(
             onDismissRequest = {
                 openDialog = false
-                uri.value = null
-                username.value = null
-                password.value = null
+                viewModel.clearAuthData()
                 onDismiss()
             },
             title = { Text(text = "Enter your database connection details.") },
@@ -44,7 +44,7 @@ fun neo4jView(
                     OutlinedTextField(
                         value = if (uri.value == null) "" else uri.value!!,
                         onValueChange = {
-                            uri.value = it
+                            viewModel.setUri(it)
                         },
                         colors = TextFieldDefaults.outlinedTextFieldColors(backgroundColor = ColorTheme.TextFieldColor),
                         placeholder = { Text(text = "Uri") },
@@ -54,7 +54,7 @@ fun neo4jView(
                     OutlinedTextField(
                         value = if (username.value == null) "" else username.value!!,
                         onValueChange = {
-                            username.value = it
+                            viewModel.setUsername(it)
                         },
                         colors = TextFieldDefaults.outlinedTextFieldColors(backgroundColor = ColorTheme.TextFieldColor),
                         placeholder = { Text(text = "Username") },
@@ -64,7 +64,7 @@ fun neo4jView(
                     OutlinedTextField(
                         value = if (password.value == null) "" else password.value!!,
                         onValueChange = {
-                            password.value = it
+                            viewModel.setPassword(it)
                         },
                         colors = TextFieldDefaults.outlinedTextFieldColors(backgroundColor = ColorTheme.TextFieldColor),
                         placeholder = { Text(text = "Password") },
@@ -97,9 +97,7 @@ fun neo4jView(
                     Button(
                         modifier = Modifier.padding(end = 16.dp),
                         onClick = {
-                            uri.value = null
-                            username.value = null
-                            password.value = null
+                            viewModel.clearAuthData()
                             openDialog = false
                             onDismiss()
                         },
@@ -110,9 +108,9 @@ fun neo4jView(
                     Button(
                         modifier = Modifier.padding(end = 16.dp),
                         onClick = {
-                            if (uri.value == null) uri.value = ""
-                            if (username.value == null) username.value = ""
-                            if (password.value == null) password.value = ""
+                            if (uri.value == null) viewModel.setUri("")
+                            if (username.value == null) viewModel.setUsername("")
+                            if (password.value == null) viewModel.setPassword("")
                             openDialog = false
                             onDismiss()
                             onConnect()

@@ -1,4 +1,4 @@
-package view.colors
+package viewmodel.colors
 
 import androidx.compose.runtime.Stable
 import androidx.compose.ui.graphics.Color
@@ -14,4 +14,6 @@ object ColorTheme {
     val ConfirmColor = Color(120,255,140)
     @Stable
     val rejectColor = Color(255, 120, 140)
+    @Stable
+    val vertexDefaultColor = Color.Gray
 }
