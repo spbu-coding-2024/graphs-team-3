@@ -79,9 +79,9 @@ fun neo4jView(
                             checked = passwordVisibility,
                             onCheckedChange = { passwordVisibility = !passwordVisibility }
                         )
-                        Text (
+                        Text(
                             text = "Show password",
-                            modifier = Modifier.clickable (
+                            modifier = Modifier.clickable(
                                 interactionSource = null,
                                 indication = null,
                                 onClick = { passwordVisibility = !passwordVisibility }
@@ -114,8 +114,8 @@ fun neo4jView(
                             if (username.value == null) username.value = ""
                             if (password.value == null) password.value = ""
                             openDialog = false
-                            onConnect()
                             onDismiss()
+                            onConnect()
                         },
                         colors = ButtonDefaults.buttonColors(ColorTheme.ConfirmColor)
                     ) {
