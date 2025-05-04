@@ -2,9 +2,11 @@ package viewmodel.screens
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
+import cafe.adriel.voyager.navigator.LocalNavigator
 import model.graph.Graph
 import model.io.neo4j.Neo4jRepository
 import view.screens.Storage
+
 
 class HelloScreenViewModel {
     private val _storage = mutableStateOf<Storage?>(null)
@@ -27,6 +29,9 @@ class HelloScreenViewModel {
 
     private val _message = mutableStateOf<String?>(null)
     val message: State<String?> get() = _message
+
+    private val _isMainScreen = mutableStateOf(false)
+    val isMainScreen: State<Boolean> get() = _isMainScreen
 
     fun selectStorage(storage: Storage?){
         _storage.value = storage
@@ -62,10 +67,15 @@ class HelloScreenViewModel {
         _message.value = message
     }
 
+    fun setMainScreen(isMainScreen: Boolean){
+        _isMainScreen.value = isMainScreen
+    }
+
     fun onNeo4jConnect() {
         var neo4jRepo = Neo4jRepository(_uri.value ?: "", _username.value ?: "", _password.value ?: "")
         try {
             _graph.value = neo4jRepo.readFromDB()
+            setMainScreen(true)
         } catch (exception: Exception) {
             setMessage(exception.message ?: "Unknown error")
             clearAuthData()
