@@ -115,6 +115,6 @@ fun helloScreen(
     }
 
     if (isMainScreen.value) {
-        navigator?.push(MainScreen(graph.value, Circular()))
+        navigator?.push(MainScreenNav(graph.value, Circular()))
     }
 }

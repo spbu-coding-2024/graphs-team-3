@@ -18,7 +18,7 @@ object HelloScreen:  Screen {
     override fun Content() = helloScreen()
 }
 
-class MainScreen(val graph: Graph, val representationStrategy: RepresentationStrategy): Screen {
+class MainScreenNav(val graph: Graph, val representationStrategy: RepresentationStrategy): Screen {
     @Composable
     override fun Content() = MainScreen(MainScreenViewModel(graph, representationStrategy))
 }
