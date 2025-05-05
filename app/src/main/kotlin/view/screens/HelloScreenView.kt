@@ -17,7 +17,7 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import view.exceptionDialog.exceptionView
 import viewmodel.colors.ColorTheme
 import view.io.neo4jView
-import viewmodel.representation.Circular
+import viewmodel.representation.ForceAtlas2
 import viewmodel.screens.HelloScreenViewModel
 
 enum class Storage {
@@ -115,6 +115,6 @@ fun helloScreen(
     }
 
     if (isMainScreen.value) {
-        navigator?.push(MainScreenNav(graph.value, Circular()))
+        navigator?.push(MainScreenNav(graph.value, ForceAtlas2()))
     }
 }
