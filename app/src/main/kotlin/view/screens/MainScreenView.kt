@@ -1,12 +1,13 @@
 package view.screens
 
+import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.rememberScrollableState
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Button
-import androidx.compose.material.Checkbox
-import androidx.compose.runtime.Composable
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.material.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import view.graph.GraphView
@@ -17,21 +18,28 @@ fun MainScreen(viewModel: MainScreenViewModel) {
     Row(
         horizontalArrangement = Arrangement.spacedBy(20.dp)
     ) {
+
+        var scale by remember { mutableStateOf(1f) }
+        val scrollState = rememberScrollState()
+
         Column(modifier = Modifier.width(370.dp)) {
             Row {
-                Checkbox(checked = viewModel.showVerticesLabels, onCheckedChange = {
-                    viewModel.showVerticesLabels = it
-                })
+                Switch(
+                    checked = viewModel.showVerticesLabels,
+                    onCheckedChange = {
+                        viewModel.showVerticesLabels = it
+                    },
+                )
                 Text("Show vertices labels", fontSize = 28.sp, modifier = Modifier.padding(4.dp))
             }
             Row {
-                Checkbox(checked = viewModel.showEdgesWeights, onCheckedChange = {
+                Switch(checked = viewModel.showEdgesWeights, onCheckedChange = {
                     viewModel.showEdgesWeights = it
                 })
                 Text("Show edges weights", fontSize = 28.sp, modifier = Modifier.padding(4.dp))
             }
             Row {
-                Checkbox(
+                Switch(
                     checked = viewModel.showVerticesId, onCheckedChange = { viewModel.showVerticesId = it })
                 Text("Show vertex id", fontSize = 28.sp, modifier = Modifier.padding(4.dp))
             }
@@ -43,19 +51,21 @@ fun MainScreen(viewModel: MainScreenViewModel) {
                     text = "Reset default settings",
                 )
             }
-            Button(
-                onClick = { },
-                enabled = false,
-            ) {
-                Text(
-                    text = "Set colors",
-                )
-            }
         }
         Surface(
-            modifier = Modifier.weight(1f),
+            modifier = Modifier
+                .weight(1f)
+                .scrollable(
+                    orientation = Orientation.Vertical,
+                    state =
+                        rememberScrollableState { delta ->
+                            scale *= 1f + delta / 500
+                            scale = scale.coerceIn(0.000001f, 100f)
+                            delta
+                        },
+                ),
         ) {
-            GraphView(viewModel.graphViewModel)
+            GraphView(viewModel.graphViewModel, scale)
         }
     }
 }
