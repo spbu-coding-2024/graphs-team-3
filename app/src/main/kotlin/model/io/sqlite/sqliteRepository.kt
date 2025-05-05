@@ -31,9 +31,9 @@ class SqliteRepository(dbPath: String = "graphs.db") {
 
     init {
         File(dbPath).parentFile?.mkdirs()
-//        Database.connect("jdbc:sqlite:$dbPath", "org.sqlite.JDBC")
+        Database.connect("jdbc:sqlite:$dbPath?foreign_keys=ON", "org.sqlite.JDBC")
         transaction {
-            exec("PRAGMA foreign_keys = ON")
+//            exec("PRAGMA foreign_keys = ON")
             SchemaUtils.create(Graphs, Vertices, Edges)
         }
     }
