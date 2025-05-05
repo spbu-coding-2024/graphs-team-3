@@ -5,7 +5,9 @@ import androidx.compose.ui.graphics.Color
 import model.graph.Graph
 import org.gephi.graph.api.GraphView
 import view.graph.GraphView
+import viewmodel.colors.ColorTheme
 import viewmodel.graph.GraphViweModel
+import viewmodel.representation.ForceAtlas2
 import viewmodel.representation.RepresentationStrategy
 
 class MainScreenViewModel (
@@ -37,11 +39,11 @@ class MainScreenViewModel (
     val graphViewModel: GraphViweModel = GraphViweModel(graph, _showVerticesLabels, _showEdgesWeights, _showVerticesId)
 
     init {
-        representationStrategy.place(800.0, 600.0, graphViewModel.vertices)
+        representationStrategy.place(800.0, 600.0, graphViewModel)
     }
 
     fun resetGraphView() {
-        representationStrategy.place(800.0, 600.0, graphViewModel.vertices)
+        representationStrategy.place(800.0, 600.0, graphViewModel)
         graphViewModel.vertices.forEach { v -> v.color = Color.Gray }
     }
 }
