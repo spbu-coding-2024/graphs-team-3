@@ -15,7 +15,7 @@ class VertexViewModel(
     private val v: Vertex,
     private var _labelVisible: State<Boolean>,
     private var _idVisible: State<Boolean>,
-    val radius: Dp = 20.dp,
+    val radius: Dp = 10.dp,
 ) {
     private var _x = mutableStateOf(x)
     var x: Dp
