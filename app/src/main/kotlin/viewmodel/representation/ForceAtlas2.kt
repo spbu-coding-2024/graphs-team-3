@@ -55,8 +55,8 @@ class ForceAtlas2(): RepresentationStrategy {
             }
             for (vertex in vertices) {
                 val m = mapping[vertex.id]
-                vertex.x = m?.x()?.dp ?: vertex.x
-                vertex.y = m?.y()?.dp ?: vertex.y
+                vertex.x = (m?.x()?.dp ?: vertex.x) + (width / 2).dp
+                vertex.y = (m?.y()?.dp ?: vertex.y) + (height / 2).dp
             }
             i++
         }
