@@ -3,11 +3,7 @@ package viewmodel.screens
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.Color
 import model.graph.Graph
-import org.gephi.graph.api.GraphView
-import view.graph.GraphView
-import viewmodel.colors.ColorTheme
 import viewmodel.graph.GraphViweModel
-import viewmodel.representation.ForceAtlas2
 import viewmodel.representation.RepresentationStrategy
 
 class MainScreenViewModel (
