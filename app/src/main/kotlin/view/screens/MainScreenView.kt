@@ -22,7 +22,7 @@ fun MainScreen(viewModel: MainScreenViewModel) {
         var scale by remember { mutableStateOf(1f) }
         val scrollState = rememberScrollState()
 
-        Column(modifier = Modifier.width(370.dp)) {
+        Column(modifier = Modifier.fillMaxWidth(0.20f)) {
             Row {
                 Switch(
                     checked = viewModel.showVerticesLabels,
