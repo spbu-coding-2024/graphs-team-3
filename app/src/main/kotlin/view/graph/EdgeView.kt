@@ -17,7 +17,7 @@ import kotlin.math.atan2
 @Composable
 fun EdgeView (
     viewModel: EdgeViewModel,
-    modifier: Modifier
+    modifier: Modifier,
 ) {
     Canvas(modifier = modifier.fillMaxSize()) {
         drawLine(
@@ -29,7 +29,7 @@ fun EdgeView (
                 viewModel.second.x.toPx() + viewModel.second.radius.toPx(),
                 viewModel.second.y.toPx() + viewModel.second.radius.toPx(),
             ),
-            color = Color.Black
+            color = viewModel.color,
         )
     }
     if (viewModel.weightVisible) {
