@@ -29,8 +29,8 @@ fun VertexView(
     if (isDrugging.value) {
         Box(
             modifier = modifier
-                .size(viewModel.radius * 2 + viewModel.radius * 1.02f, viewModel.radius * 2 + viewModel.radius * 1.1f)
-                .offset(viewModel.x - viewModel.radius * 0.51f, viewModel.y - viewModel.radius * 0.51f)
+                .size(viewModel.radius * 2 + 2.dp, viewModel.radius * 2 + 2.dp)
+                .offset(viewModel.x - 1.dp, viewModel.y - 1.dp)
                 .background(
                     color = ColorTheme.vertexBackColor,
                     shape = CircleShape
