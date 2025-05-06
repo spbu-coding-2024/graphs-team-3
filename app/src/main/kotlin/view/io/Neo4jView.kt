@@ -50,6 +50,7 @@ fun neo4jView(
                         placeholder = { Text(text = "Uri") },
                         modifier = Modifier.padding(bottom = 16.dp),
                         singleLine = true,
+                        label = { Text(text = "Username") },
                     )
                     OutlinedTextField(
                         value = if (username.value == null) "" else username.value!!,
@@ -60,6 +61,7 @@ fun neo4jView(
                         placeholder = { Text(text = "Username") },
                         modifier = Modifier.padding(bottom = 16.dp),
                         singleLine = true,
+                        label = { Text(text = "Username") },
                     )
                     OutlinedTextField(
                         value = if (password.value == null) "" else password.value!!,
@@ -71,6 +73,7 @@ fun neo4jView(
                         modifier = Modifier.padding(bottom = 16.dp),
                         singleLine = true,
                         visualTransformation = if (passwordVisibility) VisualTransformation.None else PasswordVisualTransformation(),
+                        label = { Text(text = "Password") },
                     )
                     Row(
                         verticalAlignment = Alignment.CenterVertically,

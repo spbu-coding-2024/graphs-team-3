@@ -1,0 +1,37 @@
+package viewmodel.graph
+
+import androidx.compose.runtime.State
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
+import model.graph.Edge
+import model.graph.Graph
+import viewmodel.colors.ColorTheme
+import model.algo.fordBellman.fordBellman
+import model.graph.Vertex
+import java.util.Vector
+
+class GraphViweModel(
+    private val graph: Graph,
+    showVertexLabels: State<Boolean>,
+    showEdgeWeights: State<Boolean>,
+    showVertexId: State<Boolean>,
+) {
+
+    private val _vertices = graph.vertices.associateWith { vertex ->
+        VertexViewModel(0.dp, 0.dp, ColorTheme.vertexDefaultColor, vertex, showVertexLabels, showVertexId)
+    }
+
+    private val _edges = graph.edges.associateWith { edge ->
+        val first = _vertices[edge.vertices.first]
+            ?: throw IllegalStateException("VertexView for ${edge.vertices.first} not found")
+        val second = _vertices[edge.vertices.second]
+            ?: throw IllegalStateException("VertexView for ${edge.vertices.second} not found")
+        EdgeViewModel(first, second, ColorTheme.edgeDefaultColor, edge, showEdgeWeights, graph.isDirected)
+    }
+
+    val vertices: Collection<VertexViewModel>
+        get() = _vertices.values
+
+    val edges: Collection<EdgeViewModel>
+        get() = _edges.values
+}

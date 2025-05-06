@@ -16,4 +16,8 @@ object ColorTheme {
     val rejectColor = Color(255, 120, 140)
     @Stable
     val vertexDefaultColor = Color.Gray
+    @Stable
+    val vertexBackColor = Color.Red
+    @Stable
+    val edgeDefaultColor = Color.Black
 }

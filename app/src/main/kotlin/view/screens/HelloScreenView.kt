@@ -1,5 +1,6 @@
 package view.screens
 
+import MainScreenNav
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ButtonDefaults
@@ -16,6 +17,7 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import view.exceptionDialog.exceptionView
 import viewmodel.colors.ColorTheme
 import view.io.neo4jView
+import viewmodel.representation.ForceAtlas2
 import viewmodel.screens.HelloScreenViewModel
 
 enum class Storage {
@@ -33,9 +35,10 @@ fun helloScreen(
     val uri = remember { viewModel.uri }
     val username  = remember { viewModel.username}
     val password = remember { viewModel.password }
-    val graph by viewModel.graph
+    val graph = remember { viewModel.graph }
     val exceptionDialog = remember { viewModel.exceptionDialog }
     val message = remember { viewModel.message }
+    val isMainScreen = remember { viewModel.isMainScreen }
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -76,7 +79,6 @@ fun helloScreen(
                 onClick = { viewModel.selectStorage(Storage.Neo4j) },
                 colors = ButtonDefaults.buttonColors(backgroundColor = ColorTheme.SelectRepositoryButtonColor),
                 modifier = Modifier.clip(RoundedCornerShape(percent = 25)).weight(0.28f)
-
             ) {
                 Text("Neo4j")
             }
@@ -110,5 +112,9 @@ fun helloScreen(
 
     if (exceptionDialog.value) {
         exceptionView(message.value) { viewModel.setExceptionDialog(false) }
+    }
+
+    if (isMainScreen.value) {
+        navigator?.push(MainScreenNav(graph.value, ForceAtlas2()))
     }
 }
