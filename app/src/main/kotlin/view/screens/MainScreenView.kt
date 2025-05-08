@@ -9,6 +9,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import view.graph.GraphView
@@ -73,10 +74,40 @@ fun MainScreen(viewModel: MainScreenViewModel) {
             Button(
                 onClick = viewModel::resetGraphView,
                 enabled = true,
+                modifier = Modifier.fillMaxWidth()
             ) {
                 Text(
                     text = "Reset default settings",
                 )
+            }
+            Divider(Modifier.padding(vertical = 6.dp))
+            Text(
+                text = "Algorithms",
+                fontSize = 20.sp,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth())
+
+            Button(onClick = viewModel::showBridges, modifier = Modifier.fillMaxWidth()) {
+                Text("Bridges")
+            }
+            Button(
+                onClick = viewModel::showMst,
+                enabled = !viewModel.graphViewModel.edges.none { it.origin.weight >= 0 },
+                modifier = Modifier.fillMaxWidth()
+            ) { Text("MST") }
+            Button(onClick = viewModel::showCommunities, modifier = Modifier.fillMaxWidth()) {
+                Text("Communities")
+            }
+            Button(
+                onClick = viewModel::showScc,
+                enabled = viewModel.graphViewModel.edges.isNotEmpty(),
+                modifier = Modifier.fillMaxWidth()
+            ) { Text("SCC") }
+
+            Spacer(Modifier.height(12.dp))
+            Divider()
+            Button(onClick = { viewModel.saveToDb() }, modifier = Modifier.fillMaxWidth()) {
+                Text("Save")
             }
         }
         Surface(
