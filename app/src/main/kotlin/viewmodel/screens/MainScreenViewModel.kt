@@ -45,12 +45,18 @@ class MainScreenViewModel (
         representationStrategy.place(800.0, 600.0, graphViewModel)
     }
 
+    private fun resetColors() {
+        graphViewModel.vertices.forEach { v -> v.color = Color.Gray }
+        graphViewModel.edges.forEach { e -> e.color = Color.Black }
+    }
+
     fun resetGraphView() {
         representationStrategy.place(800.0, 600.0, graphViewModel)
-        graphViewModel.vertices.forEach { v -> v.color = Color.Gray }
+        resetColors()
     }
 
     fun showBridges() {
+        resetColors()
         val edges = findBridges(graph)
         graphViewModel.edges.forEach { e ->
             if (e.origin in edges) e.color = Color.Red
@@ -58,6 +64,7 @@ class MainScreenViewModel (
     }
 
     fun showMst() {
+        resetColors()
         val mst = findMST(graph)
         graphViewModel.edges.forEach { e ->
             e.color = if (e.origin in mst) Color.Green else Color.LightGray
@@ -65,23 +72,31 @@ class MainScreenViewModel (
     }
 
     fun showCommunities() {
+        resetColors()
         val comm = labelPropagation(graph)
-        val palette = generateSequence { Color(Random.nextInt()) }.distinct().iterator()
-        comm.values.forEach { verts ->
-            val c = palette.next()
+        val palette = generatePalette(comm.size)
+
+        comm.values.forEachIndexed { idx, verts ->
+            val color = palette[idx]
             verts.forEach { v ->
-                graphViewModel.vertices.first { it.origin == v }.color = c
+                graphViewModel.vertices
+                    .first { it.origin == v }
+                    .color = color
             }
         }
     }
 
     fun showScc() {
+        resetColors()
         val scc = findSCC(graph)
-        val palette = generateSequence { Color(Random.nextInt()) }.distinct().iterator()
-        scc.forEach { comp ->
-            val c = palette.next()
-            comp.forEach { v ->
-                graphViewModel.vertices.first { it.origin == v }.color = c
+        val palette = generatePalette(scc.size)
+
+        scc.forEachIndexed { idx, component ->
+            val color = palette[idx]
+            component.forEach { v ->
+                graphViewModel.vertices
+                    .first { it.origin == v }
+                    .color = color
             }
         }
     }
@@ -93,6 +108,15 @@ class MainScreenViewModel (
         else {
             sqliteRepo!!.update(savedId!!, graph, name)
             savedId
+        }
+    }
+
+    private fun generatePalette(count: Int): List<Color> {
+        return List(count) { i ->
+            val hue = i * 360f / count
+            val saturation = 0.7f
+            val value = 0.9f
+            Color.hsv(hue, saturation, value)
         }
     }
 }
