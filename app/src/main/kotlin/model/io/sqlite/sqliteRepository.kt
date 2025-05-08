@@ -114,4 +114,10 @@ class SqliteRepository(dbPath: String = "graphs.db") {
             this[Edges.origId] = edge.id
         }
     }
+
+    fun listGraphs(): List<Pair<Int, String>> = transaction {
+        Graphs
+            .selectAll()
+            .map { it[Graphs.id].value to it[Graphs.name] }
+    }
 }
