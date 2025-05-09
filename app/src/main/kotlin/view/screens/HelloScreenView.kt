@@ -16,9 +16,10 @@ import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.navigator.LocalNavigator
 import view.exceptionDialog.exceptionView
 import viewmodel.colors.ColorTheme
-import view.io.neo4jView
+import view.io.*
 import viewmodel.representation.ForceAtlas2
 import viewmodel.screens.HelloScreenViewModel
+import model.io.sqlite.SqliteRepository
 
 enum class Storage {
     JSON,
@@ -68,10 +69,9 @@ fun helloScreen(
                 onClick = { viewModel.selectStorage(Storage.SQLite) },
                 colors = ButtonDefaults.buttonColors(backgroundColor = ColorTheme.SelectRepositoryButtonColor),
                 modifier = Modifier.clip(RoundedCornerShape(percent = 25)).weight(0.34f),
-                enabled = false,
             ) {
                 Text(
-                    "SQLite\nWIP"
+                    "SQLite"
                 )
             }
 
@@ -91,7 +91,16 @@ fun helloScreen(
         }
 
         Storage.SQLite -> {
-            viewModel.selectStorage(null)
+            sqliteGraphsView(
+                onDismiss = { viewModel.selectStorage(null) },
+                onGraphChosen = { g, id ->
+                    viewModel.selectGraph(g)
+                    navigator?.push(
+                        MainScreenNav(g, ForceAtlas2(), SqliteRepository(), id)
+                    )
+                    viewModel.selectStorage(null)
+                }
+            )
         }
 
         Storage.Neo4j -> {
@@ -112,9 +121,5 @@ fun helloScreen(
 
     if (exceptionDialog.value) {
         exceptionView(message.value) { viewModel.setExceptionDialog(false) }
-    }
-
-    if (isMainScreen.value) {
-        navigator?.push(MainScreenNav(graph.value, ForceAtlas2()))
     }
 }
