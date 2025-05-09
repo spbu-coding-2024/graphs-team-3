@@ -115,9 +115,14 @@ class SqliteRepository(dbPath: String = "graphs.db") {
         }
     }
 
-    fun listGraphs(): List<Pair<Int, String>> = transaction {
-        Graphs
-            .selectAll()
+    fun listGraphs(filter: String = ""): List<Pair<Int, String>> = transaction {
+        val q = if (filter.isBlank())
+            Graphs.selectAll()
+        else
+            Graphs.selectAll()
+                .where { Graphs.name like "%$filter%" }
+
+        q.orderBy(Graphs.name to SortOrder.ASC)
             .map { it[Graphs.id].value to it[Graphs.name] }
     }
 }
