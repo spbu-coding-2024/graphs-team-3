@@ -42,7 +42,7 @@ class ForceAtlas2(): RepresentationStrategy {
         layout.setGraphModel(graphModel)
         layout.initAlgo()
         layout.resetPropertiesValues()
-        layout.scalingRatio = 10.0
+        layout.scalingRatio = 15.0
         layout.isLinLogMode = true
         layout.gravity = 1.5
 
