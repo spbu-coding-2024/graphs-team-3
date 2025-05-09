@@ -12,11 +12,11 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import viewmodel.graph.GraphViweModel
+import viewmodel.graph.GraphViewModel
 
 @Composable
 fun GraphView(
-    viewModel: GraphViweModel,
+    viewModel: GraphViewModel,
     scale: Float,
 ) {
 

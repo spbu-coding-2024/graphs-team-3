@@ -1,16 +1,11 @@
 package viewmodel.graph
 
 import androidx.compose.runtime.State
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import model.graph.Edge
 import model.graph.Graph
 import viewmodel.colors.ColorTheme
-import model.algo.fordBellman.fordBellman
-import model.graph.Vertex
-import java.util.Vector
 
-class GraphViweModel(
+class GraphViewModel(
     private val graph: Graph,
     showVertexLabels: State<Boolean>,
     showEdgeWeights: State<Boolean>,

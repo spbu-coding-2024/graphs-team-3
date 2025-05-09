@@ -3,7 +3,7 @@ package viewmodel.screens
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.Color
 import model.graph.Graph
-import viewmodel.graph.GraphViweModel
+import viewmodel.graph.GraphViewModel
 import viewmodel.representation.RepresentationStrategy
 import model.algo.*
 import model.algo.findBridges.findBridges
@@ -39,7 +39,7 @@ class MainScreenViewModel (
         }
 
 
-    val graphViewModel: GraphViweModel = GraphViweModel(graph, _showVerticesLabels, _showEdgesWeights, _showVerticesId)
+    val graphViewModel: GraphViewModel = GraphViewModel(graph, _showVerticesLabels, _showEdgesWeights, _showVerticesId)
 
     init {
         representationStrategy.place(800.0, 600.0, graphViewModel)
