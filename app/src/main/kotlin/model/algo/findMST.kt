@@ -5,12 +5,11 @@ import model.graph.Edge
 
 fun findMST(graph: Graph): Set<Edge> {
     require(!graph.isDirected) { "Graph can not be directed" }
-    require(!graph.isNegativeWeight) { "Edges can not have negative weights" }
 
     val sortedEdges = graph.edges.sortedBy { it.weight }
     val mstEdges = mutableSetOf<Edge>()
 
-    val vertexCount = graph.vertexIdCount
+    val vertexCount = graph.vertices.size
 
     val parents = IntArray(vertexCount) { -1 }
 
