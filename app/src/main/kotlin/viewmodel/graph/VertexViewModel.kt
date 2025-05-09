@@ -51,4 +51,6 @@ class VertexViewModel(
         _x.value += offset.x.dp
         _y.value += offset.y.dp
     }
+    val origin: Vertex get() = v
+
 }

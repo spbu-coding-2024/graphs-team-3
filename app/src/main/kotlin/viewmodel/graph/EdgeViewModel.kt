@@ -25,4 +25,7 @@ class EdgeViewModel (
         set(value) {
             _color.value = value
         }
+
+    val origin: Edge get() = edge
+
 }
