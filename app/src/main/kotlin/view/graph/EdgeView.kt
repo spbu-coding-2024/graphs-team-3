@@ -5,19 +5,17 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.offset
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import viewmodel.graph.EdgeViewModel
-import kotlin.math.atan
-import kotlin.math.atan2
-
+import kotlin.math.*
 
 @Composable
 fun EdgeView (
     viewModel: EdgeViewModel,
     modifier: Modifier,
+    isDirected: Boolean,
 ) {
     Canvas(modifier = modifier.fillMaxSize()) {
         drawLine(
@@ -31,6 +29,35 @@ fun EdgeView (
             ),
             color = viewModel.color,
         )
+    }
+
+    if (isDirected) {
+        Canvas(modifier = modifier.fillMaxSize()) {
+            val radius = viewModel.first.radius.toPx()
+            val arrowBase = Offset(
+                viewModel.first.x.toPx() + radius + (viewModel.second.x.toPx() - viewModel.first.x.toPx()) / 2,
+                viewModel.first.y.toPx() + radius + (viewModel.second.y.toPx() - viewModel.first.y.toPx()) / 2
+            )
+
+            val angle = atan2(
+                viewModel.second.y.toPx() - viewModel.first.y.toPx(),
+                viewModel.second.x.toPx() - viewModel.first.x.toPx()
+            )
+            val arrowLen = 8.dp.toPx()
+            val arrowAngle = Math.toRadians(30.0).toFloat()
+
+            val arrowFirstPoint = Offset(
+                arrowBase.x - arrowLen * cos(angle - arrowAngle),
+                arrowBase.y - arrowLen * sin(angle - arrowAngle)
+            )
+            val arrowSecondPoint = Offset(
+                arrowBase.x - arrowLen * cos(angle + arrowAngle),
+                arrowBase.y - arrowLen * sin(angle + arrowAngle)
+            )
+
+            drawLine(color = viewModel.color, start = arrowBase, end = arrowFirstPoint)
+            drawLine(color = viewModel.color, start = arrowBase, end = arrowSecondPoint)
+        }
     }
     if (viewModel.weightVisible) {
         Text(

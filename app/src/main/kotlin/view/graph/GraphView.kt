@@ -36,7 +36,7 @@ fun GraphView(
         .graphicsLayer(scaleX = scale, scaleY = scale)
     ) {
         viewModel.edges.forEach { e ->
-            EdgeView(e, Modifier)
+            EdgeView(e, Modifier, viewModel.graph.isDirected)
         }
         viewModel.vertices.forEach { v ->
             VertexView(v, Modifier)
