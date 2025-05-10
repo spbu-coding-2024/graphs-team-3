@@ -5,7 +5,9 @@ import androidx.compose.ui.graphics.Color
 
 object ColorTheme {
     @Stable
-    val SelectRepositoryButtonColor = Color(51, 204, 204, 50)
+    val translucentButtonColor = Color(51, 204, 204, 50)
+    @Stable
+    val ButtonColor = Color(51, 204, 204)
     @Stable
     val TextFieldColor = Color(51, 204, 204, 50)
     @Stable
