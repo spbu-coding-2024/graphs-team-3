@@ -2,10 +2,15 @@ package view.graph
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectDragGestures
+import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.hoverable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsHoveredAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -26,7 +31,10 @@ fun VertexView(
 
     var isDrugging = remember { mutableStateOf(false) }
 
-    if (isDrugging.value) {
+    val interactionSource = remember { MutableInteractionSource() }
+    val isHover by interactionSource.collectIsHoveredAsState()
+
+    if (isHover) {
         Box(
             modifier = modifier
                 .size(viewModel.radius * 2 + 2.dp, viewModel.radius * 2 + 2.dp)
@@ -36,14 +44,7 @@ fun VertexView(
                     shape = CircleShape
                 )
                 .pointerInput(viewModel) {
-                    detectDragGestures (
-                        onDragStart = {
-
-                        },
-                        onDragEnd = {
-
-                        }
-                    ) { change, dragAmount ->
+                    detectDragGestures { change, dragAmount ->
                         change.consume()
                         viewModel.onDrag(dragAmount)
                     }
@@ -62,18 +63,12 @@ fun VertexView(
                 shape = CircleShape
             )
             .pointerInput(viewModel) {
-                detectDragGestures (
-                    onDragStart = {
-                        isDrugging.value = true
-                    },
-                    onDragEnd = {
-                        isDrugging.value = false
-                    }
-                ) { change, dragAmount ->
+                detectDragGestures { change, dragAmount ->
                     change.consume()
                     viewModel.onDrag(dragAmount)
                 }
             }
+            .hoverable(interactionSource = interactionSource)
     ) {
 
     }
