@@ -1,4 +1,4 @@
-package view.exceptionDialog
+package view.dialogs
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
