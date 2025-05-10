@@ -20,4 +20,8 @@ object ColorTheme {
     val vertexBackColor = Color.Red
     @Stable
     val edgeDefaultColor = Color.Black
+    @Stable
+    val vertexPickedColor = Color(51, 204, 204)
+    @Stable
+    val backgroundColor = Color(197, 197, 197)
 }
