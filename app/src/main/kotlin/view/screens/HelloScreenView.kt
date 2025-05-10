@@ -57,7 +57,7 @@ fun helloScreen(
         ) {
             OutlinedButton(
                 onClick = { viewModel.selectStorage(Storage.JSON) },
-                colors = ButtonDefaults.buttonColors(backgroundColor = ColorTheme.SelectRepositoryButtonColor),
+                colors = ButtonDefaults.buttonColors(backgroundColor = ColorTheme.translucentButtonColor),
                 modifier = Modifier.clip(RoundedCornerShape(percent = 25)).weight(0.23f),
                 enabled = false,
             ) {
@@ -66,7 +66,7 @@ fun helloScreen(
 
             OutlinedButton(
                 onClick = { viewModel.selectStorage(Storage.SQLite) },
-                colors = ButtonDefaults.buttonColors(backgroundColor = ColorTheme.SelectRepositoryButtonColor),
+                colors = ButtonDefaults.buttonColors(backgroundColor = ColorTheme.translucentButtonColor),
                 modifier = Modifier.clip(RoundedCornerShape(percent = 25)).weight(0.34f),
                 enabled = false,
             ) {
@@ -77,7 +77,7 @@ fun helloScreen(
 
             OutlinedButton(
                 onClick = { viewModel.selectStorage(Storage.Neo4j) },
-                colors = ButtonDefaults.buttonColors(backgroundColor = ColorTheme.SelectRepositoryButtonColor),
+                colors = ButtonDefaults.buttonColors(backgroundColor = ColorTheme.translucentButtonColor),
                 modifier = Modifier.clip(RoundedCornerShape(percent = 25)).weight(0.28f)
             ) {
                 Text("Neo4j")
