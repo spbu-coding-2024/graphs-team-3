@@ -50,7 +50,7 @@ fun neo4jView(
                         placeholder = { Text(text = "Uri") },
                         modifier = Modifier.padding(bottom = 16.dp),
                         singleLine = true,
-                        label = { Text(text = "Username") },
+                        label = { Text(text = "Uri") },
                     )
                     OutlinedTextField(
                         value = if (username.value == null) "" else username.value!!,
