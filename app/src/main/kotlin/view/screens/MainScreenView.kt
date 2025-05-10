@@ -5,17 +5,21 @@ import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.rememberScrollableState
 import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import view.exceptionDialog.exceptionView
 import view.graph.GraphView
 import viewmodel.screens.MainScreenViewModel
 
 @Composable
 fun MainScreen(viewModel: MainScreenViewModel) {
+
+    val exceptionDialog = remember { viewModel.exceptionDialog }
+    val message = remember { viewModel.message }
+
     Row(
         horizontalArrangement = Arrangement.spacedBy(20.dp)
     ) {
@@ -94,5 +98,9 @@ fun MainScreen(viewModel: MainScreenViewModel) {
         ) {
             GraphView(viewModel.graphViewModel, scale)
         }
+    }
+
+    if (exceptionDialog.value) {
+        exceptionView(message.value) { viewModel.setExceptionDialog(false) }
     }
 }
