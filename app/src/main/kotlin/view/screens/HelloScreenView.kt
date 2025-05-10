@@ -14,7 +14,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.navigator.LocalNavigator
-import view.exceptionDialog.exceptionView
+import view.dialogs.exceptionView
 import viewmodel.colors.ColorTheme
 import view.io.neo4jView
 import viewmodel.representation.ForceAtlas2
