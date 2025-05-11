@@ -55,14 +55,6 @@ class MainScreenViewModel (
         resetColors()
     }
 
-    fun showBridges() {
-        resetColors()
-        val edges = findBridges(graph)
-        graphViewModel.edges.forEach { e ->
-            if (e.origin in edges) e.color = Color.Red
-        }
-    }
-
     fun showMst() {
         resetColors()
         val mst = findMST(graph)

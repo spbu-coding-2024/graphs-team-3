@@ -91,9 +91,6 @@ fun MainScreen(viewModel: MainScreenViewModel) {
                 textAlign = TextAlign.Center,
                 modifier = Modifier.fillMaxWidth())
 
-            Button(onClick = viewModel::showBridges, modifier = Modifier.fillMaxWidth()) {
-                Text("Bridges")
-            }
             Button(
                 onClick = viewModel::showMst,
                 enabled = !viewModel.graphViewModel.edges.none { it.origin.weight >= 0 },
