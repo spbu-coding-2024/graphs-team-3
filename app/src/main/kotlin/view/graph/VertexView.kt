@@ -77,7 +77,7 @@ fun VertexView(
             modifier = Modifier
                 .offset(
                     x = viewModel.x,
-                    y = viewModel.y - viewModel.radius - 14.dp
+                    y = viewModel.y - viewModel.radius
                 )
                 .widthIn(max = 200.dp)
                 .wrapContentWidth(Alignment.CenterHorizontally),
@@ -93,7 +93,7 @@ fun VertexView(
             modifier = Modifier
                 .offset(
                     x = viewModel.x,
-                    y = viewModel.y + viewModel.radius * 2 + 14.dp
+                    y = viewModel.y + viewModel.radius * 2
                 )
                 .widthIn(max = 200.dp)
                 .wrapContentWidth(Alignment.CenterHorizontally),
