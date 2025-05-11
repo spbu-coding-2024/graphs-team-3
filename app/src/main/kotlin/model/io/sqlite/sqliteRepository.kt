@@ -6,7 +6,6 @@ import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import java.io.File
-import java.util.UUID
 
 class SqliteRepository(dbPath: String = "graphs.db") {
 
@@ -33,14 +32,13 @@ class SqliteRepository(dbPath: String = "graphs.db") {
         File(dbPath).parentFile?.mkdirs()
         Database.connect("jdbc:sqlite:$dbPath?foreign_keys=ON", "org.sqlite.JDBC")
         transaction {
-//            exec("PRAGMA foreign_keys = ON")
             SchemaUtils.create(Graphs, Vertices, Edges)
         }
     }
 
     fun save(g: Graph, name: String? = null): Int = transaction {
         val gId = Graphs.insertAndGetId {
-            it[this.name] = name ?: "Graph_${UUID.randomUUID()}"
+            it[this.name] = name ?: "Graph_${System.currentTimeMillis()}"
             it[this.isDirected] = g.isDirected
         }.value
 
@@ -93,12 +91,12 @@ class SqliteRepository(dbPath: String = "graphs.db") {
 
     fun update(gId: Int, g: Graph, newName: String? = null) = transaction {
         Graphs.update({ Graphs.id eq gId }) {
-            it[Graphs.isDirected] = g.isDirected
-            if (newName != null) it[Graphs.name] = newName
+            it[isDirected] = g.isDirected
+            if (newName != null) it[name] = newName
         }
 
-        Vertices.deleteWhere { Vertices.graph eq gId }
-        Edges.deleteWhere { Edges.graph eq gId }
+        Vertices.deleteWhere { graph eq gId }
+        Edges.deleteWhere { graph eq gId }
 
         Vertices.batchInsert(g.vertices) { vertex ->
             this[Vertices.graph] = gId
