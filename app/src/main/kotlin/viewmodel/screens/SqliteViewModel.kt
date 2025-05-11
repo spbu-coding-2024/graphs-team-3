@@ -23,4 +23,9 @@ class SqliteViewModel(private val repo: SqliteRepository) {
     }
 
     fun openGraph(id: Int): Graph = repo.read(id)
+
+    fun deleteGraph(id: Int) {
+        repo.delete(id)
+        reload()
+    }
 }
