@@ -91,7 +91,7 @@ fun helloScreen(
         }
 
         Storage.SQLite -> {
-            sqliteGraphsView(
+            sqliteView(
                 onDismiss = { viewModel.selectStorage(null) },
                 onGraphChosen = { g, id ->
                     viewModel.selectGraph(g)
