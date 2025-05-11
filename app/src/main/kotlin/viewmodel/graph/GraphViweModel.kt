@@ -1,14 +1,13 @@
 package viewmodel.graph
 
 import androidx.compose.runtime.State
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import model.graph.Edge
 import model.graph.Graph
 import viewmodel.colors.ColorTheme
 import model.algo.fordBellman.fordBellman
 import model.graph.Vertex
 import java.util.Vector
+import model.algo.findBridges.findBridges
 
 class GraphViweModel(
     internal val graph: Graph,
@@ -61,8 +60,15 @@ class GraphViweModel(
 
         var i = 0
         while (i < verticesForColoring.size - 1) {
-            _edges[graph.getEdge(verticesForColoring[i], verticesForColoring[i + 1])]?.color = ColorTheme.vertexPickedColor
+            _edges[graph.getEdge(verticesForColoring[i], verticesForColoring[i + 1])]?.color = ColorTheme.edgePickedColor
             i++
+        }
+    }
+
+    fun findBridges() {
+        var edgesForColoring = findBridges(graph)
+        edgesForColoring.forEach { edge ->
+            _edges[edge]?.color = ColorTheme.edgePickedColor
         }
     }
 }
