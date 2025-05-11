@@ -62,7 +62,7 @@ fun sqliteView(
                                     .padding(6.dp),
                                 horizontalArrangement = Arrangement.SpaceBetween
                             ) {
-                                Text(text = "$id | $name",
+                                Text(text = name,
                                     modifier = Modifier
                                     .clickable {
                                     onGraphChosen(vm.openGraph(id), id)
