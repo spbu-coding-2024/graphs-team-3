@@ -1,17 +1,16 @@
 package viewmodel.graph
 
 import androidx.compose.runtime.State
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import model.graph.Edge
 import model.graph.Graph
 import viewmodel.colors.ColorTheme
 import model.algo.fordBellman.fordBellman
 import model.graph.Vertex
 import java.util.Vector
+import model.algo.findBridges.findBridges
 
 class GraphViweModel(
-    private val graph: Graph,
+    internal val graph: Graph,
     showVertexLabels: State<Boolean>,
     showEdgeWeights: State<Boolean>,
     showVertexId: State<Boolean>,
@@ -34,4 +33,42 @@ class GraphViweModel(
 
     val edges: Collection<EdgeViewModel>
         get() = _edges.values
+
+    fun fordBellman(firstId: Int, secondId: Int) {
+        val result = fordBellman(
+            graph,
+            graph.getVertex(firstId) ?: throw IllegalStateException("No vertex with id $firstId in graph"),
+            graph.getVertex(secondId) ?: throw IllegalStateException("No vertex with id $secondId in graph")
+        )
+        val path = result.first
+        val cycle = result.second
+        val isCycle = result.third
+
+        var verticesForColoring = path ?: Vector<Vertex>()
+
+        if (isCycle) {
+            verticesForColoring = cycle ?: Vector<Vertex>()
+        }
+
+        if (verticesForColoring.size == 0) {
+            throw IllegalStateException("No path from vertex $firstId to vertex $secondId")
+        }
+
+        verticesForColoring.forEach { vertex ->
+            _vertices[vertex]?.color = ColorTheme.vertexPickedColor
+        }
+
+        var i = 0
+        while (i < verticesForColoring.size - 1) {
+            _edges[graph.getEdge(verticesForColoring[i], verticesForColoring[i + 1])]?.color = ColorTheme.edgePickedColor
+            i++
+        }
+    }
+
+    fun findBridges() {
+        var edgesForColoring = findBridges(graph)
+        edgesForColoring.forEach { edge ->
+            _edges[edge]?.color = ColorTheme.edgePickedColor
+        }
+    }
 }

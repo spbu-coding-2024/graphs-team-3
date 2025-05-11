@@ -101,4 +101,11 @@ class Graph(
         }
         return result
     }
+
+    fun getVertex(vertexId: Int): Vertex? {
+        vertices.forEach { vertex ->
+            if (vertex.id == vertexId) return vertex
+        }
+        return null
+    }
 }

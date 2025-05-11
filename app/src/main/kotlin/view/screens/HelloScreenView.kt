@@ -14,7 +14,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.navigator.LocalNavigator
-import view.exceptionDialog.exceptionView
+import view.dialogs.exceptionView
 import viewmodel.colors.ColorTheme
 import view.io.neo4jView
 import viewmodel.representation.ForceAtlas2
@@ -57,7 +57,7 @@ fun helloScreen(
         ) {
             OutlinedButton(
                 onClick = { viewModel.selectStorage(Storage.JSON) },
-                colors = ButtonDefaults.buttonColors(backgroundColor = ColorTheme.SelectRepositoryButtonColor),
+                colors = ButtonDefaults.buttonColors(backgroundColor = ColorTheme.translucentButtonColor),
                 modifier = Modifier.clip(RoundedCornerShape(percent = 25)).weight(0.23f),
                 enabled = false,
             ) {
@@ -66,7 +66,7 @@ fun helloScreen(
 
             OutlinedButton(
                 onClick = { viewModel.selectStorage(Storage.SQLite) },
-                colors = ButtonDefaults.buttonColors(backgroundColor = ColorTheme.SelectRepositoryButtonColor),
+                colors = ButtonDefaults.buttonColors(backgroundColor = ColorTheme.translucentButtonColor),
                 modifier = Modifier.clip(RoundedCornerShape(percent = 25)).weight(0.34f),
                 enabled = false,
             ) {
@@ -77,7 +77,7 @@ fun helloScreen(
 
             OutlinedButton(
                 onClick = { viewModel.selectStorage(Storage.Neo4j) },
-                colors = ButtonDefaults.buttonColors(backgroundColor = ColorTheme.SelectRepositoryButtonColor),
+                colors = ButtonDefaults.buttonColors(backgroundColor = ColorTheme.translucentButtonColor),
                 modifier = Modifier.clip(RoundedCornerShape(percent = 25)).weight(0.28f)
             ) {
                 Text("Neo4j")

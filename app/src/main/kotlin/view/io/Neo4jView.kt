@@ -11,7 +11,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
-import cafe.adriel.voyager.navigator.LocalNavigator
 import viewmodel.colors.ColorTheme
 import viewmodel.screens.HelloScreenViewModel
 
@@ -24,8 +23,6 @@ fun neo4jView(
     onConnect: () -> Unit,
     viewModel: HelloScreenViewModel
 ) {
-    val navigator = LocalNavigator.current
-
     var openDialog by remember { mutableStateOf(true) }
     var passwordVisibility by remember { mutableStateOf(false) }
     if (openDialog) {
@@ -42,7 +39,7 @@ fun neo4jView(
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     OutlinedTextField(
-                        value = if (uri.value == null) "" else uri.value!!,
+                        value = uri.value ?: "",
                         onValueChange = {
                             viewModel.setUri(it)
                         },
@@ -50,10 +47,10 @@ fun neo4jView(
                         placeholder = { Text(text = "Uri") },
                         modifier = Modifier.padding(bottom = 16.dp),
                         singleLine = true,
-                        label = { Text(text = "Username") },
+                        label = { Text(text = "Uri") },
                     )
                     OutlinedTextField(
-                        value = if (username.value == null) "" else username.value!!,
+                        value = username.value ?: "",
                         onValueChange = {
                             viewModel.setUsername(it)
                         },
@@ -64,7 +61,7 @@ fun neo4jView(
                         label = { Text(text = "Username") },
                     )
                     OutlinedTextField(
-                        value = if (password.value == null) "" else password.value!!,
+                        value = password.value ?: "",
                         onValueChange = {
                             viewModel.setPassword(it)
                         },
