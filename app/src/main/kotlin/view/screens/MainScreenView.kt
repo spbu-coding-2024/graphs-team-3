@@ -11,6 +11,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import view.dialogs.FordBellmanDialog
 import view.dialogs.exceptionView
 import view.graph.GraphView
 import viewmodel.colors.ColorTheme
@@ -18,6 +19,8 @@ import viewmodel.screens.MainScreenViewModel
 
 @Composable
 fun MainScreen(viewModel: MainScreenViewModel) {
+
+    val fordBellmanStart = remember { mutableStateOf(false) }
 
     val exceptionDialog = remember { viewModel.exceptionDialog }
     val message = remember { viewModel.message }
@@ -101,6 +104,18 @@ fun MainScreen(viewModel: MainScreenViewModel) {
                         text = "Reset default settings",
                     )
                 }
+
+                Button(
+                    onClick = {
+                        fordBellmanStart.value = true
+                    },
+                    enabled = true,
+                    colors = ButtonDefaults.buttonColors(ColorTheme.ButtonColor)
+                ) {
+                    Text(
+                        text = "Ford Bellman algorithm"
+                    )
+                }
             }
             Surface(
                 modifier = Modifier
@@ -122,5 +137,16 @@ fun MainScreen(viewModel: MainScreenViewModel) {
 
     if (exceptionDialog.value) {
         exceptionView(message.value) { viewModel.setExceptionDialog(false) }
+    }
+
+    if (fordBellmanStart.value) {
+        FordBellmanDialog(
+            viewModel.firstId, viewModel.secondId,
+            viewModel::onFordBellmanRun,
+            {
+                fordBellmanStart.value = false
+            },
+            viewModel
+        )
     }
 }
