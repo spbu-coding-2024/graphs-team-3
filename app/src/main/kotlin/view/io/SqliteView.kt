@@ -6,6 +6,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -24,6 +26,7 @@ fun sqliteView(
 ) {
     val vm = remember { SqliteViewModel(repo) }
     var open by remember { mutableStateOf(true) }
+    var toDelete by remember { mutableStateOf<Pair<Int,String>?>(null) }
 
     if (open) {
         AlertDialog(
@@ -56,13 +59,21 @@ fun sqliteView(
                             Row(
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .clickable {
-                                        onGraphChosen(vm.openGraph(id), id)
-                                        open = false
-                                    }
-                                    .padding(6.dp)
+                                    .padding(6.dp),
+                                horizontalArrangement = Arrangement.SpaceBetween
                             ) {
-                                Text(text = "$id | $name")
+                                Text(text = "$id | $name",
+                                    modifier = Modifier
+                                    .clickable {
+                                    onGraphChosen(vm.openGraph(id), id)
+                                    open = false
+                                })
+                                IconButton(
+                                    onClick = { toDelete = id to name},
+                                    modifier = Modifier.size(20.dp)
+                                ) {
+                                    Icon(Icons.Default.Delete, null)
+                                }
                             }
                         }
                     }
@@ -79,6 +90,27 @@ fun sqliteView(
                 }
             },
             modifier = Modifier.clip(RoundedCornerShape(percent = 5))
+        )
+    }
+
+    toDelete?.let { (id, name) ->
+        AlertDialog(
+            onDismissRequest = { toDelete = null},
+            title = { Text(text = "Delete \"$name\"?")},
+            confirmButton = {
+                Button(
+                    onClick = {
+                        vm.deleteGraph(id)
+                        toDelete = null
+                    },
+                    colors = ButtonDefaults.buttonColors(ColorTheme.rejectColor)
+                ) { Text(text = "Delete")}
+            },
+            dismissButton = {
+                TextButton(
+                    onClick = { toDelete = null},
+                    ) {(Text(text = "Cancel", color = ColorTheme.TextColor))}
+            }
         )
     }
 }
