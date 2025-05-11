@@ -14,6 +14,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import viewmodel.colors.ColorTheme
 import viewmodel.colors.ColorTheme.edgeDefaultColor
 import viewmodel.graph.GraphViweModel
 
@@ -29,7 +30,7 @@ fun GraphView(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(197, 197, 197))
+            .background(ColorTheme.backgroundColor)
     ) {
         Box(
             modifier = Modifier
