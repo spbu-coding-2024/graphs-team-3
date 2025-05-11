@@ -45,6 +45,7 @@ fun main() = application {
     Window (
         onCloseRequest = ::exitApplication,
         state = WindowState(width = 1200.dp, height = 900.dp),
+        title = "GRAPHS 52",
     ) {
         window.minimumSize = Dimension(800, 600)
         App()
