@@ -4,6 +4,8 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.Color
 import model.graph.Graph
+import view.dialogs.FordBellmanDialog
+import viewmodel.colors.ColorTheme
 import viewmodel.graph.GraphViweModel
 import viewmodel.representation.RepresentationStrategy
 
@@ -35,6 +37,11 @@ class MainScreenViewModel(
     private val _exceptionDialog = mutableStateOf(false)
     val exceptionDialog: State<Boolean> get() = _exceptionDialog
 
+    private val _firstId = mutableStateOf<String?>(null)
+    val firstId: State<String?> get() = _firstId
+
+    private val _secondId = mutableStateOf<String?>(null)
+    val secondId: State<String?> get() = _secondId
 
     val graphViewModel: GraphViweModel = GraphViweModel(graph, _showVerticesLabels, _showEdgesWeights, _showVerticesId)
 
@@ -46,11 +53,51 @@ class MainScreenViewModel(
         _exceptionDialog.value = exceptionDialog
     }
 
+    fun setFirstId(firstId: String?) {
+        _firstId.value = firstId
+    }
+
+    fun setSecondId(secondId: String?) {
+        _secondId.value = secondId
+    }
+
+    fun clearId() {
+        _firstId.value = null
+        _secondId.value = null
+    }
+
     private val _message = mutableStateOf<String?>(null)
     val message: State<String?> get() = _message
 
+    fun setMessage(message: String?) {
+        _message.value = message
+    }
+
     fun resetGraphView() {
         representationStrategy.place(800.0, 600.0, graphViewModel)
-        graphViewModel.vertices.forEach { v -> v.color = Color.Gray }
+        graphViewModel.vertices.forEach { v -> v.color = ColorTheme.vertexDefaultColor }
+        graphViewModel.edges.forEach { v -> v.color = ColorTheme.edgeDefaultColor }
+    }
+
+    fun resetColors() {
+        graphViewModel.vertices.forEach { v -> v.color = ColorTheme.vertexDefaultColor }
+        graphViewModel.edges.forEach { v -> v.color = ColorTheme.edgeDefaultColor }
+    }
+
+    fun onFordBellmanRun() {
+        try {
+            resetColors()
+            graphViewModel.fordBellman(
+                firstId.value?.toInt()
+                    ?: throw IllegalStateException("First vertex id must not be null"),
+                secondId.value?.toInt()
+                    ?: throw IllegalStateException("Second vertex id must not be null")
+            )
+            clearId()
+        } catch (e: Exception) {
+            setMessage(e.message)
+            clearId()
+            setExceptionDialog(true)
+        }
     }
 }
