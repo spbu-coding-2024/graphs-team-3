@@ -116,6 +116,21 @@ fun MainScreen(viewModel: MainScreenViewModel) {
                         text = "Ford Bellman algorithm"
                     )
                 }
+
+                if (!viewModel.graphViewModel.graph.isDirected) {
+                    Button(
+                        onClick = {
+                            viewModel.resetColors()
+                            viewModel.graphViewModel.findBridges()
+                        },
+                        enabled = true,
+                        colors = ButtonDefaults.buttonColors(ColorTheme.ButtonColor)
+                    ) {
+                        Text(
+                            text = "Find bridges",
+                        )
+                    }
+                }
             }
             Surface(
                 modifier = Modifier
