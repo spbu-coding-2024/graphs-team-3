@@ -14,9 +14,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import view.graph.GraphView
 import viewmodel.screens.MainScreenViewModel
+import cafe.adriel.voyager.navigator.LocalNavigator
 
 @Composable
 fun MainScreen(viewModel: MainScreenViewModel) {
+
+    val navigator = LocalNavigator.current
+
     Row(
         horizontalArrangement = Arrangement.spacedBy(20.dp)
     ) {
@@ -109,6 +113,11 @@ fun MainScreen(viewModel: MainScreenViewModel) {
             Button(onClick = { viewModel.saveToDb() }, modifier = Modifier.fillMaxWidth()) {
                 Text("Save")
             }
+            Spacer(Modifier.height(6.dp))
+            Button(
+                onClick = { navigator?.popUntilRoot() },
+                modifier = Modifier.fillMaxWidth()
+            ) { Text("Main menu") }
         }
         Surface(
             modifier = Modifier
