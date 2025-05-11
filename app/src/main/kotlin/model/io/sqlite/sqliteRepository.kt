@@ -7,7 +7,7 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import java.io.File
 
-class SqliteRepository(dbPath: String = "graphs.db") {
+class SqliteRepository(dbPath: String = "../graphs.db") {
 
     object Graphs : IntIdTable("graphs") {
         val name = varchar("name", 52)
