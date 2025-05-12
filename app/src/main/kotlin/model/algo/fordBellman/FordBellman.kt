@@ -22,7 +22,9 @@ fun fordBellman(graph: Graph, start: Vertex, end: Vertex): Triple<Vector<Vertex>
         for (edge in graph.edges) {
             val relaxResult = relaxation(graph, edge, dist, path)
             cycleFind = relaxResult.first
-            wasRelaxed = relaxResult.second
+            if (relaxResult.second) {
+                wasRelaxed = true
+            }
         }
         if (!wasRelaxed) {
             break
