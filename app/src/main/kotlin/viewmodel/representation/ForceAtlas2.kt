@@ -7,13 +7,13 @@ import org.gephi.graph.api.Node
 import org.gephi.layout.plugin.forceAtlas2.ForceAtlas2
 import org.gephi.project.api.ProjectController
 import org.openide.util.Lookup
-import viewmodel.graph.GraphViweModel
+import viewmodel.graph.GraphViewModel
 import viewmodel.graph.VertexViewModel
 import kotlin.math.abs
 import kotlin.random.Random
 
 class ForceAtlas2(): RepresentationStrategy {
-    override fun place(width: Double, height: Double, graphViewModel: GraphViweModel) {
+    override fun place(width: Double, height: Double, graphViewModel: GraphViewModel) {
         val prjCtl: ProjectController = Lookup.getDefault().lookup(ProjectController::class.java)
         prjCtl.newProject()
         val workSpace = prjCtl.currentWorkspace

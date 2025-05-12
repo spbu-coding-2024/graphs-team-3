@@ -16,11 +16,11 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import viewmodel.colors.ColorTheme
 import viewmodel.colors.ColorTheme.edgeDefaultColor
-import viewmodel.graph.GraphViweModel
+import viewmodel.graph.GraphViewModel
 
 @Composable
 fun GraphView(
-    viewModel: GraphViweModel,
+    viewModel: GraphViewModel,
     scale: Float,
 ) {
 

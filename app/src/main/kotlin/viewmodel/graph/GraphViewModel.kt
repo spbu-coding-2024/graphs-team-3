@@ -8,9 +8,8 @@ import model.algo.fordBellman.fordBellman
 import model.graph.Vertex
 import java.util.Vector
 import model.algo.findBridges.findBridges
-
-class GraphViweModel(
-    internal val graph: Graph,
+class GraphViewModel(
+    val graph: Graph,
     showVertexLabels: State<Boolean>,
     showEdgeWeights: State<Boolean>,
     showVertexId: State<Boolean>,

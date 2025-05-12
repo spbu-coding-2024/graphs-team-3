@@ -9,8 +9,11 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.Alignment
+import cafe.adriel.voyager.navigator.LocalNavigator
 import view.dialogs.FordBellmanDialog
 import view.dialogs.exceptionView
 import view.graph.GraphView
@@ -19,131 +22,167 @@ import viewmodel.screens.MainScreenViewModel
 
 @Composable
 fun MainScreen(viewModel: MainScreenViewModel) {
-
+    val navigator = LocalNavigator.current
     val fordBellmanStart = remember { mutableStateOf(false) }
-
     val exceptionDialog = remember { viewModel.exceptionDialog }
     val message = remember { viewModel.message }
+    var scale by remember { mutableStateOf(1f) }
+
     Column {
-        Box(
+        Surface(
             modifier = Modifier
-                .fillMaxHeight(0.025f)
                 .fillMaxWidth()
+                .height(4.dp)
                 .background(ColorTheme.ButtonColor)
-        )
+        ) {}
+
+        Spacer(modifier = Modifier.height(6.dp))
+
         Row(
-            horizontalArrangement = Arrangement.spacedBy(20.dp)
+            horizontalArrangement = Arrangement.spacedBy(20.dp),
+            modifier = Modifier.fillMaxSize()
         ) {
-
-            var scale by remember { mutableStateOf(1f) }
-
             Column(
                 modifier = Modifier
                     .fillMaxWidth(0.20f)
-                    .padding(start = 15.dp)
+                    .padding(16.dp)
             ) {
-                Row {
+                Row(verticalAlignment = Alignment.CenterVertically) {
                     Switch(
                         checked = viewModel.showVerticesLabels,
-                        onCheckedChange = {
-                            viewModel.showVerticesLabels = it
-                        },
+                        onCheckedChange = { viewModel.showVerticesLabels = it }
                     )
                     Text(
-                        "Show vertex label", fontSize = 28.sp,
+                        "Show vertex label",
+                        fontSize = 18.sp,
                         modifier = Modifier
-                            .clickable(
-                                onClick = { viewModel.showVerticesLabels = !viewModel.showVerticesLabels },
-                                interactionSource = null,
-                                indication = null,
-                            )
-                            .padding(4.dp)
+                            .clickable {
+                                viewModel.showVerticesLabels = !viewModel.showVerticesLabels
+                            }
+                            .padding(start = 8.dp)
                     )
                 }
-                Row {
+                Row(verticalAlignment = Alignment.CenterVertically) {
                     Switch(
                         checked = viewModel.showVerticesId,
-                        onCheckedChange = { viewModel.showVerticesId = it },
+                        onCheckedChange = { viewModel.showVerticesId = it }
                     )
                     Text(
                         "Show vertex id",
-                        fontSize = 28.sp,
+                        fontSize = 18.sp,
                         modifier = Modifier
-                            .clickable(
-                                onClick = { viewModel.showVerticesId = !viewModel.showVerticesId },
-                                interactionSource = null,
-                                indication = null,
-                            )
-                            .padding(4.dp)
+                            .clickable {
+                                viewModel.showVerticesId = !viewModel.showVerticesId
+                            }
+                            .padding(start = 8.dp)
                     )
                 }
-                Row {
+                Row(verticalAlignment = Alignment.CenterVertically) {
                     Switch(
                         checked = viewModel.showEdgesWeights,
-                        onCheckedChange = {
-                            viewModel.showEdgesWeights = it
-                        },
+                        onCheckedChange = { viewModel.showEdgesWeights = it }
                     )
                     Text(
-                        "Show edges weights", fontSize = 28.sp,
+                        "Show edges weights",
+                        fontSize = 18.sp,
                         modifier = Modifier
-                            .clickable(
-                                onClick = { viewModel.showEdgesWeights = !viewModel.showEdgesWeights },
-                                interactionSource = null,
-                                indication = null,
-                            )
-                            .padding(4.dp)
+                            .clickable {
+                                viewModel.showEdgesWeights = !viewModel.showEdgesWeights
+                            }
+                            .padding(start = 8.dp)
                     )
                 }
+
+                Spacer(modifier = Modifier.height(12.dp))
                 Button(
                     onClick = viewModel::resetGraphView,
-                    enabled = true,
-                    colors = ButtonDefaults.buttonColors(ColorTheme.ButtonColor)
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = ButtonDefaults.buttonColors(backgroundColor = ColorTheme.ButtonColor)
                 ) {
-                    Text(
-                        text = "Reset default settings",
-                    )
+                    Text("Reset default settings")
                 }
+
+                Spacer(modifier = Modifier.height(16.dp))
+                Divider()
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    "Algorithms",
+                    fontSize = 20.sp,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.fillMaxWidth()
+                )
+                Spacer(modifier = Modifier.height(8.dp))
 
                 Button(
-                    onClick = {
-                        fordBellmanStart.value = true
-                    },
-                    enabled = true,
-                    colors = ButtonDefaults.buttonColors(ColorTheme.ButtonColor)
+                    onClick = viewModel::showMst,
+                    modifier = Modifier.fillMaxWidth()
                 ) {
-                    Text(
-                        text = "Ford Bellman algorithm"
-                    )
+                    Text("MST")
                 }
-
+                Spacer(modifier = Modifier.height(4.dp))
+                Button(
+                    onClick = viewModel::showCommunities,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text("Communities")
+                }
+                Spacer(modifier = Modifier.height(4.dp))
+                Button(
+                    onClick = viewModel::showScc,
+                    enabled = viewModel.graphViewModel.edges.isNotEmpty(),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text("SCC")
+                }
+                Spacer(modifier = Modifier.height(4.dp))
+                Button(
+                    onClick = { fordBellmanStart.value = true },
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text("Ford Bellman algorithm", textAlign = TextAlign.Center)
+                }
+                Spacer(modifier = Modifier.height(4.dp))
                 if (!viewModel.graphViewModel.graph.isDirected) {
                     Button(
                         onClick = {
                             viewModel.resetColors()
                             viewModel.graphViewModel.findBridges()
                         },
-                        enabled = true,
-                        colors = ButtonDefaults.buttonColors(ColorTheme.ButtonColor)
+                        modifier = Modifier.fillMaxWidth()
                     ) {
-                        Text(
-                            text = "Find bridges",
-                        )
+                        Text("Find bridges")
                     }
+                    Spacer(modifier = Modifier.height(4.dp))
+                }
+
+                Divider()
+                Spacer(modifier = Modifier.height(12.dp))
+
+//                Button( // work only with sqlite, not in use now
+//                    onClick = { viewModel.saveToDb() },
+//                    modifier = Modifier.fillMaxWidth()
+//                ) {
+//                    Text("Save")
+//                }
+//                Spacer(modifier = Modifier.height(6.dp))
+                Button(
+                    onClick = { navigator?.popUntilRoot() },
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text("Main menu")
                 }
             }
             Surface(
                 modifier = Modifier
                     .weight(1f)
+                    .padding(8.dp)
                     .scrollable(
                         orientation = Orientation.Vertical,
-                        state =
-                            rememberScrollableState { delta ->
-                                scale *= 1f + delta / 500
-                                scale = scale.coerceIn(0.01f, 100f)
-                                delta
-                            },
-                    ),
+                        state = rememberScrollableState { delta ->
+                            scale = (scale * (1f + delta / 500)).coerceIn(0.01f, 100f)
+                            delta
+                        }
+                    )
             ) {
                 GraphView(viewModel.graphViewModel, scale)
             }
@@ -156,11 +195,10 @@ fun MainScreen(viewModel: MainScreenViewModel) {
 
     if (fordBellmanStart.value) {
         FordBellmanDialog(
-            viewModel.firstId, viewModel.secondId,
+            viewModel.firstId,
+            viewModel.secondId,
             viewModel::onFordBellmanRun,
-            {
-                fordBellmanStart.value = false
-            },
+            { fordBellmanStart.value = false },
             viewModel
         )
     }

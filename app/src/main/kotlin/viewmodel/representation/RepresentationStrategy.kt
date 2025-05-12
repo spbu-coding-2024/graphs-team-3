@@ -1,9 +1,9 @@
 package viewmodel.representation
 
-import viewmodel.graph.GraphViweModel
+import viewmodel.graph.GraphViewModel
 import viewmodel.graph.VertexViewModel
 
 
 interface RepresentationStrategy {
-    fun place(width: Double, height: Double, graphViewModel: GraphViweModel)
+    fun place(width: Double, height: Double, graphViewModel: GraphViewModel)
 }
