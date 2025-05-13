@@ -11,7 +11,6 @@ import view.screens.helloScreen
 import viewmodel.representation.RepresentationStrategy
 import viewmodel.screens.MainScreenViewModel
 import java.awt.Dimension
-import model.io.sqlite.SqliteRepository
 
 
 object HelloScreen:  Screen {
@@ -22,16 +21,12 @@ object HelloScreen:  Screen {
 class MainScreenNav(
     val graph: Graph,
     private val representationStrategy: RepresentationStrategy,
-//    val sqliteRepo: SqliteRepository? = null, // disabled "save" button - unnecessary
-//    val graphId: Int? = null
 ): Screen {
     @Composable
     override fun Content() = MainScreen(
         MainScreenViewModel(
             graph,
             representationStrategy,
-//            sqliteRepo,
-//            graphId,
             )
     )
 }

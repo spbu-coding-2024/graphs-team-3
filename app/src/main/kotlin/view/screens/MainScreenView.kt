@@ -167,13 +167,6 @@ fun MainScreen(viewModel: MainScreenViewModel) {
                 Divider()
                 Spacer(modifier = Modifier.height(12.dp))
 
-//                Button( // work only with sqlite, not in use now
-//                    onClick = { viewModel.saveToDb() },
-//                    modifier = Modifier.fillMaxWidth()
-//                ) {
-//                    Text("Save")
-//                }
-//                Spacer(modifier = Modifier.height(6.dp))
                 Button(
                     onClick = { navigator?.popUntilRoot() },
                     modifier = Modifier.fillMaxWidth(),

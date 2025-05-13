@@ -10,14 +10,11 @@ import viewmodel.graph.GraphViewModel
 import viewmodel.representation.RepresentationStrategy
 import model.algo.*
 import model.algo.findSCC
-import model.io.sqlite.SqliteRepository
 import kotlin.random.Random
 
 class MainScreenViewModel (
     private val graph: Graph,
     private val representationStrategy: RepresentationStrategy,
-//    private var sqliteRepo: SqliteRepository? = null, // unused
-//    private var savedId: Int? = null,
 ) {
     private var _showVerticesLabels = mutableStateOf(false)
     var showVerticesLabels: Boolean
@@ -123,16 +120,6 @@ class MainScreenViewModel (
             }
         }
     }
-
-//    fun saveToDb(name: String? = null) { // Unused now
-//        sqliteRepo ?: return
-//        savedId = if (savedId == null)
-//            sqliteRepo!!.save(graph, name)
-//        else {
-//            sqliteRepo!!.update(savedId!!, graph, name)
-//            savedId
-//        }
-//    }
 
     private fun generatePalette(count: Int): List<Color> {
         return List(count) { i ->
