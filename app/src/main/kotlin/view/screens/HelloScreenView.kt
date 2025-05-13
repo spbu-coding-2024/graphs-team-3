@@ -122,4 +122,8 @@ fun helloScreen(
     if (exceptionDialog.value) {
         exceptionView(message.value) { viewModel.setExceptionDialog(false) }
     }
+
+    if (isMainScreen.value) {
+        navigator?.push(MainScreenNav(graph.value, ForceAtlas2()))
+    }
 }
