@@ -29,14 +29,12 @@ fun MainScreen(viewModel: MainScreenViewModel) {
     var scale by remember { mutableStateOf(1f) }
 
     Column {
-        Surface(
+        Box(
             modifier = Modifier
+                .fillMaxHeight(0.025f)
                 .fillMaxWidth()
-                .height(4.dp)
                 .background(ColorTheme.ButtonColor)
-        ) {}
-
-        Spacer(modifier = Modifier.height(6.dp))
+        )
 
         Row(
             horizontalArrangement = Arrangement.spacedBy(20.dp),
@@ -45,7 +43,7 @@ fun MainScreen(viewModel: MainScreenViewModel) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth(0.20f)
-                    .padding(16.dp)
+                    .padding(start = 15.dp)
             ) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Switch(
@@ -56,10 +54,12 @@ fun MainScreen(viewModel: MainScreenViewModel) {
                         "Show vertex label",
                         fontSize = 18.sp,
                         modifier = Modifier
-                            .clickable {
-                                viewModel.showVerticesLabels = !viewModel.showVerticesLabels
-                            }
-                            .padding(start = 8.dp)
+                            .clickable(
+                                onClick = { viewModel.showVerticesLabels = !viewModel.showVerticesLabels },
+                                interactionSource = null,
+                                indication = null,
+                            )
+                            .padding(4.dp)
                     )
                 }
                 Row(verticalAlignment = Alignment.CenterVertically) {
@@ -71,10 +71,12 @@ fun MainScreen(viewModel: MainScreenViewModel) {
                         "Show vertex id",
                         fontSize = 18.sp,
                         modifier = Modifier
-                            .clickable {
-                                viewModel.showVerticesId = !viewModel.showVerticesId
-                            }
-                            .padding(start = 8.dp)
+                            .clickable(
+                                onClick = { viewModel.showVerticesId = !viewModel.showVerticesId },
+                                interactionSource = null,
+                                indication = null,
+                            )
+                            .padding(4.dp)
                     )
                 }
                 Row(verticalAlignment = Alignment.CenterVertically) {
@@ -86,10 +88,12 @@ fun MainScreen(viewModel: MainScreenViewModel) {
                         "Show edges weights",
                         fontSize = 18.sp,
                         modifier = Modifier
-                            .clickable {
-                                viewModel.showEdgesWeights = !viewModel.showEdgesWeights
-                            }
-                            .padding(start = 8.dp)
+                            .clickable(
+                                onClick = { viewModel.showEdgesWeights = !viewModel.showEdgesWeights },
+                                interactionSource = null,
+                                indication = null,
+                            )
+                            .padding(4.dp)
                     )
                 }
 
@@ -115,14 +119,16 @@ fun MainScreen(viewModel: MainScreenViewModel) {
 
                 Button(
                     onClick = viewModel::showMst,
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = ButtonDefaults.buttonColors(backgroundColor = ColorTheme.ButtonColor)
                 ) {
                     Text("MST")
                 }
                 Spacer(modifier = Modifier.height(4.dp))
                 Button(
                     onClick = viewModel::showCommunities,
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = ButtonDefaults.buttonColors(backgroundColor = ColorTheme.ButtonColor)
                 ) {
                     Text("Communities")
                 }
@@ -130,14 +136,16 @@ fun MainScreen(viewModel: MainScreenViewModel) {
                 Button(
                     onClick = viewModel::showScc,
                     enabled = viewModel.graphViewModel.edges.isNotEmpty(),
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = ButtonDefaults.buttonColors(backgroundColor = ColorTheme.ButtonColor)
                 ) {
                     Text("SCC")
                 }
                 Spacer(modifier = Modifier.height(4.dp))
                 Button(
                     onClick = { fordBellmanStart.value = true },
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = ButtonDefaults.buttonColors(backgroundColor = ColorTheme.ButtonColor)
                 ) {
                     Text("Ford Bellman algorithm", textAlign = TextAlign.Center)
                 }
@@ -148,7 +156,8 @@ fun MainScreen(viewModel: MainScreenViewModel) {
                             viewModel.resetColors()
                             viewModel.graphViewModel.findBridges()
                         },
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth(),
+                        colors = ButtonDefaults.buttonColors(backgroundColor = ColorTheme.ButtonColor)
                     ) {
                         Text("Find bridges")
                     }
@@ -167,7 +176,8 @@ fun MainScreen(viewModel: MainScreenViewModel) {
 //                Spacer(modifier = Modifier.height(6.dp))
                 Button(
                     onClick = { navigator?.popUntilRoot() },
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = ButtonDefaults.buttonColors(backgroundColor = ColorTheme.ButtonColor)
                 ) {
                     Text("Main menu")
                 }
