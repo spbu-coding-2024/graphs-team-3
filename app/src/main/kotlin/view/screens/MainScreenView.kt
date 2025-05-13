@@ -135,7 +135,6 @@ fun MainScreen(viewModel: MainScreenViewModel) {
                 Spacer(modifier = Modifier.height(4.dp))
                 Button(
                     onClick = viewModel::showScc,
-                    enabled = viewModel.graphViewModel.edges.isNotEmpty(),
                     modifier = Modifier.fillMaxWidth(),
                     colors = ButtonDefaults.buttonColors(backgroundColor = ColorTheme.ButtonColor)
                 ) {
