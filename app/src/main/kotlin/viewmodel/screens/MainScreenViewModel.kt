@@ -90,7 +90,7 @@ class MainScreenViewModel (
         resetColors()
         val mst = findMST(graph)
         graphViewModel.edges.forEach { e ->
-            e.color = if (e.origin in mst) Color.Green else Color.LightGray
+            e.color = if (e.origin in mst) Color.Green else Color.Gray
         }
     }
 
