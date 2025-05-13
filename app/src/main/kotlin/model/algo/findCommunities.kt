@@ -2,36 +2,19 @@ package model.algo
 
 import model.graph.Graph
 import model.graph.Vertex
+import org.jetbrains.research.ictl.louvain.getPartition
 
-fun labelPropagation(graph: Graph, maxIterations: Int = 100): Map<Int, List<Vertex>> {
-    val labels = graph.vertices.associateWith { it.id }.toMutableMap()
+fun findCommunities(graph: Graph, depth: Int = 2): Map<Int, List<Vertex>> {
+    val links = graph.edges.map {
+        EdgeLink(
+            from = it.vertices.first.id,
+            to = it.vertices.second.id,
+            weight = it.weight.toDouble()
+        )
+    }
 
-    val adjacencyList = graph.toAdjacencyList()
+    val partition = getPartition(links, depth)
 
-    var iteration = 0
-    var changed: Boolean
-
-    do {
-        iteration++
-        changed = false
-
-        for (vertex in graph.vertices.shuffled()) {
-            val neighbors = adjacencyList[vertex] ?: continue
-            if (neighbors.isEmpty()) continue
-
-            val mostCommon = neighbors
-                .mapNotNull { labels[it] }
-                .groupingBy { it }
-                .eachCount()
-                .maxWithOrNull(compareBy<Map.Entry<Int, Int>>({ it.value }, { -it.key }))
-                ?.key ?: continue
-
-            if (labels[vertex] != mostCommon) {
-                labels[vertex] = mostCommon
-                changed = true
-            }
-        }
-    } while (changed && iteration < maxIterations)
-
-    return labels.entries.groupBy({ it.value }, { it.key })
+    val idToVertex = graph.vertices.associateBy { it.id }
+    return partition.entries.groupBy({ it.value }) { idToVertex[it.key]!! }
 }

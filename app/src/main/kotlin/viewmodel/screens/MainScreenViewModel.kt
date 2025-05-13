@@ -96,7 +96,7 @@ class MainScreenViewModel (
 
     fun showCommunities() {
         resetColors()
-        val comm = labelPropagation(graph)
+        val comm = findCommunities(graph)
         val palette = generatePalette(comm.size)
 
         comm.values.forEachIndexed { idx, verts ->
