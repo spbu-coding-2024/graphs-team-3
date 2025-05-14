@@ -12,6 +12,7 @@ repositories {
     google()
     maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
     maven("https://raw.github.com/gephi/gephi/mvn-thirdparty-repo/")
+    maven("https://jitpack.io")
 }
 
 dependencies {
@@ -26,7 +27,7 @@ dependencies {
     implementation("org.jetbrains.exposed:exposed-core:0.61.0")
     implementation("org.jetbrains.exposed:exposed-dao:0.61.0")
     implementation("org.jetbrains.exposed:exposed-jdbc:0.61.0")
-}
+    implementation("com.github.JetBrains-Research:louvain:main-SNAPSHOT")}
 
 tasks.test {
     useJUnitPlatform()

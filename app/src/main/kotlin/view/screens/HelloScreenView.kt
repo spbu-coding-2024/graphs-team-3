@@ -96,7 +96,7 @@ fun helloScreen(
                 onGraphChosen = { g, id ->
                     viewModel.selectGraph(g)
                     navigator?.push(
-                        MainScreenNav(g, ForceAtlas2(),/* SqliteRepository(), id*/)
+                        MainScreenNav(g, ForceAtlas2())
                     )
                     viewModel.selectStorage(null)
                 }

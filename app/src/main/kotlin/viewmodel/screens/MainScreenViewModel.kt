@@ -10,14 +10,11 @@ import viewmodel.graph.GraphViewModel
 import viewmodel.representation.RepresentationStrategy
 import model.algo.*
 import model.algo.findSCC
-import model.io.sqlite.SqliteRepository
 import kotlin.random.Random
 
 class MainScreenViewModel (
     private val graph: Graph,
     private val representationStrategy: RepresentationStrategy,
-//    private var sqliteRepo: SqliteRepository? = null, // unused
-//    private var savedId: Int? = null,
 ) {
     private var _showVerticesLabels = mutableStateOf(false)
     var showVerticesLabels: Boolean
@@ -87,52 +84,60 @@ class MainScreenViewModel (
     }
 
     fun showMst() {
-        resetColors()
-        val mst = findMST(graph)
-        graphViewModel.edges.forEach { e ->
-            e.color = if (e.origin in mst) Color.Green else Color.LightGray
+        try {
+            resetColors()
+            val mst = findMST(graph)
+            graphViewModel.edges.forEach { e ->
+                e.color = if (e.origin in mst) Color.Green else Color.Gray
+            }
+        } catch (e: Exception) {
+            setMessage(e.message)
+            clearId()
+            setExceptionDialog(true)
         }
     }
 
     fun showCommunities() {
-        resetColors()
-        val comm = labelPropagation(graph)
-        val palette = generatePalette(comm.size)
+        try {
+            resetColors()
+            val comm = findCommunities(graph)
+            val palette = generatePalette(comm.size)
 
-        comm.values.forEachIndexed { idx, verts ->
-            val color = palette[idx]
-            verts.forEach { v ->
-                graphViewModel.vertices
-                    .first { it.origin == v }
-                    .color = color
+            comm.values.forEachIndexed { idx, verts ->
+                val color = palette[idx]
+                verts.forEach { v ->
+                    graphViewModel.vertices
+                        .first { it.origin == v }
+                        .color = color
+                }
             }
+        } catch (e: Exception) {
+            setMessage(e.message)
+            clearId()
+            setExceptionDialog(true)
         }
     }
 
     fun showScc() {
-        resetColors()
-        val scc = findSCC(graph)
-        val palette = generatePalette(scc.size)
+        try {
+            resetColors()
+            val scc = findSCC(graph)
+            val palette = generatePalette(scc.size)
 
-        scc.forEachIndexed { idx, component ->
-            val color = palette[idx]
-            component.forEach { v ->
-                graphViewModel.vertices
-                    .first { it.origin == v }
-                    .color = color
+            scc.forEachIndexed { idx, component ->
+                val color = palette[idx]
+                component.forEach { v ->
+                    graphViewModel.vertices
+                        .first { it.origin == v }
+                        .color = color
+                }
             }
+        } catch (e: Exception) {
+            setMessage(e.message)
+            clearId()
+            setExceptionDialog(true)
         }
     }
-
-//    fun saveToDb(name: String? = null) { // Unused now
-//        sqliteRepo ?: return
-//        savedId = if (savedId == null)
-//            sqliteRepo!!.save(graph, name)
-//        else {
-//            sqliteRepo!!.update(savedId!!, graph, name)
-//            savedId
-//        }
-//    }
 
     private fun generatePalette(count: Int): List<Color> {
         return List(count) { i ->

@@ -4,14 +4,17 @@ import model.graph.Graph
 import model.graph.Edge
 
 fun findMST(graph: Graph): Set<Edge> {
-    require(!graph.isDirected) { "Graph can not be directed" }
+    require(!graph.isDirected) { "MST is only implemented for undirected graphs" }
 
     val sortedEdges = graph.edges.sortedBy { it.weight }
     val mstEdges = mutableSetOf<Edge>()
 
-    val vertexCount = graph.vertices.size
+    val verticesList = graph.vertices.toList()
+    val idToIndex = verticesList
+        .mapIndexed { index, vertex -> vertex.id to index }
+        .toMap()
 
-    val parents = IntArray(vertexCount) { -1 }
+    val parents = IntArray(verticesList.size) { -1 }
 
     fun findRoot(vertexId: Int): Int {
         if (parents[vertexId] < 0) return vertexId
@@ -34,15 +37,19 @@ fun findMST(graph: Graph): Set<Edge> {
     }
 
     for (edge in sortedEdges) {
-        val sourceId: Int = edge.vertices.first.id
-        val destinationId = edge.vertices.second.id
+        val sourceId: Int = idToIndex[edge.vertices.first.id]!!
+        val destinationId = idToIndex[edge.vertices.second.id]!!
 
         if (findRoot(sourceId) != findRoot(destinationId)) {
             mstEdges += edge
             unionSets(sourceId, destinationId)
 
-            if (mstEdges.size == graph.vertexIdCount - 1) break
+            if (mstEdges.size == verticesList.size - 1) break
         }
+    }
+
+    if (mstEdges.size != verticesList.size - 1) {
+        throw IllegalStateException("Graph is not connected")
     }
 
     return mstEdges
