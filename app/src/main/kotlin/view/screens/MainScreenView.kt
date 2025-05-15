@@ -33,7 +33,7 @@ fun MainScreen(viewModel: MainScreenViewModel) {
             modifier = Modifier
                 .fillMaxHeight(0.025f)
                 .fillMaxWidth()
-                .background(ColorTheme.ButtonColor)
+                .background(ColorTheme.panelBackgroundColor)
         )
 
         Row(
