@@ -10,13 +10,14 @@ import viewmodel.graph.GraphViewModel
 import viewmodel.representation.RepresentationStrategy
 import model.algo.*
 import model.algo.findSCC
+import model.io.neo4j.Neo4jRepository
 import view.screens.Storage
 import kotlin.random.Random
 
-class MainScreenViewModel (
+class MainScreenViewModel(
     private val graph: Graph,
     private val representationStrategy: RepresentationStrategy,
-): ScreenViewModel {
+) : ScreenViewModel {
     override val _storage = mutableStateOf<Storage?>(null)
     override val storage: State<Storage?> get() = _storage
 
@@ -26,28 +27,28 @@ class MainScreenViewModel (
     override val _username = mutableStateOf<String?>(null)
     override val username: State<String?> get() = _username
 
-    override  val _password = mutableStateOf<String?>(null)
+    override val _password = mutableStateOf<String?>(null)
     override val password: State<String?> get() = _password
     private var _showVerticesLabels = mutableStateOf(false)
     var showVerticesLabels: Boolean
-    get() = _showVerticesLabels.value
-    set(value) {
-        _showVerticesLabels.value = value
-    }
+        get() = _showVerticesLabels.value
+        set(value) {
+            _showVerticesLabels.value = value
+        }
 
     private var _showEdgesWeights = mutableStateOf(false)
     var showEdgesWeights: Boolean
-    get() = _showEdgesWeights.value
-    set(value) {
-        _showEdgesWeights.value = value
-    }
+        get() = _showEdgesWeights.value
+        set(value) {
+            _showEdgesWeights.value = value
+        }
 
     private var _showVerticesId = mutableStateOf(false)
     var showVerticesId: Boolean
-    get() = _showVerticesId.value
-    set(value) {
-        _showVerticesId.value = value
-    }
+        get() = _showVerticesId.value
+        set(value) {
+            _showVerticesId.value = value
+        }
 
     private val _exceptionDialog = mutableStateOf(false)
     val exceptionDialog: State<Boolean> get() = _exceptionDialog
@@ -64,19 +65,19 @@ class MainScreenViewModel (
         representationStrategy.place(800.0, 600.0, graphViewModel)
     }
 
-    override fun selectStorage(storage: Storage?){
+    override fun selectStorage(storage: Storage?) {
         _storage.value = storage
     }
 
-    override fun setUri(uri: String?){
+    override fun setUri(uri: String?) {
         _uri.value = uri
     }
 
-    override fun setUsername(username: String?){
+    override fun setUsername(username: String?) {
         _username.value = username
     }
 
-    override fun setPassword(password: String?){
+    override fun setPassword(password: String?) {
         _password.value = password
     }
 
@@ -200,6 +201,17 @@ class MainScreenViewModel (
         } catch (e: Exception) {
             setMessage(e.message)
             clearId()
+            setExceptionDialog(true)
+        }
+    }
+
+    fun onNeo4jConnect() {
+        val neo4jRepository = Neo4jRepository(_uri.value ?: "", _username.value ?: "", _password.value ?: "")
+        try {
+            neo4jRepository.writeToDB(graph)
+        } catch (e: Exception) {
+            setMessage(e.message)
+            clearAuthData()
             setExceptionDialog(true)
         }
     }
