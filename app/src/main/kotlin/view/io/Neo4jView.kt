@@ -13,6 +13,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import viewmodel.colors.ColorTheme
 import viewmodel.screens.HelloScreenViewModel
+import viewmodel.screens.ScreenViewModel
 
 @Composable
 fun neo4jView(
@@ -21,7 +22,7 @@ fun neo4jView(
     password: State<String?>,
     onDismiss: () -> Unit,
     onConnect: () -> Unit,
-    viewModel: HelloScreenViewModel
+    viewModel: ScreenViewModel
 ) {
     var openDialog by remember { mutableStateOf(true) }
     var passwordVisibility by remember { mutableStateOf(false) }
