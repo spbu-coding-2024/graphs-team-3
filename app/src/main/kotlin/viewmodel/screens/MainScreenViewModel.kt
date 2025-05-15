@@ -10,12 +10,24 @@ import viewmodel.graph.GraphViewModel
 import viewmodel.representation.RepresentationStrategy
 import model.algo.*
 import model.algo.findSCC
+import view.screens.Storage
 import kotlin.random.Random
 
 class MainScreenViewModel (
     private val graph: Graph,
     private val representationStrategy: RepresentationStrategy,
-) {
+): ScreenViewModel {
+    override val _storage = mutableStateOf<Storage?>(null)
+    override val storage: State<Storage?> get() = _storage
+
+    override val _uri = mutableStateOf<String?>(null)
+    override val uri: State<String?> get() = _uri
+
+    override val _username = mutableStateOf<String?>(null)
+    override val username: State<String?> get() = _username
+
+    override  val _password = mutableStateOf<String?>(null)
+    override val password: State<String?> get() = _password
     private var _showVerticesLabels = mutableStateOf(false)
     var showVerticesLabels: Boolean
     get() = _showVerticesLabels.value
@@ -50,6 +62,28 @@ class MainScreenViewModel (
 
     init {
         representationStrategy.place(800.0, 600.0, graphViewModel)
+    }
+
+    override fun selectStorage(storage: Storage?){
+        _storage.value = storage
+    }
+
+    override fun setUri(uri: String?){
+        _uri.value = uri
+    }
+
+    override fun setUsername(username: String?){
+        _username.value = username
+    }
+
+    override fun setPassword(password: String?){
+        _password.value = password
+    }
+
+    override fun clearAuthData() {
+        _uri.value = null
+        _username.value = null
+        _password.value = null
     }
 
     fun setExceptionDialog(exceptionDialog: Boolean) {

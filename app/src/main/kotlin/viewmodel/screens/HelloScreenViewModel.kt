@@ -8,18 +8,18 @@ import model.io.neo4j.Neo4jRepository
 import view.screens.Storage
 
 
-class HelloScreenViewModel {
-    private val _storage = mutableStateOf<Storage?>(null)
-    val storage: State<Storage?> get() = _storage
+class HelloScreenViewModel: ScreenViewModel {
+    override val _storage = mutableStateOf<Storage?>(null)
+    override val storage: State<Storage?> get() = _storage
 
-    private val _uri = mutableStateOf<String?>(null)
-    val uri: State<String?> get() = _uri
+    override val _uri = mutableStateOf<String?>(null)
+    override val uri: State<String?> get() = _uri
 
-    private val _username = mutableStateOf<String?>(null)
-    val username: State<String?> get() = _username
+    override val _username = mutableStateOf<String?>(null)
+    override val username: State<String?> get() = _username
 
-    private val _password = mutableStateOf<String?>(null)
-    val password: State<String?> get() = _password
+    override  val _password = mutableStateOf<String?>(null)
+    override val password: State<String?> get() = _password
 
     private val _graph = mutableStateOf<Graph>(Graph())
     val graph: State<Graph> get() = _graph
@@ -33,31 +33,32 @@ class HelloScreenViewModel {
     private val _isMainScreen = mutableStateOf(false)
     val isMainScreen: State<Boolean> get() = _isMainScreen
 
-    fun selectStorage(storage: Storage?){
+    override fun selectStorage(storage: Storage?){
         _storage.value = storage
     }
 
-    fun setUri(uri: String?){
+    override fun setUri(uri: String?){
         _uri.value = uri
     }
 
-    fun setUsername(username: String?){
+    override fun setUsername(username: String?){
         _username.value = username
     }
 
-    fun setPassword(password: String?){
+    override fun setPassword(password: String?){
         _password.value = password
+    }
+
+    override fun clearAuthData() {
+        _uri.value = null
+        _username.value = null
+        _password.value = null
     }
 
     fun selectGraph(graph: Graph){
         _graph.value = graph
     }
 
-    fun clearAuthData() {
-        _uri.value = null
-        _username.value = null
-        _password.value = null
-    }
 
     fun setExceptionDialog(exceptionDialog: Boolean){
         _exceptionDialog.value = exceptionDialog
