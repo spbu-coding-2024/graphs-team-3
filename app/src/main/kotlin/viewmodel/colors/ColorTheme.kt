@@ -28,4 +28,6 @@ object ColorTheme {
     val edgePickedColor = Color(41, 98, 255)
     @Stable
     val backgroundColor = Color(197, 197, 197)
+    @Stable
+    val panelBackgroundColor = Color(51, 204, 204)
 }

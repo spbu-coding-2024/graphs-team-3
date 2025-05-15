@@ -7,6 +7,8 @@ import androidx.compose.foundation.gestures.rememberScrollableState
 import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
@@ -17,6 +19,7 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import view.dialogs.FordBellmanDialog
 import view.dialogs.exceptionView
 import view.graph.GraphView
+import view.io.neo4jView
 import viewmodel.colors.ColorTheme
 import viewmodel.screens.MainScreenViewModel
 
@@ -27,14 +30,31 @@ fun MainScreen(viewModel: MainScreenViewModel) {
     val exceptionDialog = remember { viewModel.exceptionDialog }
     val message = remember { viewModel.message }
     var scale by remember { mutableStateOf(1f) }
+    var expanded by remember { mutableStateOf(false) }
+    val storage by viewModel.storage
+    val uri = remember { viewModel.uri }
+    val username  = remember { viewModel.username}
+    val password = remember { viewModel.password }
 
     Column {
         Box(
             modifier = Modifier
                 .fillMaxHeight(0.025f)
                 .fillMaxWidth()
-                .background(ColorTheme.ButtonColor)
-        )
+                .background(ColorTheme.panelBackgroundColor)
+        ) {
+            IconButton(onClick = {expanded = true}) {
+                Icon(Icons.Default.Menu, contentDescription = "Menu")
+            }
+            DropdownMenu(
+                expanded = expanded,
+                onDismissRequest = { expanded = false },
+            ) {
+                DropdownMenuItem(onClick = {viewModel.selectStorage(Storage.Neo4j)}) {
+                    Text("Save to Neo4j")
+                }
+            }
+        }
 
         Row(
             horizontalArrangement = Arrangement.spacedBy(20.dp),
@@ -203,5 +223,21 @@ fun MainScreen(viewModel: MainScreenViewModel) {
             { fordBellmanStart.value = false },
             viewModel
         )
+    }
+
+    when (storage) {
+        Storage.Neo4j -> {
+            neo4jView(
+                uri,
+                username,
+                password,
+                onDismiss = { viewModel.selectStorage(null) },
+                onConnect = viewModel::onNeo4jConnect,
+                viewModel
+            )
+        }
+        else -> {
+
+        }
     }
 }
