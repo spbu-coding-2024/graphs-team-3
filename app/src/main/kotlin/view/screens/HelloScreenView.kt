@@ -20,6 +20,7 @@ import view.io.*
 import viewmodel.representation.ForceAtlas2
 import viewmodel.screens.HelloScreenViewModel
 import model.io.sqlite.SqliteRepository
+import view.dialogs.RandomGraphDialog
 
 enum class Storage {
     JSON,
@@ -34,12 +35,19 @@ fun helloScreen(
     val storage by viewModel.storage
     val navigator = LocalNavigator.current
     val uri = remember { viewModel.uri }
-    val username  = remember { viewModel.username}
+    val username = remember { viewModel.username }
     val password = remember { viewModel.password }
     val graph = remember { viewModel.graph }
     val exceptionDialog = remember { viewModel.exceptionDialog }
     val message = remember { viewModel.message }
     val isMainScreen = remember { viewModel.isMainScreen }
+    val isRandom = remember { viewModel.isRandom }
+    val isDirected = remember { viewModel.randomDirected }
+    val isWeighted = remember { viewModel.randomWeighted }
+    val vertexCount = remember { viewModel.vertexCount }
+    val edgeMaxCount = remember { viewModel.edgeMaxCount }
+    val maxWeight = remember { viewModel.maxWeight }
+
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -81,6 +89,13 @@ fun helloScreen(
                 modifier = Modifier.clip(RoundedCornerShape(percent = 25)).weight(0.28f)
             ) {
                 Text("Neo4j")
+            }
+            OutlinedButton(
+                onClick = { viewModel.setIsRandom(true) },
+                colors = ButtonDefaults.buttonColors(backgroundColor = ColorTheme.translucentButtonColor),
+                modifier = Modifier.clip(RoundedCornerShape(percent = 25)).weight(0.28f)
+            ) {
+                Text("Random Graph")
             }
         }
     }
@@ -125,5 +140,21 @@ fun helloScreen(
 
     if (isMainScreen.value) {
         navigator?.push(MainScreenNav(graph.value, ForceAtlas2()))
+    }
+
+    if (isRandom.value) {
+        RandomGraphDialog(
+            isDirected,
+            isWeighted,
+            vertexCount,
+            edgeMaxCount,
+            maxWeight,
+            {
+                viewModel.clearProperties()
+                viewModel.setIsRandom(false)
+            },
+            viewModel::onRandom,
+            viewModel
+        )
     }
 }

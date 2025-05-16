@@ -43,8 +43,8 @@ fun EdgeView (
                 viewModel.second.y.toPx() - viewModel.first.y.toPx(),
                 viewModel.second.x.toPx() - viewModel.first.x.toPx()
             )
-            val arrowLen = 8.dp.toPx()
-            val arrowAngle = Math.toRadians(30.0).toFloat()
+            val arrowLen = 25.dp.toPx()
+            val arrowAngle = Math.toRadians(25.0).toFloat()
 
             val arrowFirstPoint = Offset(
                 arrowBase.x - arrowLen * cos(angle - arrowAngle),

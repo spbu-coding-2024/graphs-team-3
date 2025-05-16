@@ -119,6 +119,13 @@ fun MainScreen(viewModel: MainScreenViewModel) {
 
                 Spacer(modifier = Modifier.height(12.dp))
                 Button(
+                    onClick = viewModel::resetColors,
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = ButtonDefaults.buttonColors(backgroundColor = ColorTheme.ButtonColor)
+                ) {
+                    Text("Reset default colors")
+                }
+                Button(
                     onClick = viewModel::resetGraphView,
                     modifier = Modifier.fillMaxWidth(),
                     colors = ButtonDefaults.buttonColors(backgroundColor = ColorTheme.ButtonColor)

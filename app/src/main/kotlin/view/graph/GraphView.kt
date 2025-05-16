@@ -35,15 +35,15 @@ fun GraphView(
         Box(
             modifier = Modifier
             .fillMaxSize()
-            .pointerInput(viewModel) {
+            .pointerInput(scale) {
                 detectDragGestures { change, dragAmount ->
                     change.consume()
-                    offsetX.value += dragAmount.x
-                    offsetY.value += dragAmount.y
+                    offsetX.value += dragAmount.x / scale
+                    offsetY.value += dragAmount.y / scale
                 }
             }
-            .offset(offsetX.value.dp, offsetY.value.dp)
             .graphicsLayer(scaleX = scale, scaleY = scale)
+            .offset(offsetX.value.dp, offsetY.value.dp)
         ) {
             viewModel.edges.forEach { e ->
                 EdgeView(e, Modifier, viewModel.graph.isDirected)
