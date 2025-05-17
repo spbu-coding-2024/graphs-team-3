@@ -144,12 +144,14 @@ fun MainScreen(viewModel: MainScreenViewModel) {
                 )
                 Spacer(modifier = Modifier.height(8.dp))
 
-                Button(
-                    onClick = viewModel::showMst,
-                    modifier = Modifier.fillMaxWidth(),
-                    colors = ButtonDefaults.buttonColors(backgroundColor = ColorTheme.ButtonColor)
-                ) {
-                    Text("MST")
+                if (!viewModel.graphViewModel.graph.isDirected) {
+                    Button(
+                        onClick = viewModel::showMst,
+                        modifier = Modifier.fillMaxWidth(),
+                        colors = ButtonDefaults.buttonColors(backgroundColor = ColorTheme.ButtonColor)
+                    ) {
+                        Text("MST")
+                    }
                 }
                 Spacer(modifier = Modifier.height(4.dp))
                 Button(
