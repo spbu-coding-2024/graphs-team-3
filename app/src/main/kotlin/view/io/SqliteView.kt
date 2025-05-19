@@ -15,6 +15,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import model.graph.Graph
 import model.io.sqlite.SqliteRepository
+import view.dialogs.exceptionView
 import viewmodel.colors.ColorTheme
 import viewmodel.screens.SqliteViewModel
 
@@ -27,6 +28,9 @@ fun sqliteView(
     val vm = remember { SqliteViewModel(repo) }
     var open by remember { mutableStateOf(true) }
     var toDelete by remember { mutableStateOf<Pair<Int,String>?>(null) }
+
+    val exceptionDialog = remember { vm.exceptionDialog }
+    val message = remember { vm.message }
 
     if (open) {
         AlertDialog(
@@ -79,9 +83,13 @@ fun sqliteView(
                     }
                     Spacer(Modifier.height(8.dp))
                     Row(
-                        horizontalArrangement = Arrangement.End,
+                        horizontalArrangement = Arrangement.SpaceBetween,
                         modifier = Modifier.fillMaxWidth()
                     ) {
+                        Button(
+                            onClick = { vm.chooseFile() },
+                            colors = ButtonDefaults.buttonColors(ColorTheme.ButtonColor)
+                        ) { Text(text = "Choose file") }
                         Button(
                             onClick = { open = false; onDismiss() },
                             colors = ButtonDefaults.buttonColors(ColorTheme.rejectColor)
@@ -112,5 +120,9 @@ fun sqliteView(
                     ) {(Text(text = "Cancel", color = ColorTheme.TextColor))}
             }
         )
+    }
+
+    if (exceptionDialog.value) {
+        exceptionView(message.value) { vm.setExceptionDialog(false) }
     }
 }
