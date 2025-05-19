@@ -63,20 +63,19 @@ fun sqliteView(
                             Row(
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .padding(6.dp),
-                                horizontalArrangement = Arrangement.SpaceBetween
-                            ) {
-                                Text(text = name,
-                                    modifier = Modifier
+                                    .padding(6.dp)
                                     .clickable {
                                     onGraphChosen(vm.openGraph(id), id)
                                     open = false
-                                })
+                                    },
+                                horizontalArrangement = Arrangement.SpaceBetween
+                            ) {
+                                Text(text = name)
                                 IconButton(
                                     onClick = { toDelete = id to name},
                                     modifier = Modifier.size(20.dp)
                                 ) {
-                                    Icon(Icons.Default.Delete, null)
+                                    Icon(Icons.Default.Delete, "Delete")
                                 }
                             }
                         }
