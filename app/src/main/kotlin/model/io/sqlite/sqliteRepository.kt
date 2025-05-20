@@ -5,7 +5,6 @@ import org.jetbrains.exposed.dao.id.IntIdTable
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
-import java.io.File
 
 class SqliteRepository(dbPath: String = "../graphs.db") {
 
@@ -28,15 +27,18 @@ class SqliteRepository(dbPath: String = "../graphs.db") {
         val weight = long("weight")
     }
 
+    private val db: Database = Database.connect(
+        url = "jdbc:sqlite:$dbPath?foreign_keys=ON",
+        driver = "org.sqlite.JDBC"
+    )
+
     init {
-        File(dbPath).parentFile?.mkdirs()
-        Database.connect("jdbc:sqlite:$dbPath?foreign_keys=ON", "org.sqlite.JDBC")
-        transaction {
+        transaction(db) {
             SchemaUtils.create(Graphs, Vertices, Edges)
         }
     }
 
-    fun save(g: Graph, name: String? = null): Int = transaction {
+    fun save(g: Graph, name: String? = null): Int = transaction(db) {
         val gId = Graphs.insertAndGetId {
             it[this.name] = name ?: "Graph_${System.currentTimeMillis()}"
             it[this.isDirected] = g.isDirected
@@ -59,11 +61,11 @@ class SqliteRepository(dbPath: String = "../graphs.db") {
         gId
     }
 
-    fun delete(gId: Int) = transaction {
+    fun delete(gId: Int) = transaction(db) {
         Graphs.deleteWhere { id eq gId }
     }
 
-    fun read(gId: Int): Graph = transaction {
+    fun read(gId: Int): Graph = transaction(db) {
         val directed = Graphs
             .selectAll()
             .where { Graphs.id eq gId }
@@ -89,7 +91,7 @@ class SqliteRepository(dbPath: String = "../graphs.db") {
         g
     }
 
-    fun update(gId: Int, g: Graph, newName: String? = null) = transaction {
+    fun update(gId: Int, g: Graph, newName: String? = null) = transaction(db) {
         Graphs.update({ Graphs.id eq gId }) {
             it[isDirected] = g.isDirected
             if (newName != null) it[name] = newName
@@ -113,7 +115,7 @@ class SqliteRepository(dbPath: String = "../graphs.db") {
         }
     }
 
-    fun listGraphs(filter: String = ""): List<Pair<Int, String>> = transaction {
+    fun listGraphs(filter: String = ""): List<Pair<Int, String>> = transaction(db) {
         val q = if (filter.isBlank())
             Graphs.selectAll()
         else

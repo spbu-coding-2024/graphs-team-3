@@ -6,8 +6,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Delete
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -16,23 +14,23 @@ import androidx.compose.ui.unit.dp
 import model.graph.Graph
 import model.io.sqlite.SqliteRepository
 import view.dialogs.exceptionView
-import view.dialogs.SqliteDeleteDialog
+import view.dialogs.OverwriteDialog
 import viewmodel.colors.ColorTheme
-import viewmodel.screens.SqliteViewModel
+import viewmodel.screens.SqliteSaveViewModel
 
 @Composable
-fun sqliteView(
+fun sqliteSaveView(
+    graph: Graph,
     repo: SqliteRepository = remember { SqliteRepository() },
     onDismiss: () -> Unit,
-    onGraphChosen: (Graph, Int) -> Unit,
 ) {
-    val vm = remember { SqliteViewModel(repo) }
+    val vm = remember { SqliteSaveViewModel(repo, graph) }
     var open by remember { mutableStateOf(true) }
 
-    val deleteDialog = remember { vm.deleteDialog }
-    val toDelete = remember { vm.toDelete }
     val exceptionDialog = remember { vm.exceptionDialog }
     val message = remember { vm.message }
+    val overwriteDialog = remember { vm.overwriteDialog }
+    val nameState = remember { vm.nameState }
 
     if (open) {
         AlertDialog(
@@ -40,7 +38,7 @@ fun sqliteView(
                 open = false
                 onDismiss()
             },
-            title = { Text(text = "Choose the graph") },
+            title = { Text(text = "Create name for the graph") },
             buttons = {
                 Column(
                     modifier = Modifier
@@ -49,9 +47,9 @@ fun sqliteView(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     OutlinedTextField(
-                        value = vm.filter,
-                        onValueChange = vm::onFilterChange,
-                        label = { Text(text = "Search") },
+                        value = nameState.value,
+                        onValueChange = vm::onNameChange,
+                        label = { Text(text = "Name") },
                         colors = TextFieldDefaults.outlinedTextFieldColors(backgroundColor = ColorTheme.TextFieldColor),
                         modifier = Modifier.fillMaxWidth()
                     )
@@ -61,24 +59,15 @@ fun sqliteView(
                             .heightIn(max = 300.dp)
                             .fillMaxWidth()
                     ) {
-                        items(vm.graphs) { (id, name) ->
+                        items(vm.graphs) { (_, name) ->
                             Row(
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .padding(6.dp)
-                                    .clickable {
-                                    onGraphChosen(vm.openGraph(id), id)
-                                    open = false
-                                    },
+                                    .clickable { vm.onGraphClicked(name) },
                                 horizontalArrangement = Arrangement.SpaceBetween
                             ) {
                                 Text(text = name)
-                                IconButton(
-                                    onClick = { vm.startDelete(id, name) },
-                                    modifier = Modifier.size(20.dp)
-                                ) {
-                                    Icon(Icons.Default.Delete, "Delete")
-                                }
                             }
                         }
                     }
@@ -91,10 +80,22 @@ fun sqliteView(
                             onClick = { vm.chooseFile() },
                             colors = ButtonDefaults.buttonColors(ColorTheme.ButtonColor)
                         ) { Text(text = "Choose file") }
-                        Button(
-                            onClick = { open = false; onDismiss() },
-                            colors = ButtonDefaults.buttonColors(ColorTheme.rejectColor)
-                        ) { Text(text = "Cancel") }
+                        Row {
+                            Button(
+                                onClick = { open = false; onDismiss() },
+                                colors = ButtonDefaults.buttonColors(ColorTheme.rejectColor)
+                            ) { Text(text = "Cancel") }
+                            Spacer(Modifier.width(8.dp))
+                            Button(
+                                onClick = {
+                                    if (vm.onSaveClick()) {
+                                        open = false
+                                        onDismiss()
+                                    }
+                                },
+                                colors = ButtonDefaults.buttonColors(ColorTheme.ConfirmColor)
+                            ) { Text(text = "Save") }
+                        }
                     }
                 }
             },
@@ -102,11 +103,15 @@ fun sqliteView(
         )
     }
 
-    if (deleteDialog.value) {
-        SqliteDeleteDialog(
-            graphName = toDelete.value?.second.orEmpty(),
-            onConfirm = vm::confirmDelete,
-            onDismiss = vm::cancelDelete
+    if (overwriteDialog.value != null) {
+        OverwriteDialog(
+            graphName = nameState.value,
+            onConfirm = {
+                vm.confirmOverwrite()
+                open = false
+                onDismiss()
+            },
+            onDismiss = vm::cancelOverwrite
         )
     }
 
