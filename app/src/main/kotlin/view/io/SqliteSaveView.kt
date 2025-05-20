@@ -14,6 +14,7 @@ import androidx.compose.ui.unit.dp
 import model.graph.Graph
 import model.io.sqlite.SqliteRepository
 import view.dialogs.exceptionView
+import view.dialogs.OverwriteDialog
 import viewmodel.colors.ColorTheme
 import viewmodel.screens.SqliteSaveViewModel
 
@@ -103,26 +104,14 @@ fun sqliteSaveView(
     }
 
     if (overwriteDialog.value != null) {
-        AlertDialog(
-            onDismissRequest = { vm.cancelOverwrite() },
-            title = { Text(text = "Graph with this name exists") },
-            text = { Text("The existing graph will be overwritten. Continue?") },
-            confirmButton = {
-                Button(onClick = {
-                    vm.confirmOverwrite()
-                    overwriteDialog.value = null
-                    open = false
-                    onDismiss()
-                },
-                colors = ButtonDefaults.buttonColors(ColorTheme.rejectColor)
-                ) { Text("Continue") }
+        OverwriteDialog(
+            graphName = nameState.value,
+            onConfirm = {
+                vm.confirmOverwrite()
+                open = false
+                onDismiss()
             },
-            dismissButton = {
-                TextButton(onClick = {
-                    vm.cancelOverwrite()
-                }
-                ) { Text("Cancel",  color = ColorTheme.TextColor) }
-            }
+            onDismiss = vm::cancelOverwrite
         )
     }
 

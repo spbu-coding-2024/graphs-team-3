@@ -59,9 +59,9 @@ class SqliteSaveViewModel(
             setExceptionDialog(true)
             return false
         }
-        val dup = graphs.firstOrNull { it.second == name }
-        if (dup != null) {
-            overwriteDialog.value = dup.first
+        val duplicate = graphs.firstOrNull { it.second == name }
+        if (duplicate != null) {
+            overwriteDialog.value = duplicate.first
             return false
         }
         saveNew(name)
@@ -72,6 +72,7 @@ class SqliteSaveViewModel(
         overwriteDialog.value?.let { gid ->
             try {
                 repo.update(gid, graph, nameState.value.trim())
+                overwriteDialog.value = null
             } catch (e: Exception) {
                 setMessage(e.message ?: "Unknown error")
                 setExceptionDialog(true)
@@ -115,11 +116,11 @@ class SqliteSaveViewModel(
         }
     }
 
-    fun setExceptionDialog(v: Boolean) {
-        _exceptionDialog.value = v
+    fun setExceptionDialog(exceptionDialog: Boolean) {
+        _exceptionDialog.value = exceptionDialog
     }
 
-    fun setMessage(msg: String?) {
-        _message.value = msg
+    fun setMessage(message: String) {
+        _message.value = message
     }
 }
