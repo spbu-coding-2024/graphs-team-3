@@ -21,11 +21,17 @@ class SqliteViewModel(private var repo: SqliteRepository) {
 
     val graphs = mutableStateListOf<Pair<Int, String>>()
 
-    private val _exceptionDialog = mutableStateOf<Boolean>(false)
+    private val _exceptionDialog = mutableStateOf(false)
     val exceptionDialog: State<Boolean> get() = _exceptionDialog
 
     private val _message = mutableStateOf<String?>(null)
     val message: State<String?> get() = _message
+
+    private val _toDelete = mutableStateOf<Pair<Int, String>?>(null)
+    val toDelete: State<Pair<Int, String>?> get() = _toDelete
+
+    private val _deleteDialog = mutableStateOf(false)
+    val deleteDialog: State<Boolean> get() = _deleteDialog
 
     init { reload() }
 
@@ -41,17 +47,27 @@ class SqliteViewModel(private var repo: SqliteRepository) {
 
     fun openGraph(id: Int): Graph = repo.read(id)
 
-    fun deleteGraph(id: Int) {
-        repo.delete(id)
-        reload()
-    }
-
     fun setExceptionDialog(exceptionDialog: Boolean) {
         _exceptionDialog.value = exceptionDialog
     }
 
     fun setMessage(message: String) {
         _message.value = message
+    }
+
+    fun startDelete(id: Int, name: String) {
+        _toDelete.value = id to name
+        _deleteDialog.value = true
+    }
+
+    fun confirmDelete() {
+        _toDelete.value?.let { (id, _) -> repo.delete(id) }
+        reload(); cancelDelete()
+    }
+
+    fun cancelDelete() {
+        _deleteDialog.value = false
+        _toDelete.value = null
     }
 
     fun chooseFile() {

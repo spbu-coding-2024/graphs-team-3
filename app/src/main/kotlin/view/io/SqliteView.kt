@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.dp
 import model.graph.Graph
 import model.io.sqlite.SqliteRepository
 import view.dialogs.exceptionView
+import view.dialogs.SqliteDeleteDialog
 import viewmodel.colors.ColorTheme
 import viewmodel.screens.SqliteViewModel
 
@@ -27,8 +28,9 @@ fun sqliteView(
 ) {
     val vm = remember { SqliteViewModel(repo) }
     var open by remember { mutableStateOf(true) }
-    var toDelete by remember { mutableStateOf<Pair<Int,String>?>(null) }
 
+    val deleteDialog = remember { vm.deleteDialog }
+    val toDelete = remember { vm.toDelete }
     val exceptionDialog = remember { vm.exceptionDialog }
     val message = remember { vm.message }
 
@@ -72,7 +74,7 @@ fun sqliteView(
                             ) {
                                 Text(text = name)
                                 IconButton(
-                                    onClick = { toDelete = id to name},
+                                    onClick = { vm.startDelete(id, name) },
                                     modifier = Modifier.size(20.dp)
                                 ) {
                                     Icon(Icons.Default.Delete, "Delete")
@@ -100,24 +102,11 @@ fun sqliteView(
         )
     }
 
-    toDelete?.let { (id, name) ->
-        AlertDialog(
-            onDismissRequest = { toDelete = null},
-            title = { Text(text = "Delete \"$name\"?")},
-            confirmButton = {
-                Button(
-                    onClick = {
-                        vm.deleteGraph(id)
-                        toDelete = null
-                    },
-                    colors = ButtonDefaults.buttonColors(ColorTheme.rejectColor)
-                ) { Text(text = "Delete")}
-            },
-            dismissButton = {
-                TextButton(
-                    onClick = { toDelete = null},
-                    ) {(Text(text = "Cancel", color = ColorTheme.TextColor))}
-            }
+    if (deleteDialog.value) {
+        SqliteDeleteDialog(
+            graphName = toDelete.value?.second.orEmpty(),
+            onConfirm = vm::confirmDelete,
+            onDismiss = vm::cancelDelete
         )
     }
 
