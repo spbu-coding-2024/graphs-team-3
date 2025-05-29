@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test
 import java.util.Vector
 
 class FordBellmanTest {
+    // Tests shortest path in a simple undirected unweighted graph (all edges weight = 1)
     @Test
     fun `simple test undirected unweighted graph`() {
         val graph = Graph()
@@ -32,6 +33,7 @@ class FordBellmanTest {
         }
     }
 
+    // Tests optimal path selection in undirected weighted graph with varying edge weights
     @Test
     fun `simple test undirected weighted graph`() {
         val graph = Graph()
@@ -56,6 +58,7 @@ class FordBellmanTest {
         }
     }
 
+    // Tests pathfinding in directed weighted graph verifying correct handling of edge directions
     @Test
     fun `simple test directed weighted graph`() {
         val graph = Graph(true)
@@ -83,6 +86,7 @@ class FordBellmanTest {
         }
     }
 
+    // Verifies correct handling when no path exists between start and end vertices
     @Test
     fun `no path test`() {
         val graph = Graph(true)
@@ -101,6 +105,7 @@ class FordBellmanTest {
         assertEquals(result.first, null)
     }
 
+    // Tests optimal path selection when multiple route options are available
     @Test
     fun `three path test`() {
         val graph = Graph()
@@ -130,6 +135,7 @@ class FordBellmanTest {
         }
     }
 
+    // Ensures negative cycle not affecting the path is correctly ignored
     @Test
     fun `negative cycle not on path`() {
         val graph = Graph(true)
@@ -162,6 +168,7 @@ class FordBellmanTest {
         }
     }
 
+    // Tests detection of negative cycle involving the start vertex
     @Test
     fun `negative cycle at start`() {
         val graph = Graph(true)
@@ -188,6 +195,7 @@ class FordBellmanTest {
         }
     }
 
+    // Tests detection of negative cycle in intermediate path segments
     @Test
     fun `negative cycle at the middle`() {
         val graph = Graph(true)
@@ -215,6 +223,7 @@ class FordBellmanTest {
         }
     }
 
+    // Tests detection of negative cycle affecting the end of the path
     @Test
     fun `negative cycle at the end`() {
         val graph = Graph(true)

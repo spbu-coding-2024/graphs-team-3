@@ -16,6 +16,11 @@ import org.neo4j.harness.Neo4jBuilders
 const val vertexCount = 100
 const val edgesCount = 5
 
+
+/**
+ * Testing input/output with neo4j graph database
+ * For testing use library - neo4j harness (in-memory)
+ */
 class Neo4jTest {
     companion object {
         private lateinit var neo4j: Neo4j
@@ -79,6 +84,10 @@ class Neo4jTest {
         }
     }
 
+    /**
+     * Create graph and load in to database
+     * Check vertex and edges count in database
+     */
     @Test
     @Order(1)
     fun `test neo4j load`() {
@@ -90,6 +99,10 @@ class Neo4jTest {
         assertEquals(graph.edges.size, getEdgesCount())
     }
 
+    /**
+     * Store graph from database
+     * Check vertex and edges count in database
+     */
     @Test
     @Order(2)
     fun `test neo4j store`() {

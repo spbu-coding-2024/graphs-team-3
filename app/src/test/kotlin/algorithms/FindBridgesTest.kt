@@ -7,6 +7,10 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 
 class FindBridgesTest {
+
+    /**
+     * Graph without bridges
+     */
     @Test
     fun `no bridges in graph`() {
         val graph = Graph()
@@ -30,6 +34,9 @@ class FindBridgesTest {
         assertTrue(result.isEmpty())
     }
 
+    /**
+     * One bridge in graph
+     */
     @Test
     fun `one bridge in graph`() {
         val graph = Graph()
@@ -56,6 +63,9 @@ class FindBridgesTest {
         assertTrue(result.size == 1)
     }
 
+    /**
+     * Graph has a point of articulation -> two bridges (edges from a point of articulatiom)
+     */
     @Test
     fun `there is a point of articulation in the graph`() {
         val graph = Graph()
@@ -85,6 +95,9 @@ class FindBridgesTest {
         assertTrue(result.size == 2)
     }
 
+    /**
+     * In this case graph is a tree -> all edges are bridges
+     */
     @Test
     fun `all edges in tree are bridges`() {
         val graph = Graph()

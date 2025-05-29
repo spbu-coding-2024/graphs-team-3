@@ -10,6 +10,16 @@ import viewmodel.colors.ColorTheme
 import viewmodel.graph.GraphViewModel
 
 class FordBellmanAndBridgeFindIntedrationTest {
+
+    /**
+     * Test checks coloring vertexes and edges after algorithms using
+     *
+     * User run bridges find algorithm -> coloring bridges
+     *
+     * User run Ford-Bellman algorithm on correct data -> coloring path vertices
+     *
+     * User run Ford-Bellman algorithm on not correct data -> Illegal state exception with check message
+     */
     @Test
     fun `algorithm coloring test`() {
         val bridges = mutableSetOf<Edge>()
