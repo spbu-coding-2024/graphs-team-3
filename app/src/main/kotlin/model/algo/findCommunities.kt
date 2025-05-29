@@ -33,5 +33,4 @@ fun findCommunities(
         .groupBy(
             keySelector = { it.value },
             valueTransform = { idToVertex.getValue(it.key) },
-        )
 }

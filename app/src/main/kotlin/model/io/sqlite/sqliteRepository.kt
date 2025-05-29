@@ -29,10 +29,13 @@ class SqliteRepository(
         val weight = long("weight")
     }
 
+    private val db: Database = Database.connect(
+        url = "jdbc:sqlite:$dbPath?foreign_keys=ON",
+        driver = "org.sqlite.JDBC"
+    )
+
     init {
-        File(dbPath).parentFile?.mkdirs()
-        Database.connect("jdbc:sqlite:$dbPath?foreign_keys=ON", "org.sqlite.JDBC")
-        transaction {
+        transaction(db) {
             SchemaUtils.create(Graphs, Vertices, Edges)
         }
     }

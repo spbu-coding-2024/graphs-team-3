@@ -22,7 +22,7 @@ fun findMST(graph: Graph): Set<Edge> {
         parents[vertexId] = findRoot(parents[vertexId])
         return parents[vertexId]
     }
-
+    
     fun unionSets(
         firstId: Int,
         secondId: Int,
