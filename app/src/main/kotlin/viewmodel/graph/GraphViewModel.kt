@@ -15,11 +15,11 @@ class GraphViewModel(
     showVertexId: State<Boolean>,
 ) {
 
-    private val _vertices = graph.vertices.associateWith { vertex ->
+    internal val _vertices = graph.vertices.associateWith { vertex ->
         VertexViewModel(0.dp, 0.dp, ColorTheme.vertexDefaultColor, vertex, showVertexLabels, showVertexId)
     }
 
-    private val _edges = graph.edges.associateWith { edge ->
+    internal val _edges = graph.edges.associateWith { edge ->
         val first = _vertices[edge.vertices.first]
             ?: throw IllegalStateException("VertexView for ${edge.vertices.first} not found")
         val second = _vertices[edge.vertices.second]
