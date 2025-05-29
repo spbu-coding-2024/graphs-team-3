@@ -3,11 +3,11 @@ package integration
 import androidx.compose.runtime.mutableStateOf
 import model.graph.Edge
 import model.graph.Graph
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import viewmodel.colors.ColorTheme
 import viewmodel.graph.GraphViewModel
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.assertThrows
 
 class FordBellmanAndBridgeFindIntedrationTest {
     @Test
@@ -31,12 +31,13 @@ class FordBellmanAndBridgeFindIntedrationTest {
         graph.addEdge(5, 8)
         graph.addEdge(7, 8)
 
-        val graphViewModel = GraphViewModel(
-            graph,
-            mutableStateOf(false),
-            mutableStateOf(false),
-            mutableStateOf(false)
-        )
+        val graphViewModel =
+            GraphViewModel(
+                graph,
+                mutableStateOf(false),
+                mutableStateOf(false),
+                mutableStateOf(false),
+            )
 
         graphViewModel.findBridges()
 

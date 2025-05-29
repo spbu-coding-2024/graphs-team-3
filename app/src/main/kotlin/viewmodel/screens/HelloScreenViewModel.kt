@@ -2,13 +2,10 @@ package viewmodel.screens
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
-import cafe.adriel.voyager.navigator.LocalNavigator
 import model.graph.Graph
 import model.io.neo4j.Neo4jRepository
 import model.utils.randomGraph
 import view.screens.Storage
-import kotlin.math.max
-
 
 class HelloScreenViewModel : ScreenViewModel {
     override val _storage = mutableStateOf<Storage?>(null)
@@ -79,7 +76,6 @@ class HelloScreenViewModel : ScreenViewModel {
         _graph.value = graph
     }
 
-
     fun setExceptionDialog(exceptionDialog: Boolean) {
         _exceptionDialog.value = exceptionDialog
     }
@@ -145,13 +141,14 @@ class HelloScreenViewModel : ScreenViewModel {
             if (edgeMaxCountCast > vertexCountCast) {
                 throw IllegalStateException("Max edges count can`t be greater than vertex count")
             }
-            _graph.value = randomGraph(
-                randomDirected.value,
-                randomWeighted.value,
-                vertexCountCast,
-                edgeMaxCountCast,
-                maxWeightCast
-            )
+            _graph.value =
+                randomGraph(
+                    randomDirected.value,
+                    randomWeighted.value,
+                    vertexCountCast,
+                    edgeMaxCountCast,
+                    maxWeightCast,
+                )
             setMainScreen(true)
         } catch (e: Exception) {
             setMessage(e.message ?: "Unknown error")

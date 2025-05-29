@@ -4,13 +4,16 @@ import androidx.compose.runtime.*
 import model.graph.Graph
 import model.io.sqlite.SqliteRepository
 
-class SqliteViewModel(private val repo: SqliteRepository) {
-
+class SqliteViewModel(
+    private val repo: SqliteRepository,
+) {
     var filter by mutableStateOf("")
         private set
     val graphs = mutableStateListOf<Pair<Int, String>>()
 
-    init { reload() }
+    init {
+        reload()
+    }
 
     fun onFilterChange(searchQuery: String) {
         filter = searchQuery

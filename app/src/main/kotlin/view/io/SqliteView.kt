@@ -26,7 +26,7 @@ fun sqliteView(
 ) {
     val vm = remember { SqliteViewModel(repo) }
     var open by remember { mutableStateOf(true) }
-    var toDelete by remember { mutableStateOf<Pair<Int,String>?>(null) }
+    var toDelete by remember { mutableStateOf<Pair<Int, String>?>(null) }
 
     if (open) {
         AlertDialog(
@@ -37,40 +37,46 @@ fun sqliteView(
             title = { Text(text = "Choose the graph") },
             buttons = {
                 Column(
-                    modifier = Modifier
-                        .padding(8.dp)
-                        .fillMaxWidth(),
-                    horizontalAlignment = Alignment.CenterHorizontally
+                    modifier =
+                        Modifier
+                            .padding(8.dp)
+                            .fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     OutlinedTextField(
                         value = vm.filter,
                         onValueChange = vm::onFilterChange,
                         label = { Text(text = "Search") },
                         colors = TextFieldDefaults.outlinedTextFieldColors(backgroundColor = ColorTheme.TextFieldColor),
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth(),
                     )
                     Spacer(Modifier.height(8.dp))
                     LazyColumn(
-                        modifier = Modifier
-                            .heightIn(max = 300.dp)
-                            .fillMaxWidth()
+                        modifier =
+                            Modifier
+                                .heightIn(max = 300.dp)
+                                .fillMaxWidth(),
                     ) {
                         items(vm.graphs) { (id, name) ->
                             Row(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(6.dp),
-                                horizontalArrangement = Arrangement.SpaceBetween
+                                modifier =
+                                    Modifier
+                                        .fillMaxWidth()
+                                        .padding(6.dp),
+                                horizontalArrangement = Arrangement.SpaceBetween,
                             ) {
-                                Text(text = name,
-                                    modifier = Modifier
-                                    .clickable {
-                                    onGraphChosen(vm.openGraph(id), id)
-                                    open = false
-                                })
+                                Text(
+                                    text = name,
+                                    modifier =
+                                        Modifier
+                                            .clickable {
+                                                onGraphChosen(vm.openGraph(id), id)
+                                                open = false
+                                            },
+                                )
                                 IconButton(
-                                    onClick = { toDelete = id to name},
-                                    modifier = Modifier.size(20.dp)
+                                    onClick = { toDelete = id to name },
+                                    modifier = Modifier.size(20.dp),
                                 ) {
                                     Icon(Icons.Default.Delete, null)
                                 }
@@ -80,37 +86,40 @@ fun sqliteView(
                     Spacer(Modifier.height(8.dp))
                     Row(
                         horizontalArrangement = Arrangement.End,
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth(),
                     ) {
                         Button(
-                            onClick = { open = false; onDismiss() },
-                            colors = ButtonDefaults.buttonColors(ColorTheme.rejectColor)
+                            onClick = {
+                                open = false
+                                onDismiss()
+                            },
+                            colors = ButtonDefaults.buttonColors(ColorTheme.rejectColor),
                         ) { Text(text = "Cancel") }
                     }
                 }
             },
-            modifier = Modifier.clip(RoundedCornerShape(percent = 5))
+            modifier = Modifier.clip(RoundedCornerShape(percent = 5)),
         )
     }
 
     toDelete?.let { (id, name) ->
         AlertDialog(
-            onDismissRequest = { toDelete = null},
-            title = { Text(text = "Delete \"$name\"?")},
+            onDismissRequest = { toDelete = null },
+            title = { Text(text = "Delete \"$name\"?") },
             confirmButton = {
                 Button(
                     onClick = {
                         vm.deleteGraph(id)
                         toDelete = null
                     },
-                    colors = ButtonDefaults.buttonColors(ColorTheme.rejectColor)
-                ) { Text(text = "Delete")}
+                    colors = ButtonDefaults.buttonColors(ColorTheme.rejectColor),
+                ) { Text(text = "Delete") }
             },
             dismissButton = {
                 TextButton(
-                    onClick = { toDelete = null},
-                    ) {(Text(text = "Cancel", color = ColorTheme.TextColor))}
-            }
+                    onClick = { toDelete = null },
+                ) { (Text(text = "Cancel", color = ColorTheme.TextColor)) }
+            },
         )
     }
 }

@@ -1,7 +1,6 @@
 package model.utils
 
 import model.graph.Graph
-import model.io.neo4j.Neo4jRepository
 
 fun randomGraph(
     isDirected: Boolean,
@@ -18,14 +17,14 @@ fun randomGraph(
     }
 
     for (i in 0 until vertexCount) {
-        for (j in (0 until vertexCount).shuffled().take((1 .. edgeMaxCount).random())) {
+        for (j in (0 until vertexCount).shuffled().take((1..edgeMaxCount).random())) {
             if (isDirected && edges.contains(j to i)) {
                 continue
             }
-            resultGraph.addEdge(i, j, (1 .. maxWeight).random())
+            resultGraph.addEdge(i, j, (1..maxWeight).random())
             edges.add(i to j)
         }
     }
 
-    return  resultGraph
+    return resultGraph
 }

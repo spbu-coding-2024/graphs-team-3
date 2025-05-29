@@ -18,28 +18,35 @@ fun findBridges(graph: Graph): Set<Edge> {
     val adjacencyList = graph.toAdjacencyList()
     var briges = mutableSetOf<Edge>()
 
-    fun dfs(current: Vertex, parent: Vertex? = null) {
+    fun dfs(
+        current: Vertex,
+        parent: Vertex? = null,
+    ) {
         timeIn[current] = time++
         ret[current] = time - 1
         isVisited[current] = true
         for (adjacentVertex in adjacencyList[current] ?: throw IllegalStateException()) {
             if (adjacentVertex == parent) continue
             if (isVisited[adjacentVertex] ?: throw IllegalStateException()) {
-                ret[current] = min(
-                    ret[current] ?: throw IllegalStateException(),
-                    timeIn[adjacentVertex] ?: throw IllegalStateException()
-                )
+                ret[current] =
+                    min(
+                        ret[current] ?: throw IllegalStateException(),
+                        timeIn[adjacentVertex] ?: throw IllegalStateException(),
+                    )
             } else {
                 dfs(adjacentVertex, current)
-                ret[current] = min(
-                    ret[current] ?: throw IllegalStateException(),
-                    ret[adjacentVertex] ?: throw IllegalStateException()
-                )
-                if ((ret[adjacentVertex] ?: throw IllegalStateException()) > (timeIn[current]
-                        ?: throw IllegalStateException())
+                ret[current] =
+                    min(
+                        ret[current] ?: throw IllegalStateException(),
+                        ret[adjacentVertex] ?: throw IllegalStateException(),
+                    )
+                if ((ret[adjacentVertex] ?: throw IllegalStateException()) > (
+                        timeIn[current]
+                            ?: throw IllegalStateException()
+                    )
                 ) {
                     briges.add(
-                        graph.getEdge(current, adjacentVertex) ?: throw IllegalStateException("No such vertex in graph")
+                        graph.getEdge(current, adjacentVertex) ?: throw IllegalStateException("No such vertex in graph"),
                     )
                 }
             }

@@ -14,13 +14,12 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.navigator.LocalNavigator
+import view.dialogs.RandomGraphDialog
 import view.dialogs.exceptionView
-import viewmodel.colors.ColorTheme
 import view.io.*
+import viewmodel.colors.ColorTheme
 import viewmodel.representation.ForceAtlas2
 import viewmodel.screens.HelloScreenViewModel
-import model.io.sqlite.SqliteRepository
-import view.dialogs.RandomGraphDialog
 
 enum class Storage {
     JSON,
@@ -29,9 +28,7 @@ enum class Storage {
 }
 
 @Composable
-fun helloScreen(
-    viewModel: HelloScreenViewModel = remember { HelloScreenViewModel() },
-) {
+fun helloScreen(viewModel: HelloScreenViewModel = remember { HelloScreenViewModel() }) {
     val storage by viewModel.storage
     val navigator = LocalNavigator.current
     val uri = remember { viewModel.uri }
@@ -48,7 +45,6 @@ fun helloScreen(
     val edgeMaxCount = remember { viewModel.edgeMaxCount }
     val maxWeight = remember { viewModel.maxWeight }
 
-
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -58,11 +54,11 @@ fun helloScreen(
             text = "Select the method for loading the graph",
             color = ColorTheme.TextColor,
             fontFamily = FontFamily.Monospace,
-            fontSize = 52.sp
+            fontSize = 52.sp,
         )
         Row(
             modifier = Modifier.fillMaxWidth(0.5f),
-            horizontalArrangement = Arrangement.spacedBy(10.dp)
+            horizontalArrangement = Arrangement.spacedBy(10.dp),
         ) {
             OutlinedButton(
                 onClick = { viewModel.selectStorage(Storage.JSON) },
@@ -79,21 +75,21 @@ fun helloScreen(
                 modifier = Modifier.clip(RoundedCornerShape(percent = 25)).weight(0.34f),
             ) {
                 Text(
-                    "SQLite"
+                    "SQLite",
                 )
             }
 
             OutlinedButton(
                 onClick = { viewModel.selectStorage(Storage.Neo4j) },
                 colors = ButtonDefaults.buttonColors(backgroundColor = ColorTheme.translucentButtonColor),
-                modifier = Modifier.clip(RoundedCornerShape(percent = 25)).weight(0.28f)
+                modifier = Modifier.clip(RoundedCornerShape(percent = 25)).weight(0.28f),
             ) {
                 Text("Neo4j")
             }
             OutlinedButton(
                 onClick = { viewModel.setIsRandom(true) },
                 colors = ButtonDefaults.buttonColors(backgroundColor = ColorTheme.translucentButtonColor),
-                modifier = Modifier.clip(RoundedCornerShape(percent = 25)).weight(0.28f)
+                modifier = Modifier.clip(RoundedCornerShape(percent = 25)).weight(0.28f),
             ) {
                 Text("Random Graph")
             }
@@ -111,10 +107,10 @@ fun helloScreen(
                 onGraphChosen = { g, id ->
                     viewModel.selectGraph(g)
                     navigator?.push(
-                        MainScreenNav(g, ForceAtlas2())
+                        MainScreenNav(g, ForceAtlas2()),
                     )
                     viewModel.selectStorage(null)
-                }
+                },
             )
         }
 
@@ -125,12 +121,11 @@ fun helloScreen(
                 password,
                 onDismiss = { viewModel.selectStorage(null) },
                 onConnect = viewModel::onNeo4jConnect,
-                viewModel
+                viewModel,
             )
         }
 
         else -> {
-
         }
     }
 
@@ -154,7 +149,7 @@ fun helloScreen(
                 viewModel.setIsRandom(false)
             },
             viewModel::onRandom,
-            viewModel
+            viewModel,
         )
     }
 }

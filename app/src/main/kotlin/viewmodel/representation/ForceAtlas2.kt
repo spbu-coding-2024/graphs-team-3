@@ -2,18 +2,20 @@ package viewmodel.representation
 
 import androidx.compose.ui.unit.dp
 import org.gephi.graph.api.GraphController
-import org.gephi.graph.api.GraphModel
 import org.gephi.graph.api.Node
 import org.gephi.layout.plugin.forceAtlas2.ForceAtlas2
 import org.gephi.project.api.ProjectController
 import org.openide.util.Lookup
 import viewmodel.graph.GraphViewModel
-import viewmodel.graph.VertexViewModel
 import kotlin.math.abs
 import kotlin.random.Random
 
-class ForceAtlas2(): RepresentationStrategy {
-    override fun place(width: Double, height: Double, graphViewModel: GraphViewModel) {
+class ForceAtlas2 : RepresentationStrategy {
+    override fun place(
+        width: Double,
+        height: Double,
+        graphViewModel: GraphViewModel,
+    ) {
         val prjCtl: ProjectController = Lookup.getDefault().lookup(ProjectController::class.java)
         prjCtl.newProject()
         val workSpace = prjCtl.currentWorkspace

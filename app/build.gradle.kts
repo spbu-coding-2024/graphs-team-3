@@ -21,13 +21,14 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter:5.9.0")
     implementation("org.xerial:sqlite-jdbc:3.49.1.0")
     implementation("org.neo4j.driver", "neo4j-java-driver", "5.28.4")
-    implementation("org.gephi","gephi-toolkit" ,"0.10.1" , classifier = "all")
+    implementation("org.gephi", "gephi-toolkit", "0.10.1", classifier = "all")
     implementation("cafe.adriel.voyager:voyager-navigator:1.0.1")
     implementation("cafe.adriel.voyager:voyager-screenmodel:1.0.1")
     implementation("org.jetbrains.exposed:exposed-core:0.61.0")
     implementation("org.jetbrains.exposed:exposed-dao:0.61.0")
     implementation("org.jetbrains.exposed:exposed-jdbc:0.61.0")
-    implementation("com.github.JetBrains-Research:louvain:main-SNAPSHOT")}
+    implementation("com.github.JetBrains-Research:louvain:main-SNAPSHOT")
+}
 
 tasks.test {
     useJUnitPlatform()
@@ -40,5 +41,4 @@ compose.desktop {
     application {
         mainClass = "MainKt"
     }
-
 }

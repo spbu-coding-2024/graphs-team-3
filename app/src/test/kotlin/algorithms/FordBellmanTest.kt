@@ -3,10 +3,10 @@ package algorithms
 import model.algo.fordBellman.fordBellman
 import model.graph.Graph
 import model.graph.Vertex
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Test
 import java.util.Vector
-import org.junit.jupiter.api.Assertions.assertFalse
-import org.junit.jupiter.api.Assertions.assertEquals
 
 class FordBellmanTest {
     @Test
@@ -54,9 +54,7 @@ class FordBellmanTest {
             assertEquals(it, result.first?.get(0))
             result.first?.remove(it)
         }
-
     }
-
 
     @Test
     fun `simple test directed weighted graph`() {

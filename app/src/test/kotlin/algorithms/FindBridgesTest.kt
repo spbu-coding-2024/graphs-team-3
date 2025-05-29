@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 
 class FindBridgesTest {
-
     @Test
     fun `no bridges in graph`() {
         val graph = Graph()
@@ -92,7 +91,7 @@ class FindBridgesTest {
 
         val edgeSet: MutableSet<Edge> = mutableSetOf()
 
-        for (i in 0 .. 12) {
+        for (i in 0..12) {
             graph.addVertex(i.toString())
         }
 

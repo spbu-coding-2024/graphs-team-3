@@ -3,16 +3,14 @@ package viewmodel.screens
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.Color
+import model.algo.*
+import model.algo.findSCC
 import model.graph.Graph
-import view.dialogs.FordBellmanDialog
+import model.io.neo4j.Neo4jRepository
+import view.screens.Storage
 import viewmodel.colors.ColorTheme
 import viewmodel.graph.GraphViewModel
 import viewmodel.representation.RepresentationStrategy
-import model.algo.*
-import model.algo.findSCC
-import model.io.neo4j.Neo4jRepository
-import view.screens.Storage
-import kotlin.random.Random
 
 class MainScreenViewModel(
     private val graph: Graph,
@@ -174,14 +172,13 @@ class MainScreenViewModel(
         }
     }
 
-    private fun generatePalette(count: Int): List<Color> {
-        return List(count) { i ->
+    private fun generatePalette(count: Int): List<Color> =
+        List(count) { i ->
             val hue = i * 360f / count
             val saturation = 0.7f
             val value = 0.9f
             Color.hsv(hue, saturation, value)
         }
-    }
 
     fun resetColors() {
         graphViewModel.vertices.forEach { v -> v.color = ColorTheme.vertexDefaultColor }
@@ -195,7 +192,7 @@ class MainScreenViewModel(
                 firstId.value?.toInt()
                     ?: throw IllegalStateException("First vertex id must not be null"),
                 secondId.value?.toInt()
-                    ?: throw IllegalStateException("Second vertex id must not be null")
+                    ?: throw IllegalStateException("Second vertex id must not be null"),
             )
             clearId()
         } catch (e: Exception) {
