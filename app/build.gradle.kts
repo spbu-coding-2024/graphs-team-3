@@ -17,11 +17,12 @@ repositories {
 
 dependencies {
     implementation(compose.desktop.currentOs)
-    testImplementation(kotlin("test"))
+    testImplementation("org.neo4j.test:neo4j-harness:5.13.0")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.9.0")
     implementation("org.xerial:sqlite-jdbc:3.49.1.0")
     implementation("org.neo4j.driver", "neo4j-java-driver", "5.28.4")
     implementation("org.gephi","gephi-toolkit" ,"0.10.1" , classifier = "all")
-    implementation("org.apache.logging.log4j:log4j-core:2.20.0")
+//    implementation("org.apache.logging.log4j:log4j-core:2.20.0")
     implementation("cafe.adriel.voyager:voyager-navigator:1.0.1")
     implementation("cafe.adriel.voyager:voyager-screenmodel:1.0.1")
     implementation("org.jetbrains.exposed:exposed-core:0.61.0")
