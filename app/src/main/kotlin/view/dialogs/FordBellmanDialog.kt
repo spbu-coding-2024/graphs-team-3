@@ -15,7 +15,7 @@ fun FordBellmanDialog(
     secondId: State<String?>,
     algoRun: () -> Unit,
     onDismiss: () -> Unit,
-    viewModel: MainScreenViewModel
+    viewModel: MainScreenViewModel,
 ) {
     var openDialog by remember { mutableStateOf(true) }
     if (openDialog) {
@@ -55,7 +55,7 @@ fun FordBellmanDialog(
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.End,
-                        verticalAlignment = Alignment.CenterVertically
+                        verticalAlignment = Alignment.CenterVertically,
                     ) {
                         Button(
                             modifier = Modifier.padding(end = 16.dp),
@@ -64,7 +64,7 @@ fun FordBellmanDialog(
                                 onDismiss()
                                 openDialog = false
                             },
-                            colors = ButtonDefaults.buttonColors(ColorTheme.rejectColor)
+                            colors = ButtonDefaults.buttonColors(ColorTheme.rejectColor),
                         ) {
                             Text("Cancel")
                         }
@@ -77,14 +77,13 @@ fun FordBellmanDialog(
                                 openDialog = false
                                 algoRun()
                             },
-                            colors = ButtonDefaults.buttonColors(ColorTheme.ConfirmColor)
+                            colors = ButtonDefaults.buttonColors(ColorTheme.ConfirmColor),
                         ) {
                             Text("Ok")
                         }
                     }
                 }
-            }
+            },
         )
     }
-
 }

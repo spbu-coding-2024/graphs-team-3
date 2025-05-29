@@ -6,8 +6,6 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import viewmodel.colors.ColorTheme
 import viewmodel.screens.HelloScreenViewModel
@@ -21,7 +19,7 @@ fun RandomGraphDialog(
     maxWeight: State<String?> = mutableStateOf("1"),
     onDismiss: () -> Unit,
     onConfirm: () -> Unit,
-    viewModel: HelloScreenViewModel
+    viewModel: HelloScreenViewModel,
 ) {
     var openDialog by remember { mutableStateOf(true) }
     if (openDialog) {
@@ -33,22 +31,24 @@ fun RandomGraphDialog(
             title = { Text(text = "Choose graph properties") },
             buttons = {
                 Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp),
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp),
                 ) {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
                         Switch(
                             checked = isDirected.value,
-                            onCheckedChange = { viewModel.setDirected(!isDirected.value) }
+                            onCheckedChange = { viewModel.setDirected(!isDirected.value) },
                         )
                         Text(
                             text = "Directed",
-                            modifier = Modifier.clickable(
-                                onClick = { viewModel.setDirected(!isDirected.value) }
-                            )
+                            modifier =
+                                Modifier.clickable(
+                                    onClick = { viewModel.setDirected(!isDirected.value) },
+                                ),
                         )
                     }
                     Row(
@@ -59,13 +59,14 @@ fun RandomGraphDialog(
                             onCheckedChange = {
                                 viewModel.setWeighted(!isWeighted.value)
                                 viewModel.setMaxWeight(null)
-                            }
+                            },
                         )
                         Text(
                             text = "Weighted",
-                            modifier = Modifier.clickable(
-                                onClick = { viewModel.setWeighted(!isWeighted.value) }
-                            )
+                            modifier =
+                                Modifier.clickable(
+                                    onClick = { viewModel.setWeighted(!isWeighted.value) },
+                                ),
                         )
                     }
                 }
@@ -113,7 +114,7 @@ fun RandomGraphDialog(
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.End,
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Button(
                         modifier = Modifier.padding(end = 16.dp),
@@ -122,7 +123,7 @@ fun RandomGraphDialog(
                             onDismiss()
                             openDialog = false
                         },
-                        colors = ButtonDefaults.buttonColors(ColorTheme.rejectColor)
+                        colors = ButtonDefaults.buttonColors(ColorTheme.rejectColor),
                     ) {
                         Text("Cancel")
                     }
@@ -135,12 +136,12 @@ fun RandomGraphDialog(
                             openDialog = false
                             onConfirm()
                         },
-                        colors = ButtonDefaults.buttonColors(ColorTheme.ConfirmColor)
+                        colors = ButtonDefaults.buttonColors(ColorTheme.ConfirmColor),
                     ) {
                         Text("Ok")
                     }
                 }
-            }
+            },
         )
     }
 }

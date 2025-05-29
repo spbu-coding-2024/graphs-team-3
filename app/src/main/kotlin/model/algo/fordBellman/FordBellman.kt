@@ -6,7 +6,11 @@ import model.graph.Vertex
 import java.util.Vector
 import kotlin.math.max
 
-fun fordBellman(graph: Graph, start: Vertex, end: Vertex): Triple<Vector<Vertex>?, Vector<Vertex>?, Boolean> {
+fun fordBellman(
+    graph: Graph,
+    start: Vertex,
+    end: Vertex,
+): Triple<Vector<Vertex>?, Vector<Vertex>?, Boolean> {
     val dist = hashMapOf<Vertex, Long>()
     val path = hashMapOf<Vertex, Vertex?>()
     graph.vertices.forEach { vertex ->
@@ -42,12 +46,16 @@ fun fordBellman(graph: Graph, start: Vertex, end: Vertex): Triple<Vector<Vertex>
         cycle = findCycle(graph, cycleFind, path)
     }
 
-
     val result = pathRestore(graph, start, end, path, cycle)
     return Triple(result, cycle, result == null)
 }
 
-fun relaxation(graph: Graph, edge: Edge, dist: HashMap<Vertex, Long>, path: HashMap<Vertex, Vertex?>): Pair<Vertex?, Boolean> {
+fun relaxation(
+    graph: Graph,
+    edge: Edge,
+    dist: HashMap<Vertex, Long>,
+    path: HashMap<Vertex, Vertex?>,
+): Pair<Vertex?, Boolean> {
     var cycleFind: Vertex? = null
     var wasRelaxed = false
     if (dist[edge.vertices.first]!! < Long.MAX_VALUE) {
@@ -73,7 +81,11 @@ fun relaxation(graph: Graph, edge: Edge, dist: HashMap<Vertex, Long>, path: Hash
     return cycleFind to wasRelaxed
 }
 
-fun findCycle(graph: Graph, startVertex: Vertex, path: HashMap<Vertex, Vertex?>): Vector<Vertex> {
+fun findCycle(
+    graph: Graph,
+    startVertex: Vertex,
+    path: HashMap<Vertex, Vertex?>,
+): Vector<Vertex> {
     val cycle = Vector<Vertex>()
     var currentVertex: Vertex? = startVertex
     for (i in 0..graph.vertices.size) {
@@ -87,7 +99,13 @@ fun findCycle(graph: Graph, startVertex: Vertex, path: HashMap<Vertex, Vertex?>)
     return cycle
 }
 
-fun pathRestore(graph: Graph, start: Vertex, end: Vertex, path: HashMap<Vertex, Vertex?>, cycle: Vector<Vertex>): Vector<Vertex>? {
+fun pathRestore(
+    graph: Graph,
+    start: Vertex,
+    end: Vertex,
+    path: HashMap<Vertex, Vertex?>,
+    cycle: Vector<Vertex>,
+): Vector<Vertex>? {
     var result = Vector<Vertex>()
     var current = end
     result.addFirst(current)

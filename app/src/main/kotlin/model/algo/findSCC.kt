@@ -49,4 +49,3 @@ fun findSCC(graph: Graph): Set<Set<Vertex>> {
 
     return result
 }
-

@@ -2,7 +2,6 @@ package view.graph
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectDragGestures
-import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.hoverable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsHoveredAsState
@@ -28,7 +27,6 @@ fun VertexView(
     viewModel: VertexViewModel,
     modifier: Modifier,
 ) {
-
     var isDrugging = remember { mutableStateOf(false) }
 
     val interactionSource = remember { MutableInteractionSource() }
@@ -36,71 +34,68 @@ fun VertexView(
 
     if (isHover) {
         Box(
-            modifier = modifier
-                .size(viewModel.radius * 2 + 2.dp, viewModel.radius * 2 + 2.dp)
-                .offset(viewModel.x - 1.dp, viewModel.y - 1.dp)
-                .background(
-                    color = ColorTheme.vertexBackColor,
-                    shape = CircleShape
-                )
-                .pointerInput(viewModel) {
-                    detectDragGestures { change, dragAmount ->
-                        change.consume()
-                        viewModel.onDrag(dragAmount)
-                    }
-                }
+            modifier =
+                modifier
+                    .size(viewModel.radius * 2 + 2.dp, viewModel.radius * 2 + 2.dp)
+                    .offset(viewModel.x - 1.dp, viewModel.y - 1.dp)
+                    .background(
+                        color = ColorTheme.vertexBackColor,
+                        shape = CircleShape,
+                    ).pointerInput(viewModel) {
+                        detectDragGestures { change, dragAmount ->
+                            change.consume()
+                            viewModel.onDrag(dragAmount)
+                        }
+                    },
         ) {
-
         }
     }
 
     Box(
-        modifier = modifier
-            .size(viewModel.radius * 2, viewModel.radius * 2)
-            .offset(viewModel.x, viewModel.y)
-            .background(
-                color = viewModel.color,
-                shape = CircleShape
-            )
-            .pointerInput(viewModel) {
-                detectDragGestures { change, dragAmount ->
-                    change.consume()
-                    viewModel.onDrag(dragAmount)
-                }
-            }
-            .hoverable(interactionSource = interactionSource)
+        modifier =
+            modifier
+                .size(viewModel.radius * 2, viewModel.radius * 2)
+                .offset(viewModel.x, viewModel.y)
+                .background(
+                    color = viewModel.color,
+                    shape = CircleShape,
+                ).pointerInput(viewModel) {
+                    detectDragGestures { change, dragAmount ->
+                        change.consume()
+                        viewModel.onDrag(dragAmount)
+                    }
+                }.hoverable(interactionSource = interactionSource),
     ) {
-
     }
     if (viewModel.labelVisible) {
         Text(
-            modifier = Modifier
-                .offset(
-                    x = viewModel.x,
-                    y = viewModel.y - viewModel.radius
-                )
-                .widthIn(max = 200.dp)
-                .wrapContentWidth(Alignment.CenterHorizontally),
+            modifier =
+                Modifier
+                    .offset(
+                        x = viewModel.x,
+                        y = viewModel.y - viewModel.radius,
+                    ).widthIn(max = 200.dp)
+                    .wrapContentWidth(Alignment.CenterHorizontally),
             text = viewModel.label,
             textAlign = TextAlign.Center,
             color = Color.Black,
-            fontSize = 14.sp
+            fontSize = 14.sp,
         )
     }
 
     if (viewModel.idVisible) {
         Text(
-            modifier = Modifier
-                .offset(
-                    x = viewModel.x,
-                    y = viewModel.y + viewModel.radius * 2
-                )
-                .widthIn(max = 200.dp)
-                .wrapContentWidth(Alignment.CenterHorizontally),
+            modifier =
+                Modifier
+                    .offset(
+                        x = viewModel.x,
+                        y = viewModel.y + viewModel.radius * 2,
+                    ).widthIn(max = 200.dp)
+                    .wrapContentWidth(Alignment.CenterHorizontally),
             text = viewModel.id,
             textAlign = TextAlign.Center,
             color = Color.Black,
-            fontSize = 14.sp
+            fontSize = 14.sp,
         )
     }
 }

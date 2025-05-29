@@ -12,7 +12,6 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import viewmodel.colors.ColorTheme
-import viewmodel.screens.HelloScreenViewModel
 import viewmodel.screens.ScreenViewModel
 
 @Composable
@@ -22,7 +21,7 @@ fun neo4jView(
     password: State<String?>,
     onDismiss: () -> Unit,
     onConnect: () -> Unit,
-    viewModel: ScreenViewModel
+    viewModel: ScreenViewModel,
 ) {
     var openDialog by remember { mutableStateOf(true) }
     var passwordVisibility by remember { mutableStateOf(false) }
@@ -78,22 +77,23 @@ fun neo4jView(
                     ) {
                         Checkbox(
                             checked = passwordVisibility,
-                            onCheckedChange = { passwordVisibility = !passwordVisibility }
+                            onCheckedChange = { passwordVisibility = !passwordVisibility },
                         )
                         Text(
                             text = "Show password",
-                            modifier = Modifier.clickable(
-                                interactionSource = null,
-                                indication = null,
-                                onClick = { passwordVisibility = !passwordVisibility }
-                            )
+                            modifier =
+                                Modifier.clickable(
+                                    interactionSource = null,
+                                    indication = null,
+                                    onClick = { passwordVisibility = !passwordVisibility },
+                                ),
                         )
                     }
                 }
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.End,
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Button(
                         modifier = Modifier.padding(end = 16.dp),
@@ -102,7 +102,7 @@ fun neo4jView(
                             openDialog = false
                             onDismiss()
                         },
-                        colors = ButtonDefaults.buttonColors(ColorTheme.rejectColor)
+                        colors = ButtonDefaults.buttonColors(ColorTheme.rejectColor),
                     ) {
                         Text("Cancel")
                     }
@@ -116,13 +116,13 @@ fun neo4jView(
                             onDismiss()
                             onConnect()
                         },
-                        colors = ButtonDefaults.buttonColors(ColorTheme.ConfirmColor)
+                        colors = ButtonDefaults.buttonColors(ColorTheme.ConfirmColor),
                     ) {
                         Text("Ok")
                     }
                 }
             },
-            modifier = Modifier.clip(RoundedCornerShape(percent = 5))
+            modifier = Modifier.clip(RoundedCornerShape(percent = 5)),
         )
     }
 }

@@ -5,18 +5,18 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.runtime.*
-import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.material.icons.outlined.Warning
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.unit.dp
 import viewmodel.colors.ColorTheme
 
 @Composable
 fun exceptionView(
     message: String?,
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
 ) {
     var openDialog by remember { mutableStateOf(true) }
 
@@ -45,12 +45,12 @@ fun exceptionView(
                         openDialog = false
                     },
                     colors = ButtonDefaults.buttonColors(backgroundColor = ColorTheme.rejectColor),
-                    modifier = Modifier.clip(RoundedCornerShape(percent = 25)).padding(15.dp)
+                    modifier = Modifier.clip(RoundedCornerShape(percent = 25)).padding(15.dp),
                 ) {
                     Text("Cancel")
                 }
             },
-            modifier = Modifier.clip(RoundedCornerShape(percent = 5))
+            modifier = Modifier.clip(RoundedCornerShape(percent = 5)),
         )
     }
 }

@@ -22,9 +22,16 @@ class Graph(
         return newVertex
     }
 
-    fun addVertex(id: Int, label: String): Vertex = _vertices.getOrPut(id) { Vertex(label, id) }
+    fun addVertex(
+        id: Int,
+        label: String,
+    ): Vertex = _vertices.getOrPut(id) { Vertex(label, id) }
 
-    fun addEdge(firstVertexId: Int, secondVertexId: Int, weight: Long = 1): Edge {
+    fun addEdge(
+        firstVertexId: Int,
+        secondVertexId: Int,
+        weight: Long = 1,
+    ): Edge {
         var edgeForChange: Edge? = null
         _edges.values.forEach { edge ->
             when {
@@ -92,10 +99,15 @@ class Graph(
         return adjacencyList
     }
 
-    fun getEdge(first: Vertex, second: Vertex): Edge? {
+    fun getEdge(
+        first: Vertex,
+        second: Vertex,
+    ): Edge? {
         var result: Edge? = null
         this.edges.forEach { edge ->
-            if ((edge.vertices.first == first && edge.vertices.second == second) || (edge.vertices.first == second && edge.vertices.second == first)) {
+            if ((edge.vertices.first == first && edge.vertices.second == second) ||
+                (edge.vertices.first == second && edge.vertices.second == first)
+            ) {
                 result = edge
             }
         }
