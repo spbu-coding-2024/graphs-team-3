@@ -3,12 +3,10 @@ package algorithms
 import model.algo.fordBellman.fordBellman
 import model.graph.Graph
 import model.graph.Vertex
-import model.io.neo4j.Neo4jRepository
 import org.junit.jupiter.api.Test
 import java.util.Vector
-import kotlin.test.assertEquals
-import kotlin.test.assertFalse
-import kotlin.test.assertTrue
+import org.junit.jupiter.api.Assertions.assertFalse
+import org.junit.jupiter.api.Assertions.assertEquals
 
 class FordBellmanTest {
     @Test
