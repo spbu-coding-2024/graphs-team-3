@@ -21,7 +21,7 @@ fun findSCC(graph: Graph): Set<Set<Vertex>> {
 
     fun dfs(vertex: Vertex) {
         visited += vertex
-        for (neighbor in adjacencyList[vertex] ?: throw IllegalStateException()) {
+        for (neighbor in adjacencyList[vertex]?: throw IllegalStateException()) {
             if (neighbor !in visited) dfs(neighbor)
         }
         stack.addFirst(vertex)
@@ -30,14 +30,10 @@ fun findSCC(graph: Graph): Set<Set<Vertex>> {
     for (vertex in adjacencyList.keys) if (vertex !in visited) dfs(vertex)
 
     visited.clear()
-
-    fun findComponents(
-        vertex: Vertex,
-        component: MutableSet<Vertex>,
-    ) {
+    fun findComponents(vertex: Vertex, component: MutableSet<Vertex>) {
         visited += vertex
         component += vertex
-        for (neighbor in revAdjacencyList[vertex] ?: throw IllegalStateException()) {
+        for (neighbor in revAdjacencyList[vertex]?: throw IllegalStateException()) {
             if (neighbor !in visited) findComponents(neighbor, component)
         }
     }

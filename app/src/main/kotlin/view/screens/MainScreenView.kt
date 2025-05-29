@@ -22,6 +22,7 @@ import view.graph.GraphView
 import view.io.neo4jView
 import viewmodel.colors.ColorTheme
 import viewmodel.screens.MainScreenViewModel
+import view.io.sqliteSaveView
 
 @Composable
 fun MainScreen(viewModel: MainScreenViewModel) {
@@ -53,6 +54,9 @@ fun MainScreen(viewModel: MainScreenViewModel) {
             ) {
                 DropdownMenuItem(onClick = { viewModel.selectStorage(Storage.Neo4j) }) {
                     Text("Save to Neo4j")
+                }
+                DropdownMenuItem(onClick = {viewModel.selectStorage(Storage.SQLite)}) {
+                    Text("Save to SQLite")
                 }
             }
         }
@@ -247,6 +251,12 @@ fun MainScreen(viewModel: MainScreenViewModel) {
                 onDismiss = { viewModel.selectStorage(null) },
                 onConnect = viewModel::onNeo4jConnect,
                 viewModel,
+            )
+        }
+        Storage.SQLite -> {
+            sqliteSaveView(
+                graph = viewModel.graphViewModel.graph,
+                onDismiss = { viewModel.selectStorage(null) },
             )
         }
         else -> {

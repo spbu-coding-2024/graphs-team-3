@@ -3,13 +3,11 @@ package model.io.sqlite
 import model.graph.*
 import org.jetbrains.exposed.dao.id.IntIdTable
 import org.jetbrains.exposed.sql.*
-import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction
-import java.io.File
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 
-class SqliteRepository(
-    dbPath: String = "../graphs.db",
-) {
+class SqliteRepository(dbPath: String = "../graphs.db") {
+
     object Graphs : IntIdTable("graphs") {
         val name = varchar("name", 52)
         val isDirected = bool("isDirected")
@@ -29,81 +27,71 @@ class SqliteRepository(
         val weight = long("weight")
     }
 
+    private val db: Database = Database.connect(
+        url = "jdbc:sqlite:$dbPath?foreign_keys=ON",
+        driver = "org.sqlite.JDBC"
+    )
+
     init {
-        File(dbPath).parentFile?.mkdirs()
-        Database.connect("jdbc:sqlite:$dbPath?foreign_keys=ON", "org.sqlite.JDBC")
-        transaction {
+        transaction(db) {
             SchemaUtils.create(Graphs, Vertices, Edges)
         }
     }
 
-    fun save(
-        g: Graph,
-        name: String? = null,
-    ): Int =
-        transaction {
-            val gId =
-                Graphs
-                    .insertAndGetId {
-                        it[this.name] = name ?: "Graph_${System.currentTimeMillis()}"
-                        it[this.isDirected] = g.isDirected
-                    }.value
+    fun save(g: Graph, name: String? = null): Int = transaction(db) {
+        val gId = Graphs.insertAndGetId {
+            it[this.name] = name ?: "Graph_${System.currentTimeMillis()}"
+            it[this.isDirected] = g.isDirected
+        }.value
 
-            Vertices.batchInsert(g.vertices) { vertex ->
-                this[Vertices.graph] = gId
-                this[Vertices.label] = vertex.label
-                this[Vertices.origId] = vertex.id
+        Vertices.batchInsert(g.vertices) { vertex ->
+            this[Vertices.graph] = gId
+            this[Vertices.label] = vertex.label
+            this[Vertices.origId] = vertex.id
+        }
+
+        Edges.batchInsert(g.edges) { edge ->
+            this[Edges.graph] = gId
+            this[Edges.fromId] = edge.vertices.first.id
+            this[Edges.toId] = edge.vertices.second.id
+            this[Edges.weight] = edge.weight
+            this[Edges.origId] = edge.id
+        }
+
+        gId
+    }
+
+    fun delete(gId: Int) = transaction(db) {
+        Graphs.deleteWhere { id eq gId }
+    }
+
+    fun read(gId: Int): Graph = transaction(db) {
+        val directed = Graphs
+            .selectAll()
+            .where { Graphs.id eq gId }
+            .single()
+            .let { it[Graphs.isDirected] }
+
+        val g = Graph(isDirected = directed)
+
+        Vertices
+            .selectAll()
+            .where { Vertices.graph eq gId }
+            .forEach { row ->
+                g.addVertex(row[Vertices.origId], row[Vertices.label])
             }
 
-            Edges.batchInsert(g.edges) { edge ->
-                this[Edges.graph] = gId
-                this[Edges.fromId] = edge.vertices.first.id
-                this[Edges.toId] = edge.vertices.second.id
-                this[Edges.weight] = edge.weight
-                this[Edges.origId] = edge.id
+        Edges
+            .selectAll()
+            .where { Edges.graph eq gId }
+            .forEach { row ->
+                g.addEdge(row[Edges.fromId], row[Edges.toId], row[Edges.weight])
             }
 
-            gId
-        }
+        g
+    }
 
-    fun delete(gId: Int) =
-        transaction {
-            Graphs.deleteWhere { id eq gId }
-        }
-
-    fun read(gId: Int): Graph =
-        transaction {
-            val directed =
-                Graphs
-                    .selectAll()
-                    .where { Graphs.id eq gId }
-                    .single()
-                    .let { it[Graphs.isDirected] }
-
-            val g = Graph(isDirected = directed)
-
-            Vertices
-                .selectAll()
-                .where { Vertices.graph eq gId }
-                .forEach { row ->
-                    g.addVertex(row[Vertices.origId], row[Vertices.label])
-                }
-
-            Edges
-                .selectAll()
-                .where { Edges.graph eq gId }
-                .forEach { row ->
-                    g.addEdge(row[Edges.fromId], row[Edges.toId], row[Edges.weight])
-                }
-
-            g
-        }
-
-    fun update(
-        gId: Int,
-        g: Graph,
-        newName: String? = null,
-    ) = transaction {
+    fun update(gId: Int, g: Graph, newName: String? = null) = transaction(db) {
         Graphs.update({ Graphs.id eq gId }) {
             it[isDirected] = g.isDirected
             if (newName != null) it[name] = newName
@@ -127,19 +115,14 @@ class SqliteRepository(
         }
     }
 
-    fun listGraphs(filter: String = ""): List<Pair<Int, String>> =
-        transaction {
-            val q =
-                if (filter.isBlank()) {
-                    Graphs.selectAll()
-                } else {
-                    Graphs
-                        .selectAll()
-                        .where { Graphs.name like "%$filter%" }
-                }
+    fun listGraphs(filter: String = ""): List<Pair<Int, String>> = transaction(db) {
+        val q = if (filter.isBlank())
+            Graphs.selectAll()
+        else
+            Graphs.selectAll()
+                .where { Graphs.name like "%$filter%" }
 
-            q
-                .orderBy(Graphs.name to SortOrder.ASC)
-                .map { it[Graphs.id].value to it[Graphs.name] }
-        }
+        q.orderBy(Graphs.name to SortOrder.ASC)
+            .map { it[Graphs.id].value to it[Graphs.name] }
+    }
 }
