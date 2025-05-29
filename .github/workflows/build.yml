@@ -1,0 +1,29 @@
+name: Library Test
+on:
+  push:
+  pull_request:
+    branches: [main]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: 17
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+      - name: Test with Gradle
+        run: ./gradlew test
+  ktlint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: yutailang0119/action-ktlint@v4
+        with:
+          report-path: build/*.xml
+          ignore-warnings: true
+        continue-on-error: false
