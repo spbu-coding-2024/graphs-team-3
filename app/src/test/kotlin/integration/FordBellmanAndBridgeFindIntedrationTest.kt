@@ -52,9 +52,9 @@ class FordBellmanAndBridgeFindIntedrationTest {
 
         graphViewModel._edges.keys.forEach { edge ->
             if (bridges.contains(edge)) {
-                assertEquals(graphViewModel._edges[edge]?.color, ColorTheme.edgePickedColor)
+                assertEquals(graphViewModel._edges[edge]?.color, ColorTheme.EdgePickedColor)
             } else {
-                assertEquals(graphViewModel._edges[edge]?.color, ColorTheme.edgeDefaultColor)
+                assertEquals(graphViewModel._edges[edge]?.color, ColorTheme.EdgeDefaultColor)
             }
         }
 
@@ -62,9 +62,9 @@ class FordBellmanAndBridgeFindIntedrationTest {
 
         graphViewModel._vertices.keys.forEach { vertex ->
             if (vertex.id == 0 || vertex.id == 1 || vertex.id == 3 || vertex.id == 7) {
-                assertEquals(graphViewModel._vertices[vertex]?.color, ColorTheme.vertexPickedColor)
+                assertEquals(graphViewModel._vertices[vertex]?.color, ColorTheme.VertexPickedColor)
             } else {
-                assertEquals(graphViewModel._vertices[vertex]?.color, ColorTheme.vertexDefaultColor)
+                assertEquals(graphViewModel._vertices[vertex]?.color, ColorTheme.VertexDefaultColor)
             }
         }
 

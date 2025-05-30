@@ -27,7 +27,7 @@ fun GraphView(
         modifier =
             Modifier
                 .fillMaxSize()
-                .background(ColorTheme.backgroundColor),
+                .background(ColorTheme.BackgroundColor),
     ) {
         Box(
             modifier =

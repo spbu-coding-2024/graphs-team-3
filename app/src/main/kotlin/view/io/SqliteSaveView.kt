@@ -89,7 +89,7 @@ fun sqliteSaveView(
                                     open = false
                                     onDismiss()
                                 },
-                                colors = ButtonDefaults.buttonColors(ColorTheme.rejectColor),
+                                colors = ButtonDefaults.buttonColors(ColorTheme.RejectColor),
                             ) { Text(text = "Cancel") }
                             Spacer(Modifier.width(8.dp))
                             Button(

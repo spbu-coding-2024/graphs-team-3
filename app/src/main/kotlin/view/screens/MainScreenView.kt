@@ -43,7 +43,7 @@ fun MainScreen(viewModel: MainScreenViewModel) {
                 Modifier
                     .fillMaxHeight(0.025f)
                     .fillMaxWidth()
-                    .background(ColorTheme.panelBackgroundColor),
+                    .background(ColorTheme.PanelBackgroundColor),
         ) {
             IconButton(onClick = { expanded = true }) {
                 Icon(Icons.Default.Menu, contentDescription = "Menu")

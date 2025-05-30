@@ -62,7 +62,7 @@ fun helloScreen(viewModel: HelloScreenViewModel = remember { HelloScreenViewMode
         ) {
             OutlinedButton(
                 onClick = { viewModel.selectStorage(Storage.JSON) },
-                colors = ButtonDefaults.buttonColors(backgroundColor = ColorTheme.translucentButtonColor),
+                colors = ButtonDefaults.buttonColors(backgroundColor = ColorTheme.TranslucentButtonColor),
                 modifier = Modifier.clip(RoundedCornerShape(percent = 25)).weight(0.23f),
                 enabled = false,
             ) {
@@ -71,7 +71,7 @@ fun helloScreen(viewModel: HelloScreenViewModel = remember { HelloScreenViewMode
 
             OutlinedButton(
                 onClick = { viewModel.selectStorage(Storage.SQLite) },
-                colors = ButtonDefaults.buttonColors(backgroundColor = ColorTheme.translucentButtonColor),
+                colors = ButtonDefaults.buttonColors(backgroundColor = ColorTheme.TranslucentButtonColor),
                 modifier = Modifier.clip(RoundedCornerShape(percent = 25)).weight(0.34f),
             ) {
                 Text(
@@ -81,14 +81,14 @@ fun helloScreen(viewModel: HelloScreenViewModel = remember { HelloScreenViewMode
 
             OutlinedButton(
                 onClick = { viewModel.selectStorage(Storage.Neo4j) },
-                colors = ButtonDefaults.buttonColors(backgroundColor = ColorTheme.translucentButtonColor),
+                colors = ButtonDefaults.buttonColors(backgroundColor = ColorTheme.TranslucentButtonColor),
                 modifier = Modifier.clip(RoundedCornerShape(percent = 25)).weight(0.28f),
             ) {
                 Text("Neo4j")
             }
             OutlinedButton(
                 onClick = { viewModel.setIsRandom(true) },
-                colors = ButtonDefaults.buttonColors(backgroundColor = ColorTheme.translucentButtonColor),
+                colors = ButtonDefaults.buttonColors(backgroundColor = ColorTheme.TranslucentButtonColor),
                 modifier = Modifier.clip(RoundedCornerShape(percent = 25)).weight(0.28f),
             ) {
                 Text("Random Graph")

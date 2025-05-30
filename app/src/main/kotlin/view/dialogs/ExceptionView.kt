@@ -44,7 +44,7 @@ fun exceptionView(
                         onDismiss()
                         openDialog = false
                     },
-                    colors = ButtonDefaults.buttonColors(backgroundColor = ColorTheme.rejectColor),
+                    colors = ButtonDefaults.buttonColors(backgroundColor = ColorTheme.RejectColor),
                     modifier = Modifier.clip(RoundedCornerShape(percent = 25)).padding(15.dp),
                 ) {
                     Text("Cancel")

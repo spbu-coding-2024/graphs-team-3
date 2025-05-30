@@ -17,7 +17,7 @@ class GraphViewModel(
 ) {
     internal val _vertices =
         graph.vertices.associateWith { vertex ->
-            VertexViewModel(0.dp, 0.dp, ColorTheme.vertexDefaultColor, vertex, showVertexLabels, showVertexId)
+            VertexViewModel(0.dp, 0.dp, ColorTheme.VertexDefaultColor, vertex, showVertexLabels, showVertexId)
         }
 
     internal val _edges =
@@ -28,7 +28,7 @@ class GraphViewModel(
             val second =
                 _vertices[edge.vertices.second]
                     ?: throw IllegalStateException("VertexView for ${edge.vertices.second} not found")
-            EdgeViewModel(first, second, ColorTheme.edgeDefaultColor, edge, showEdgeWeights, graph.isDirected)
+            EdgeViewModel(first, second, ColorTheme.EdgeDefaultColor, edge, showEdgeWeights, graph.isDirected)
         }
 
     val vertices: Collection<VertexViewModel>
@@ -62,12 +62,12 @@ class GraphViewModel(
         }
 
         verticesForColoring.forEach { vertex ->
-            _vertices[vertex]?.color = ColorTheme.vertexPickedColor
+            _vertices[vertex]?.color = ColorTheme.VertexPickedColor
         }
 
         var i = 0
         while (i < verticesForColoring.size - 1) {
-            _edges[graph.getEdge(verticesForColoring[i], verticesForColoring[i + 1])]?.color = ColorTheme.edgePickedColor
+            _edges[graph.getEdge(verticesForColoring[i], verticesForColoring[i + 1])]?.color = ColorTheme.EdgePickedColor
             i++
         }
     }
@@ -75,7 +75,7 @@ class GraphViewModel(
     fun findBridges() {
         var edgesForColoring = findBridges(graph)
         edgesForColoring.forEach { edge ->
-            _edges[edge]?.color = ColorTheme.edgePickedColor
+            _edges[edge]?.color = ColorTheme.EdgePickedColor
         }
     }
 }

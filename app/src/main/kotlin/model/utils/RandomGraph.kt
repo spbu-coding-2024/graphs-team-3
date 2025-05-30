@@ -18,7 +18,7 @@ fun randomGraph(
 
     for (i in 0 until vertexCount) {
         for (j in (0 until vertexCount).shuffled().take((1..edgeMaxCount).random())) {
-            if (isDirected && edges.contains(j to i)) {
+            if (isDirected && edges.contains(j to i) || i == j) {
                 continue
             }
             resultGraph.addEdge(i, j, (1..maxWeight).random())
