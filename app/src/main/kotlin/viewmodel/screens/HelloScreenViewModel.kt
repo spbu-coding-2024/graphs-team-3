@@ -138,7 +138,7 @@ class HelloScreenViewModel : ScreenViewModel {
             val edgeMaxCountCast = edgeMaxCount.value?.toInt() ?: 0
             val maxWeightCast = maxWeight.value?.toLong() ?: 1
 
-            if (edgeMaxCountCast > vertexCountCast) {
+            if (edgeMaxCountCast >= vertexCountCast) {
                 throw IllegalStateException("Max edges count can`t be greater than vertex count")
             }
             _graph.value =
