@@ -7,8 +7,9 @@ import model.io.sqlite.SqliteRepository
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.io.TempDir
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
 import java.nio.file.Path
-import kotlin.test.*
 import viewmodel.representation.RepresentationStrategy
 import viewmodel.screens.MainScreenViewModel
 import viewmodel.representation.ForceAtlas2

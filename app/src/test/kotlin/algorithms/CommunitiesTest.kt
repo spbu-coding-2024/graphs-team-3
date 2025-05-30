@@ -4,8 +4,8 @@ import model.algo.findCommunities
 import model.graph.Graph
 import model.graph.Vertex
 import org.junit.jupiter.api.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertTrue
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
 
 class CommunitiesTest {
     /**
