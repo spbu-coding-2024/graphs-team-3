@@ -11,7 +11,7 @@
 
 ![Hello Screen](/resources/mainScreen.png)
 
-## Tecnologies
+## Technologies
 
 - Kotlin 2.1.10
 - Java 21
@@ -62,7 +62,7 @@ cd graphs-team-3
 #### Use Ford-Bellman algorithm
 ![](resources/FordBellman.gif)
 
-## Strong Connect Components
+## Strongly Connected Components
 ![](resources/SCC.gif)
 
 # Load graph
@@ -76,7 +76,7 @@ You can:
 # Contributors
 
 - [Gorlov Stepan](https://github.com/Stepiiiiiiik)
-- [Yakovelev Nickolai](https://github.com/Nickovlev)
+- [Yakovlev Nickolai](https://github.com/Nickovlev)
 
 # License
 [GPLv3](https://www.gnu.org/licenses/gpl-3.0.txt)
