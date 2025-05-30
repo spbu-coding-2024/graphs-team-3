@@ -6,8 +6,9 @@ import model.graph.Graph
 fun findMST(graph: Graph): Set<Edge> {
     require(!graph.isDirected) { "MST is only implemented for undirected graphs" }
 
-    val sortedEdges = graph.edges.sortedBy { it.weight }
     val mstEdges = mutableSetOf<Edge>()
+    if (graph.vertices.isEmpty()) return mstEdges
+    val sortedEdges = graph.edges.sortedBy { it.weight }
 
     val verticesList = graph.vertices.toList()
     val idToIndex =
