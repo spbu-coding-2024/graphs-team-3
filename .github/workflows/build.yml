@@ -1,4 +1,4 @@
-name: Library Test
+name: Application Test
 on:
   push:
   pull_request:
