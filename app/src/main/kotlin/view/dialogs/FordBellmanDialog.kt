@@ -64,7 +64,7 @@ fun FordBellmanDialog(
                                 onDismiss()
                                 openDialog = false
                             },
-                            colors = ButtonDefaults.buttonColors(ColorTheme.rejectColor),
+                            colors = ButtonDefaults.buttonColors(ColorTheme.RejectColor),
                         ) {
                             Text("Cancel")
                         }

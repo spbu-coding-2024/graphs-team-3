@@ -102,7 +102,7 @@ fun neo4jView(
                             openDialog = false
                             onDismiss()
                         },
-                        colors = ButtonDefaults.buttonColors(ColorTheme.rejectColor),
+                        colors = ButtonDefaults.buttonColors(ColorTheme.RejectColor),
                     ) {
                         Text("Cancel")
                     }

@@ -39,7 +39,7 @@ fun VertexView(
                     .size(viewModel.radius * 2 + 2.dp, viewModel.radius * 2 + 2.dp)
                     .offset(viewModel.x - 1.dp, viewModel.y - 1.dp)
                     .background(
-                        color = ColorTheme.vertexBackColor,
+                        color = ColorTheme.VertexBackColor,
                         shape = CircleShape,
                     ).pointerInput(viewModel) {
                         detectDragGestures { change, dragAmount ->

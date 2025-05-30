@@ -54,7 +54,7 @@ fun OverwriteDialog(
                             onConfirm()
                             open = false
                         },
-                        colors = ButtonDefaults.buttonColors(ColorTheme.rejectColor),
+                        colors = ButtonDefaults.buttonColors(ColorTheme.RejectColor),
                     ) { Text("Continue") }
                 }
             },

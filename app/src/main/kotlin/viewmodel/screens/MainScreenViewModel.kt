@@ -179,8 +179,8 @@ class MainScreenViewModel(
         }
 
     fun resetColors() {
-        graphViewModel.vertices.forEach { v -> v.color = ColorTheme.vertexDefaultColor }
-        graphViewModel.edges.forEach { e -> e.color = ColorTheme.edgeDefaultColor }
+        graphViewModel.vertices.forEach { v -> v.color = ColorTheme.VertexDefaultColor }
+        graphViewModel.edges.forEach { e -> e.color = ColorTheme.EdgeDefaultColor }
     }
 
     fun onFordBellmanRun() {
