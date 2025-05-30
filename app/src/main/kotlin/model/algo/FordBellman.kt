@@ -1,4 +1,4 @@
-package model.algo.fordBellman
+package model.algo
 
 import model.graph.Edge
 import model.graph.Graph
