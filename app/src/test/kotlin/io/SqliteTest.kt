@@ -18,6 +18,9 @@ class SqliteTest {
         repo = SqliteRepository(dbFile)
     }
 
+    /**
+     * Simple test for saving empty graph
+     */
     @Test
     fun `save empty graph`() {
         val id = repo.save(Graph(), "empty")
@@ -25,6 +28,9 @@ class SqliteTest {
         assertTrue(restored.vertices.isEmpty())
     }
 
+    /**
+     * Round-trip with undirected graph
+     */
     @Test
     fun `save and read undirected graph`() {
         val graph = Graph()
@@ -40,6 +46,9 @@ class SqliteTest {
         assertEquals(1, restored.edges.size)
     }
 
+    /**
+     * Round-trip with directed graph
+     */
     @Test
     fun `save and read directed graph`() {
         val graph = Graph(true)
@@ -55,6 +64,9 @@ class SqliteTest {
         assertEquals(1, restored.edges.size)
     }
 
+    /**
+     * Test checks if update function delete previous graph
+     */
     @Test
     fun `update overrides graph and name`() {
         val original = Graph()
@@ -78,6 +90,9 @@ class SqliteTest {
         assertEquals("new", actualName)
     }
 
+    /**
+     * Deletion of whole graph. Cannot read it after delete
+     */
     @Test
     fun `delete removes graph entirely`() {
         val graph = Graph()
@@ -89,6 +104,9 @@ class SqliteTest {
         assertThrows<NoSuchElementException> { repo.read(id) }
     }
 
+    /**
+     * Listing function filter properly and list in alphabetical order
+     */
     @Test
     fun `listGraphs ordered alphabetically and filterable`() {
         repo.save(Graph(), "b")
