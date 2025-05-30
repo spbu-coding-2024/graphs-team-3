@@ -61,15 +61,6 @@ fun helloScreen(viewModel: HelloScreenViewModel = remember { HelloScreenViewMode
             horizontalArrangement = Arrangement.spacedBy(10.dp),
         ) {
             OutlinedButton(
-                onClick = { viewModel.selectStorage(Storage.JSON) },
-                colors = ButtonDefaults.buttonColors(backgroundColor = ColorTheme.TranslucentButtonColor),
-                modifier = Modifier.clip(RoundedCornerShape(percent = 25)).weight(0.23f),
-                enabled = false,
-            ) {
-                Text("JSON\nWIP")
-            }
-
-            OutlinedButton(
                 onClick = { viewModel.selectStorage(Storage.SQLite) },
                 colors = ButtonDefaults.buttonColors(backgroundColor = ColorTheme.TranslucentButtonColor),
                 modifier = Modifier.clip(RoundedCornerShape(percent = 25)).weight(0.34f),
