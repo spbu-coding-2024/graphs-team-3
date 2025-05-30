@@ -1,6 +1,6 @@
 package algorithms
 
-import model.algo.fordBellman.fordBellman
+import model.algo.fordBellman
 import model.graph.Graph
 import model.graph.Vertex
 import org.junit.jupiter.api.Assertions.assertEquals
