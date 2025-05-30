@@ -7,11 +7,17 @@ import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 class SccTest {
+    /**
+     * No graph - no scc
+     */
     @Test
     fun `empty graph no scc`() {
         assertTrue(findSCC(Graph()).isEmpty())
     }
 
+    /**
+     * Single vertex is strongly connected component
+     */
     @Test
     fun `single vertex graph`() {
         val graph = Graph()
@@ -21,6 +27,9 @@ class SccTest {
         assertEquals(1, scc.first().size)
     }
 
+    /**
+     * Each vertex is scc because there is no edges
+     */
     @Test
     fun `5000 scc, no edges`() {
         val graph = Graph()
@@ -31,6 +40,9 @@ class SccTest {
         assertEquals( 5000, result)
     }
 
+    /**
+     * Cycle produces one scc
+     */
     @Test
     fun `directed cycle forms one scc`() {
         val graph = Graph(true)
@@ -48,6 +60,9 @@ class SccTest {
         assertEquals(100, scc.first().size)
     }
 
+    /**
+     * Each vertex is reachable - scc
+     */
     @Test
     fun `chain in directed graph produces 100 scc`() {
         val graph = Graph(true)

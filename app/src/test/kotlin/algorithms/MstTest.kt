@@ -9,6 +9,9 @@ import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 class MstTest {
+    /**
+     * Chain produce one mst
+     */
     @Test
     fun `all edges in mst`() {
         val graph = Graph()
@@ -26,6 +29,9 @@ class MstTest {
         assertEquals(expected, result)
     }
 
+    /**
+     * If there is no edges there is no mst
+     */
     @Test
     fun `graph is not connected`() {
         val graph = Graph()
@@ -39,6 +45,9 @@ class MstTest {
         }
     }
 
+    /**
+     * Mst cannot be find in directed graphs
+     */
     @Test
     fun `directed graph throws exception`() {
         val graph = Graph(true)
@@ -47,6 +56,9 @@ class MstTest {
         }
     }
 
+    /**
+     * No edges - no mst
+     */
     @Test
     fun `single vertex returns empty mst`() {
         val graph = Graph()
@@ -54,6 +66,9 @@ class MstTest {
         assertTrue(findMST(graph).isEmpty())
     }
 
+    /**
+     * Test checks if negative weight is supported
+     */
     @Test
     fun `negative weight is supported`() {
         val graph = Graph()
@@ -70,6 +85,9 @@ class MstTest {
         assertEquals(expected, result)
     }
 
+    /**
+     * If there is no graph - mst is empty
+     */
     @Test
     fun `empty graph - empty mst`() {
         val graph = Graph()

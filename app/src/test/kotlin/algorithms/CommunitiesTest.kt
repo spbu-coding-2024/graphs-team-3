@@ -8,6 +8,9 @@ import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 class CommunitiesTest {
+    /**
+     * Test checks whether graph is complete there is certainly one community
+     */
     @Test
     fun `one community, complete graph`() {
         val graph = Graph()
@@ -26,6 +29,9 @@ class CommunitiesTest {
         assertEquals(1, findCommunities(graph).size)
     }
 
+    /**
+     * Each vertex from 5000 is its own community
+     */
     @Test
     fun `5000 communities, no edges`() {
         val graph = Graph()
@@ -36,12 +42,18 @@ class CommunitiesTest {
         assertEquals( 5000, result)
     }
 
+    /**
+     * No graph - no communities
+     */
     @Test
     fun `empty graph, no communities`() {
         val graph = Graph()
         assertTrue(findCommunities(graph).isEmpty())
     }
 
+    /**
+     * three vertices connected with each other
+     */
     @Test
     fun `two communities connected with one edge`() {
         val graph = Graph()
@@ -67,6 +79,9 @@ class CommunitiesTest {
         assertEquals(secondComm, findCommunities(graph).getValue(1).toSet())
     }
 
+    /**
+     * One vertex - its own community
+     */
     @Test
     fun `single isolated vertex is its own community`() {
         val graph = Graph()
