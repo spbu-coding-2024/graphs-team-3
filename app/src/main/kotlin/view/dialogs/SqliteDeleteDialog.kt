@@ -6,11 +6,11 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Warning
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
+import androidx.compose.ui.unit.dp
 import viewmodel.colors.ColorTheme
 
 @Composable
@@ -32,19 +32,19 @@ fun SqliteDeleteDialog(
                     Text("Delete \"$graphName\"?")
                 }
             },
-            text = { Text("This action cannot be undone")},
+            text = { Text("This action cannot be undone") },
             buttons = {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.End,
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
                     TextButton(
                         modifier = Modifier.padding(end = 16.dp),
                         onClick = {
                             open = false
                             onDismiss()
-                        }
+                        },
                     ) { Text("Cancel", color = ColorTheme.TextColor) }
                     Button(
                         modifier = Modifier.padding(end = 16.dp),
@@ -52,11 +52,11 @@ fun SqliteDeleteDialog(
                             onConfirm()
                             open = false
                         },
-                        colors = ButtonDefaults.buttonColors(ColorTheme.rejectColor)
+                        colors = ButtonDefaults.buttonColors(ColorTheme.rejectColor),
                     ) { Text("Delete") }
                 }
             },
-            modifier = Modifier.clip(RoundedCornerShape(percent = 5))
+            modifier = Modifier.clip(RoundedCornerShape(percent = 5)),
         )
     }
 }

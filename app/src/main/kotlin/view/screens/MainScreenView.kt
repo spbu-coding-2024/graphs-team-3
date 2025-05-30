@@ -20,9 +20,9 @@ import view.dialogs.FordBellmanDialog
 import view.dialogs.exceptionView
 import view.graph.GraphView
 import view.io.neo4jView
+import view.io.sqliteSaveView
 import viewmodel.colors.ColorTheme
 import viewmodel.screens.MainScreenViewModel
-import view.io.sqliteSaveView
 
 @Composable
 fun MainScreen(viewModel: MainScreenViewModel) {
@@ -55,7 +55,7 @@ fun MainScreen(viewModel: MainScreenViewModel) {
                 DropdownMenuItem(onClick = { viewModel.selectStorage(Storage.Neo4j) }) {
                     Text("Save to Neo4j")
                 }
-                DropdownMenuItem(onClick = {viewModel.selectStorage(Storage.SQLite)}) {
+                DropdownMenuItem(onClick = { viewModel.selectStorage(Storage.SQLite) }) {
                     Text("Save to SQLite")
                 }
             }

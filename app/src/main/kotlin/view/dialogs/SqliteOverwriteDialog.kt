@@ -33,19 +33,20 @@ fun OverwriteDialog(
                 }
             },
             text = {
-                Text("Graph \"$graphName\" will be overwritten. Continue?") },
+                Text("Graph \"$graphName\" will be overwritten. Continue?")
+            },
             buttons = {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.End,
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
                     TextButton(
                         modifier = Modifier.padding(end = 16.dp),
                         onClick = {
                             open = false
                             onDismiss()
-                        }
+                        },
                     ) { Text("Cancel", color = ColorTheme.TextColor) }
                     Button(
                         modifier = Modifier.padding(end = 16.dp),
@@ -53,13 +54,14 @@ fun OverwriteDialog(
                             onConfirm()
                             open = false
                         },
-                        colors = ButtonDefaults.buttonColors(ColorTheme.rejectColor)
+                        colors = ButtonDefaults.buttonColors(ColorTheme.rejectColor),
                     ) { Text("Continue") }
                 }
             },
-            modifier = Modifier
-                .fillMaxWidth()
-                .clip(RoundedCornerShape(percent = 5))
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(percent = 5)),
         )
     }
 }
