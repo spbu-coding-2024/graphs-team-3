@@ -14,7 +14,6 @@ class SqliteSaveViewModel(
     private var repo: SqliteRepository,
     private val graph: Graph,
 ) {
-
     companion object {
         private val DB_EXTENSIONS = listOf(".db", ".sqlite", ".sqlite3", ".db3", ".s3db")
     }
@@ -97,9 +96,10 @@ class SqliteSaveViewModel(
         val oldRepo = repo
         try {
             val dialog = FileDialog(null as Frame?, "Choose database file", FileDialog.LOAD)
-            dialog.filenameFilter = FilenameFilter { _, fname ->
-                DB_EXTENSIONS.any { ext -> fname.endsWith(ext) }
-            }
+            dialog.filenameFilter =
+                FilenameFilter { _, fname ->
+                    DB_EXTENSIONS.any { ext -> fname.endsWith(ext) }
+                }
             dialog.isVisible = true
             dialog.file?.let { fileName ->
                 val fullPath = File(dialog.directory, fileName).absolutePath

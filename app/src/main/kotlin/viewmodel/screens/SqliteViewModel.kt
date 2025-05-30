@@ -10,8 +10,9 @@ import java.io.FilenameFilter
 import kotlin.io.path.Path
 import kotlin.io.path.exists
 
-class SqliteViewModel(private var repo: SqliteRepository) {
-
+class SqliteViewModel(
+    private var repo: SqliteRepository,
+) {
     companion object {
         private val DB_EXTENSIONS = listOf(".db", ".sqlite", ".sqlite3", ".db3", ".s3db")
     }
@@ -33,7 +34,9 @@ class SqliteViewModel(private var repo: SqliteRepository) {
     private val _deleteDialog = mutableStateOf(false)
     val deleteDialog: State<Boolean> get() = _deleteDialog
 
-    init { reload() }
+    init {
+        reload()
+    }
 
     fun onFilterChange(searchQuery: String) {
         filter = searchQuery
@@ -55,14 +58,18 @@ class SqliteViewModel(private var repo: SqliteRepository) {
         _message.value = message
     }
 
-    fun startDelete(id: Int, name: String) {
+    fun startDelete(
+        id: Int,
+        name: String,
+    ) {
         _toDelete.value = id to name
         _deleteDialog.value = true
     }
 
     fun confirmDelete() {
         _toDelete.value?.let { (id, _) -> repo.delete(id) }
-        reload(); cancelDelete()
+        reload()
+        cancelDelete()
     }
 
     fun cancelDelete() {
@@ -74,9 +81,10 @@ class SqliteViewModel(private var repo: SqliteRepository) {
         val oldRepo = repo
         try {
             val dialog = FileDialog(null as Frame?, "Choose database file", FileDialog.LOAD)
-            dialog.filenameFilter = FilenameFilter { _, name ->
-                DB_EXTENSIONS.any { ext -> name.endsWith(ext) }
-            }
+            dialog.filenameFilter =
+                FilenameFilter { _, name ->
+                    DB_EXTENSIONS.any { ext -> name.endsWith(ext) }
+                }
             dialog.isVisible = true
 
             dialog.file?.let { fileName ->

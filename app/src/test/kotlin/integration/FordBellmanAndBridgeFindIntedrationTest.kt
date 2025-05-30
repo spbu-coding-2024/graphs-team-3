@@ -10,7 +10,6 @@ import viewmodel.colors.ColorTheme
 import viewmodel.graph.GraphViewModel
 
 class FordBellmanAndBridgeFindIntedrationTest {
-
     /**
      * Test checks coloring vertexes and edges after algorithms using
      *

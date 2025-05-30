@@ -2,8 +2,8 @@ package viewmodel.graph
 
 import androidx.compose.runtime.State
 import androidx.compose.ui.unit.dp
-import model.algo.findBridges.findBridges
-import model.algo.fordBellman.fordBellman
+import model.algo.findBridges
+import model.algo.fordBellman
 import model.graph.Graph
 import model.graph.Vertex
 import viewmodel.colors.ColorTheme

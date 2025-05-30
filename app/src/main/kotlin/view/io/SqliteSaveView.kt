@@ -13,8 +13,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import model.graph.Graph
 import model.io.sqlite.SqliteRepository
-import view.dialogs.exceptionView
 import view.dialogs.OverwriteDialog
+import view.dialogs.exceptionView
 import viewmodel.colors.ColorTheme
 import viewmodel.screens.SqliteSaveViewModel
 
@@ -41,31 +41,34 @@ fun sqliteSaveView(
             title = { Text(text = "Create name for the graph") },
             buttons = {
                 Column(
-                    modifier = Modifier
-                        .padding(8.dp)
-                        .fillMaxWidth(),
-                    horizontalAlignment = Alignment.CenterHorizontally
+                    modifier =
+                        Modifier
+                            .padding(8.dp)
+                            .fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     OutlinedTextField(
                         value = nameState.value,
                         onValueChange = vm::onNameChange,
                         label = { Text(text = "Name") },
                         colors = TextFieldDefaults.outlinedTextFieldColors(backgroundColor = ColorTheme.TextFieldColor),
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth(),
                     )
                     Spacer(Modifier.height(8.dp))
                     LazyColumn(
-                        modifier = Modifier
-                            .heightIn(max = 300.dp)
-                            .fillMaxWidth()
+                        modifier =
+                            Modifier
+                                .heightIn(max = 300.dp)
+                                .fillMaxWidth(),
                     ) {
                         items(vm.graphs) { (_, name) ->
                             Row(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(6.dp)
-                                    .clickable { vm.onGraphClicked(name) },
-                                horizontalArrangement = Arrangement.SpaceBetween
+                                modifier =
+                                    Modifier
+                                        .fillMaxWidth()
+                                        .padding(6.dp)
+                                        .clickable { vm.onGraphClicked(name) },
+                                horizontalArrangement = Arrangement.SpaceBetween,
                             ) {
                                 Text(text = name)
                             }
@@ -74,16 +77,19 @@ fun sqliteSaveView(
                     Spacer(Modifier.height(8.dp))
                     Row(
                         horizontalArrangement = Arrangement.SpaceBetween,
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth(),
                     ) {
                         Button(
                             onClick = { vm.chooseFile() },
-                            colors = ButtonDefaults.buttonColors(ColorTheme.ButtonColor)
+                            colors = ButtonDefaults.buttonColors(ColorTheme.ButtonColor),
                         ) { Text(text = "Choose file") }
                         Row {
                             Button(
-                                onClick = { open = false; onDismiss() },
-                                colors = ButtonDefaults.buttonColors(ColorTheme.rejectColor)
+                                onClick = {
+                                    open = false
+                                    onDismiss()
+                                },
+                                colors = ButtonDefaults.buttonColors(ColorTheme.rejectColor),
                             ) { Text(text = "Cancel") }
                             Spacer(Modifier.width(8.dp))
                             Button(
@@ -93,13 +99,13 @@ fun sqliteSaveView(
                                         onDismiss()
                                     }
                                 },
-                                colors = ButtonDefaults.buttonColors(ColorTheme.ConfirmColor)
+                                colors = ButtonDefaults.buttonColors(ColorTheme.ConfirmColor),
                             ) { Text(text = "Save") }
                         }
                     }
                 }
             },
-            modifier = Modifier.clip(RoundedCornerShape(percent = 5))
+            modifier = Modifier.clip(RoundedCornerShape(percent = 5)),
         )
     }
 
@@ -111,7 +117,7 @@ fun sqliteSaveView(
                 open = false
                 onDismiss()
             },
-            onDismiss = vm::cancelOverwrite
+            onDismiss = vm::cancelOverwrite,
         )
     }
 

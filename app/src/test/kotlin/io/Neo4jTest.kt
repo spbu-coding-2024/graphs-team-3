@@ -16,7 +16,6 @@ import org.neo4j.harness.Neo4jBuilders
 const val vertexCount = 100
 const val edgesCount = 5
 
-
 /**
  * Testing input/output with neo4j graph database
  * For testing use library - neo4j harness (in-memory)

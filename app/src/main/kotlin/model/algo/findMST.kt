@@ -1,7 +1,7 @@
 package model.algo
 
-import model.graph.Graph
 import model.graph.Edge
+import model.graph.Graph
 
 fun findMST(graph: Graph): Set<Edge> {
     require(!graph.isDirected) { "MST is only implemented for undirected graphs" }
@@ -10,9 +10,10 @@ fun findMST(graph: Graph): Set<Edge> {
     val mstEdges = mutableSetOf<Edge>()
 
     val verticesList = graph.vertices.toList()
-    val idToIndex = verticesList
-        .mapIndexed { index, vertex -> vertex.id to index }
-        .toMap()
+    val idToIndex =
+        verticesList
+            .mapIndexed { index, vertex -> vertex.id to index }
+            .toMap()
 
     val parents = IntArray(verticesList.size) { -1 }
 
@@ -22,7 +23,10 @@ fun findMST(graph: Graph): Set<Edge> {
         return parents[vertexId]
     }
 
-    fun unionSets(firstId: Int, secondId: Int) {
+    fun unionSets(
+        firstId: Int,
+        secondId: Int,
+    ) {
         val rootFirst = findRoot(firstId)
         val rootSecond = findRoot(secondId)
         if (rootFirst == rootSecond) return

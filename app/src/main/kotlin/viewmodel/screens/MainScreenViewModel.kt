@@ -111,8 +111,6 @@ class MainScreenViewModel(
 
     fun resetGraphView() {
         representationStrategy.place(800.0, 600.0, graphViewModel)
-        graphViewModel.vertices.forEach { v -> v.color = ColorTheme.vertexDefaultColor }
-        graphViewModel.edges.forEach { v -> v.color = ColorTheme.edgeDefaultColor }
         resetColors()
     }
 

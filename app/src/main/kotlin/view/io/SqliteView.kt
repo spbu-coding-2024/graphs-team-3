@@ -15,8 +15,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import model.graph.Graph
 import model.io.sqlite.SqliteRepository
-import view.dialogs.exceptionView
 import view.dialogs.SqliteDeleteDialog
+import view.dialogs.exceptionView
 import viewmodel.colors.ColorTheme
 import viewmodel.screens.SqliteViewModel
 
@@ -43,39 +43,42 @@ fun sqliteView(
             title = { Text(text = "Choose the graph") },
             buttons = {
                 Column(
-                    modifier = Modifier
-                        .padding(8.dp)
-                        .fillMaxWidth(),
-                    horizontalAlignment = Alignment.CenterHorizontally
+                    modifier =
+                        Modifier
+                            .padding(8.dp)
+                            .fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     OutlinedTextField(
                         value = vm.filter,
                         onValueChange = vm::onFilterChange,
                         label = { Text(text = "Search") },
                         colors = TextFieldDefaults.outlinedTextFieldColors(backgroundColor = ColorTheme.TextFieldColor),
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth(),
                     )
                     Spacer(Modifier.height(8.dp))
                     LazyColumn(
-                        modifier = Modifier
-                            .heightIn(max = 300.dp)
-                            .fillMaxWidth()
+                        modifier =
+                            Modifier
+                                .heightIn(max = 300.dp)
+                                .fillMaxWidth(),
                     ) {
                         items(vm.graphs) { (id, name) ->
                             Row(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(6.dp)
-                                    .clickable {
-                                    onGraphChosen(vm.openGraph(id), id)
-                                    open = false
-                                    },
-                                horizontalArrangement = Arrangement.SpaceBetween
+                                modifier =
+                                    Modifier
+                                        .fillMaxWidth()
+                                        .padding(6.dp)
+                                        .clickable {
+                                            onGraphChosen(vm.openGraph(id), id)
+                                            open = false
+                                        },
+                                horizontalArrangement = Arrangement.SpaceBetween,
                             ) {
                                 Text(text = name)
                                 IconButton(
                                     onClick = { vm.startDelete(id, name) },
-                                    modifier = Modifier.size(20.dp)
+                                    modifier = Modifier.size(20.dp),
                                 ) {
                                     Icon(Icons.Default.Delete, "Delete")
                                 }
@@ -85,20 +88,23 @@ fun sqliteView(
                     Spacer(Modifier.height(8.dp))
                     Row(
                         horizontalArrangement = Arrangement.SpaceBetween,
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth(),
                     ) {
                         Button(
                             onClick = { vm.chooseFile() },
-                            colors = ButtonDefaults.buttonColors(ColorTheme.ButtonColor)
+                            colors = ButtonDefaults.buttonColors(ColorTheme.ButtonColor),
                         ) { Text(text = "Choose file") }
                         Button(
-                            onClick = { open = false; onDismiss() },
-                            colors = ButtonDefaults.buttonColors(ColorTheme.rejectColor)
+                            onClick = {
+                                open = false
+                                onDismiss()
+                            },
+                            colors = ButtonDefaults.buttonColors(ColorTheme.rejectColor),
                         ) { Text(text = "Cancel") }
                     }
                 }
             },
-            modifier = Modifier.clip(RoundedCornerShape(percent = 5))
+            modifier = Modifier.clip(RoundedCornerShape(percent = 5)),
         )
     }
 
@@ -106,7 +112,7 @@ fun sqliteView(
         SqliteDeleteDialog(
             graphName = toDelete.value?.second.orEmpty(),
             onConfirm = vm::confirmDelete,
-            onDismiss = vm::cancelDelete
+            onDismiss = vm::cancelDelete,
         )
     }
 

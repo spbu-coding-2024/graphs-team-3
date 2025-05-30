@@ -1,4 +1,6 @@
 [![CodeFactor](https://www.codefactor.io/repository/github/spbu-coding-2024/graphs-team-3/badge)](https://www.codefactor.io/repository/github/spbu-coding-2024/graphs-team-3)
+
+![example workflow](https://github.com/spbu-coding-2024/graphs-team-3/actions/workflows/build.yml/badge.svg)
 ![Kotlin](https://img.shields.io/badge/Kotlin-2.1.10-blue.svg)
 ![Gradle](https://img.shields.io/badge/Gradle-8.13-brightgreen.svg)
 ![Java](https://img.shields.io/badge/Java-21-brightgreen.svg)

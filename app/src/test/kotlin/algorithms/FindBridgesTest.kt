@@ -1,13 +1,12 @@
 package algorithms
 
-import model.algo.findBridges.findBridges
+import model.algo.findBridges
 import model.graph.Edge
 import model.graph.Graph
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 
 class FindBridgesTest {
-
     /**
      * Graph without bridges
      */
