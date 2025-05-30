@@ -7,7 +7,7 @@
 ![License](https://img.shields.io/badge/License-GPLv3-red.svg)
 [![Neo4j](https://img.shields.io/badge/Neo4j-008CC1?style=flat&logo=neo4j&logoColor=white)](https://neo4j.com/)
 [![SQLite](https://img.shields.io/badge/SQLite-07405E?style=flat)](https://www.sqlite.org/)
-# Graph Vizualizer Application
+# Graph Visualizer Application
 
 ![Hello Screen](/resources/mainScreen.png)
 
