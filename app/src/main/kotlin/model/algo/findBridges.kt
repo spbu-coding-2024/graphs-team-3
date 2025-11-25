@@ -41,9 +41,9 @@ fun findBridges(graph: Graph): Set<Edge> {
                         ret[adjacentVertex] ?: throw IllegalStateException(),
                     )
                 if ((ret[adjacentVertex] ?: throw IllegalStateException()) > (
-                        timeIn[current]
-                            ?: throw IllegalStateException()
-                    )
+                            timeIn[current]
+                                ?: throw IllegalStateException()
+                            )
                 ) {
                     briges.add(
                         graph.getEdge(current, adjacentVertex) ?: throw IllegalStateException("No such vertex in graph"),

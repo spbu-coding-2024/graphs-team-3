@@ -61,6 +61,13 @@ fun helloScreen(viewModel: HelloScreenViewModel = remember { HelloScreenViewMode
             horizontalArrangement = Arrangement.spacedBy(10.dp),
         ) {
             OutlinedButton(
+                onClick = { viewModel.selectStorage(Storage.JSON) },
+                colors = ButtonDefaults.buttonColors(backgroundColor = ColorTheme.TranslucentButtonColor),
+                modifier = Modifier.clip(RoundedCornerShape(percent = 25)).weight(0.25f),
+            ) {
+                Text("JSON")
+            }
+            OutlinedButton(
                 onClick = { viewModel.selectStorage(Storage.SQLite) },
                 colors = ButtonDefaults.buttonColors(backgroundColor = ColorTheme.TranslucentButtonColor),
                 modifier = Modifier.clip(RoundedCornerShape(percent = 25)).weight(0.34f),
@@ -80,7 +87,7 @@ fun helloScreen(viewModel: HelloScreenViewModel = remember { HelloScreenViewMode
             OutlinedButton(
                 onClick = { viewModel.setIsRandom(true) },
                 colors = ButtonDefaults.buttonColors(backgroundColor = ColorTheme.TranslucentButtonColor),
-                modifier = Modifier.clip(RoundedCornerShape(percent = 25)).weight(0.28f),
+                modifier = Modifier.clip(RoundedCornerShape(percent = 25)).weight(0.34f),
             ) {
                 Text("Random Graph")
             }
@@ -89,7 +96,14 @@ fun helloScreen(viewModel: HelloScreenViewModel = remember { HelloScreenViewMode
 
     when (storage) {
         Storage.JSON -> {
-            viewModel.selectStorage(null)
+            jsonView(
+                onDismiss = { viewModel.selectStorage(null) },
+                onGraphChosen = { g->
+                    viewModel.selectGraph(g)
+                    navigator?.push(MainScreenNav(g, ForceAtlas2()))
+                    viewModel.selectStorage(null)
+                },
+            )
         }
 
         Storage.SQLite -> {
