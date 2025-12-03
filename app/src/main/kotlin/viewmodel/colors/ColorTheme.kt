@@ -17,7 +17,7 @@ object ColorTheme {
     val TextColor = Color(0, 0, 0)
 
     @Stable
-    val ConfirmColor = Color(120, 255, 140)
+    val ConfirmColor = Color(124, 255, 120, 255)
 
     @Stable
     val RejectColor = Color(255, 120, 140)

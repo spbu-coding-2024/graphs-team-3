@@ -18,11 +18,17 @@ import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.navigator.LocalNavigator
 import view.dialogs.FordBellmanDialog
 import view.dialogs.exceptionView
+import view.io.jsonSaveView
 import view.graph.GraphView
 import view.io.neo4jView
 import view.io.sqliteSaveView
 import viewmodel.colors.ColorTheme
 import viewmodel.screens.MainScreenViewModel
+import view.dialogs.CycleDetectionDialog
+import view.dialogs.CycleListDialog
+import model.graph.Vertex
+import model.algo.findCyclesStartingFrom
+import model.algo.findCrucialVertices
 
 @Composable
 fun MainScreen(viewModel: MainScreenViewModel) {
@@ -32,10 +38,15 @@ fun MainScreen(viewModel: MainScreenViewModel) {
     val message = remember { viewModel.message }
     var scale by remember { mutableStateOf(1f) }
     var expanded by remember { mutableStateOf(false) }
+    var showCycleDetectionDialog by remember { mutableStateOf(false) }
     val storage by viewModel.storage
     val uri = remember { viewModel.uri }
     val username = remember { viewModel.username }
     val password = remember { viewModel.password }
+
+
+    var showCycleListDialog by remember { mutableStateOf(false) }
+    var cyclesForDialog by remember { mutableStateOf<List<List<Vertex>>>(emptyList()) }
 
     Column {
         Box(
@@ -52,6 +63,9 @@ fun MainScreen(viewModel: MainScreenViewModel) {
                 expanded = expanded,
                 onDismissRequest = { expanded = false },
             ) {
+                DropdownMenuItem(onClick = { viewModel.selectStorage(Storage.JSON) }) {
+                    Text("Save to JSON")
+                }
                 DropdownMenuItem(onClick = { viewModel.selectStorage(Storage.Neo4j) }) {
                     Text("Save to Neo4j")
                 }
@@ -161,6 +175,28 @@ fun MainScreen(viewModel: MainScreenViewModel) {
                 }
                 Spacer(modifier = Modifier.height(4.dp))
                 Button(
+                    onClick = { showCycleDetectionDialog = true },
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = ButtonDefaults.buttonColors(backgroundColor = ColorTheme.ButtonColor),
+                ) {
+                    Text("Find Cycles for Vertex")
+                }
+                Button(
+                    onClick = {
+                        try {
+                            viewModel.graphViewModel.findCrucialVertices()
+                        } catch (e: IllegalStateException) {
+                            viewModel.setExceptionDialog(true)
+                            viewModel.setMessage(e.message ?: "An error occurred")
+                        }
+                    },
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = ButtonDefaults.buttonColors(backgroundColor = ColorTheme.ButtonColor),
+                ) {
+                    Text("Find Crucial Vertices")
+                }
+                Spacer(modifier = Modifier.height(4.dp))
+                Button(
                     onClick = viewModel::showCommunities,
                     modifier = Modifier.fillMaxWidth(),
                     colors = ButtonDefaults.buttonColors(backgroundColor = ColorTheme.ButtonColor),
@@ -242,7 +278,41 @@ fun MainScreen(viewModel: MainScreenViewModel) {
         )
     }
 
+
+    if (showCycleDetectionDialog) {
+        CycleDetectionDialog(
+            graphViewModel = viewModel.graphViewModel,
+            onDismiss = { showCycleDetectionDialog = false },
+            onVertexSelected = { vertexId ->
+                val cycles = viewModel.graphViewModel.graph.findCyclesStartingFrom(vertexId)
+                if (cycles.isEmpty()) {
+                    viewModel.setExceptionDialog(true)
+                    viewModel.setMessage("No cycles found for vertex $vertexId")
+                } else {
+                    cyclesForDialog = cycles
+                    showCycleDetectionDialog = false
+                    showCycleListDialog = true
+                }
+            }
+        )
+    }
+
+
+    if (showCycleListDialog) {
+        CycleListDialog(
+            cycles = cyclesForDialog,
+            graphViewModel = viewModel.graphViewModel,
+            onDismiss = { showCycleListDialog = false }
+        )
+    }
+
     when (storage) {
+        Storage.JSON -> {
+            jsonSaveView(
+                graph = viewModel.graphViewModel.graph,
+                onDismiss = { viewModel.selectStorage(null) },
+            )
+        }
         Storage.Neo4j -> {
             neo4jView(
                 uri,
