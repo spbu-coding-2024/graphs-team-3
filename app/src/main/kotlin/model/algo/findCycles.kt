@@ -39,21 +39,5 @@ fun Graph.findCyclesStartingFrom(startVertexId: Int): List<List<Vertex>> {
 
     dfs(startVertex, mutableListOf(), mutableSetOf())
 
-    return cycles.distinctBy { canonicalForm(it) }
-}
-
-// Вспомогательная функция для приведения цикла к каноническому виду (для удаления дубликатов)
-private fun canonicalForm(cycle: List<Vertex>): String {
-    val n = cycle.size
-    if (n <= 1) return cycle.joinToString(",") { it.id.toString() }
-
-    // Находим лексикографически минимальный сдвиг цикла
-    var minRotation = cycle.map { it.id }.toString()
-    for (i in 1 until n) {
-        val rotation = (cycle.drop(i) + cycle.take(i)).map { it.id }.toString()
-        if (rotation < minRotation) {
-            minRotation = rotation
-        }
-    }
-    return minRotation
+    return cycles
 }

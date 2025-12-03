@@ -101,7 +101,7 @@ fun jsonView(
     }
 }
 
-private fun selectJsonFile(): File? {
+fun selectJsonFile(): File? {
     val fileChooser = JFileChooser().apply {
         fileFilter = FileNameExtensionFilter("JSON files", "json")
         dialogTitle = "Select JSON Graph File"

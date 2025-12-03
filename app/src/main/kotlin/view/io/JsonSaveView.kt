@@ -110,7 +110,7 @@ fun jsonSaveView(
     }
 }
 
-private fun selectSaveJsonFile(): File? {
+fun selectSaveJsonFile(): File? {
     val fileChooser = JFileChooser().apply {
         fileFilter = FileNameExtensionFilter("JSON files", "json")
         dialogTitle = "Save Graph as JSON"

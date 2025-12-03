@@ -99,7 +99,7 @@ class GraphViewModel(
 
         for (i in cycle.indices) {
             val currentVertex = cycle[i]
-            val nextVertex = cycle[(i + 1) % cycle.size]
+            val nextVertex = cycle[(i + 1) % cycle.size] //% нужен для случая, чтобы соединить size-1 вершину с исходной 0 (n%n==0)
             val edge = graph.getEdge(currentVertex, nextVertex)
             if (edge != null) {
                 edgesMap[edge]?.color = ColorTheme.EdgePickedColor

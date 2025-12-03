@@ -7,7 +7,7 @@ import model.graph.Graph
 import java.io.File
 
 class JsonRepository {
-    private val json = Json { prettyPrint = true }
+    val json = Json { prettyPrint = true }
 
     fun writeToDisk(graph: Graph, filePath: String) {
 
