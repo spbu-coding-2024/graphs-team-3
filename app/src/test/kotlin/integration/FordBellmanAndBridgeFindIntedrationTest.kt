@@ -50,21 +50,24 @@ class FordBellmanAndBridgeFindIntedrationTest {
 
         graphViewModel.findBridges()
 
-        graphViewModel._edges.keys.forEach { edge ->
-            if (bridges.contains(edge)) {
-                assertEquals(graphViewModel._edges[edge]?.color, ColorTheme.EdgePickedColor)
+
+        graphViewModel.edges.forEach { edge ->
+            if (bridges.contains(edge.origin)) {
+                assertEquals(edge.color, ColorTheme.EdgePickedColor)
             } else {
-                assertEquals(graphViewModel._edges[edge]?.color, ColorTheme.EdgeDefaultColor)
+                assertEquals(edge.color, ColorTheme.EdgeDefaultColor)
             }
         }
 
         graphViewModel.fordBellman(firstId, secondId)
 
-        graphViewModel._vertices.keys.forEach { vertex ->
-            if (vertex.id == 0 || vertex.id == 1 || vertex.id == 3 || vertex.id == 7) {
-                assertEquals(graphViewModel._vertices[vertex]?.color, ColorTheme.VertexPickedColor)
+
+        graphViewModel.vertices.forEach { vertex ->
+
+            if (vertex.origin.id == 0 || vertex.origin.id == 1 || vertex.origin.id == 3 || vertex.origin.id == 7) {
+                assertEquals(vertex.color, ColorTheme.VertexPickedColor)
             } else {
-                assertEquals(graphViewModel._vertices[vertex]?.color, ColorTheme.VertexDefaultColor)
+                assertEquals(vertex.color, ColorTheme.VertexDefaultColor)
             }
         }
 
